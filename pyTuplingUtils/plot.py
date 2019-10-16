@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #
 # Author: Yipeng Sun
-# Last Change: Wed Oct 16, 2019 at 02:00 PM -0400
+# License: BSD 2-clause
+# Last Change: Wed Oct 16, 2019 at 02:55 PM -0400
 
 import numpy as np
 import matplotlib as mp
