@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Oct 16, 2019 at 02:55 PM -0400
+# Last Change: Thu Oct 17, 2019 at 02:28 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -38,6 +38,14 @@ def decorate_output(tight_layout=True, pad=0.1):
 ################
 # Plot helpers #
 ################
+
+def plot_style(text_usetex=True,
+               font_family='serif', font_weight='normal', font_size=12):
+    plt.rcParams.update({'text.usetex': text_usetex})
+    plt.rcParams.update({'font.family': font_family})
+    plt.rcParams.update({'font.weight': font_weight})
+    plt.rcParams.update({'font.size': int(font_size)})
+
 
 def tick_formatter_simple(x, p):
     return x
@@ -104,7 +112,7 @@ def plot_pts(pts, width, pts_add_args,
         mp.ticker.FuncFormatter(xtick_formatter)
     )
 
-    return (output, fig, ax)
+    return output, fig, ax
 
 
 @decorate_output
@@ -131,7 +139,7 @@ def plot_histo(histo, bins, histo_add_args,
         mp.ticker.FuncFormatter(xtick_formatter)
     )
 
-    return (output, fig, ax)
+    return output, fig, ax
 
 
 @decorate_output
@@ -149,7 +157,7 @@ def plot_two_histos(histo1, bins1, histo2, bins2,
                         figure=fig, axis=ax1,
                         **kwargs)
 
-    return (output, fig, ax1, ax2)
+    return output, fig, ax1, ax2
 
 
 ##############
