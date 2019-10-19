@@ -2,13 +2,13 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 02:42 AM -0400
+# Last Change: Sat Oct 19, 2019 at 03:04 AM -0400
 
-from argparse import ArgumentPaser
+from argparse import ArgumentParser
 
 
 def single_ntuple_parser_no_output(descr, parser=None):
-    parser = ArgumentPaser(description=descr) if parser is None else parser
+    parser = ArgumentParser(description=descr) if parser is None else parser
 
     parser.add_argument('-n', '--ref',
                         nargs='?',
