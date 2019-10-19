@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 17, 2019 at 02:40 AM -0400
+# Last Change: Sat Oct 19, 2019 at 02:53 AM -0400
 
 import setuptools
 
@@ -34,7 +34,8 @@ setup(
     scripts=['bin/uidcommon', 'bin/uiddump'],
     include_package_data=True,
     install_requires=[
-        'uproot'
+        'uproot',
+        'lz4',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
