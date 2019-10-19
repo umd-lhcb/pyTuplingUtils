@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 17, 2019 at 02:24 AM -0400
+# Last Change: Sat Oct 19, 2019 at 03:08 AM -0400
 
 import numpy as np
 
@@ -12,6 +12,9 @@ from .io import read_branch
 def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber'):
     run = read_branch(ntp, tree, run_branch)
     event = read_branch(ntp, tree, event_branch)
+
+    run = np.char.mod('%d', run)
+    event = np.char.mod('%d', event)
 
     run = np.char.add(run, '-')
     ids = np.char.add(run, event)
