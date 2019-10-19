@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #
 # Author: Yipeng Sun
-# Last Change: Sat Oct 19, 2019 at 02:31 AM -0400
+# License: BSD 2-clause
+# Last Change: Sat Oct 19, 2019 at 02:42 AM -0400
 
 from argparse import ArgumentPaser
 
