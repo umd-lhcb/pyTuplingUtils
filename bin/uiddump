@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 03:02 AM -0400
+# Last Change: Sat Oct 19, 2019 at 03:05 AM -0400
 
 import uproot
 
@@ -32,7 +32,7 @@ branch name contains eventNumber.''')
 
 if __name__ == '__main__':
     args = parse_input().parse_args()
-    ntp = uproot.open(args.ref_ntuple)
+    ntp = uproot.open(args.ref)
 
     _, _, total_size, _, dupl_size = extract_uid(
         ntp, args.ref_tree, args.runNumber, args.eventNumber)
