@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+#
+# Author: Yipeng Sun
+# License: BSD 2-clause
+# Last Change: Sat Oct 19, 2019 at 02:42 AM -0400
+
+import uproot
+
+from pyTuplingUtils.utils import extract_uid
+from pyTuplingUtils.argparse import single_ntuple_parser_no_output
+
+
+def parse_input(descr='''
+dump runNumber-eventNumber id for all events, and count number of unique events.
+'''):
+    parser = single_ntuple_parser_no_output(descr)
+
+    parser.add_argument('--runNumber',
+                        nargs='?',
+                        default='runNumber',
+                        help='''
+branch name contains runNumber.''')
+
+    parser.add_argument('--eventNumber',
+                        nargs='?',
+                        default='eventNumber',
+                        help='''
+branch name contains eventNumber.''')
+
+    return parser
+
+
+if __name__ == '__main__':
+    args = parse_input().parse_args()
+    ntp = uproot.open(args.ref_ntuple)
+
+    _, _, total_size, _, dupl_size = extract_uid(
+        ntp, args.ref_tree, args.runNumber, args.eventNumber)
+    print('Total # of event: {}, duplicate: {}, duplicate rate: {}%'.format(
+        total_size, dupl_size, dupl_size/total_size*100))
