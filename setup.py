@@ -1,12 +1,12 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 02:53 AM -0400
+# Last Change: Sat Oct 19, 2019 at 02:58 AM -0400
 
 import setuptools
 
 from distutils.core import setup
 
-VERSION = 0.1
+from pyTuplingUtils import version
 
 
 ###########
@@ -23,7 +23,7 @@ with open('README.md', 'r') as ld:
 
 setup(
     name='pyTuplingUtils',
-    version=VERSION,
+    version=version,
     author='Yipeng Sun',
     author_email='syp@umd.edu',
     description='Utilities for n-tuples, such as plotting and simple debugging, with the help of uproot',
