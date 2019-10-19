@@ -2,9 +2,9 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 17, 2019 at 02:24 AM -0400
+# Last Change: Sat Oct 19, 2019 at 03:00 AM -0400
 
-import np
+import numpy as np
 
 
 def read_branch(ntp, tree, branch, idx=None):
