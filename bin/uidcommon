@@ -6,14 +6,15 @@
 
 import uproot
 
-from pyTuplingUtils.utils import extract_uid
-from pyTuplingUtils.argparse import single_ntuple_parser_no_output
+from pyTuplingUtils.utils import find_common_uid
+from pyTuplingUtils.argparse import double_ntuple_parser_no_output
 
 
 def parse_input(descr='''
-dump runNumber-eventNumber id for all events, and count number of unique events.
+dump runNumber-eventNumber id for all events in both n-tuples, and find the
+intersection of unique events in them.
 '''):
-    parser = single_ntuple_parser_no_output(descr)
+    parser = double_ntuple_parser_no_output(descr)
 
     parser.add_argument('--runNumber',
                         nargs='?',
@@ -32,9 +33,10 @@ branch name contains eventNumber.''')
 
 if __name__ == '__main__':
     args = parse_input().parse_args()
-    ntp = uproot.open(args.ref_ntuple)
+    ntp1 = uproot.open(args.ref)
+    ntp2 = uproot.open(args.comp)
 
-    _, _, total_size, _, dupl_size = extract_uid(
-        ntp, args.ref_tree, args.runNumber, args.eventNumber)
-    print('Total: {}, duplicate: {}, duplicate rate: {}%'.format(
-        total_size, dupl_size, dupl_size/total_size*100))
+    uid_comm, idx1, idx2 = find_common_uid(
+        ntp1, ntp2, args.ref_tree, args.comp_tree,
+        run_branch=args.runNumber, event_branch=args.eventNumber)
+    print('Total common UIDs: {}'.format(uid_comm.size))
