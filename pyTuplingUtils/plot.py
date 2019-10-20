@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 04:10 AM -0400
+# Last Change: Sun Oct 20, 2019 at 04:15 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -42,11 +42,11 @@ def decorate_output(f, tight_layout=True, pad=0.1):
 def plot_style(text_usetex=True,
                font_family='serif', font_weight='normal', font_size=12,
                style='classic'):
+    plt.style.use(style)
     plt.rcParams.update({'text.usetex': text_usetex})
     plt.rcParams.update({'font.family': font_family})
     plt.rcParams.update({'font.weight': font_weight})
     plt.rcParams.update({'font.size': int(font_size)})
-    plt.style.use(style)
 
 
 def tick_formatter_simple(x, p):
