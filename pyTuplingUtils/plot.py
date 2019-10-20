@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 04:04 AM -0400
+# Last Change: Sun Oct 20, 2019 at 04:10 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -187,10 +187,10 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     ax1.set_xlabel(ax1_xlabel)
     ax1.set_ylabel(ax1_ylabel)
 
-    plot_histo(histo1, bins1, histo1_add_args, figure=fig, axis=ax1,
-               xtick_formatter=xtick_formatter)
-    plot_histo(histo2, bins2, histo2_add_args, figure=fig, axis=ax1,
-               xtick_formatter=xtick_formatter)
+    plot_histo(histo1, bins1, histo1_add_args,
+               figure=fig, axis=ax1, xtick_formatter=xtick_formatter)
+    plot_histo(histo2, bins2, histo2_add_args,
+               figure=fig, axis=ax1, xtick_formatter=xtick_formatter)
 
     ax1.legend()
 
@@ -199,6 +199,7 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     ax2.set_xlabel(ax2_xlabel)
     ax2.set_ylabel(ax2_ylabel)
 
-    plot_pts(pts, width, pts_add_args, xtick_formatter=xtick_formatter)
+    plot_pts(pts, width, pts_add_args,
+             figure=fig, axis=ax2, xtick_formatter=xtick_formatter)
 
     fig.savefig(output)
