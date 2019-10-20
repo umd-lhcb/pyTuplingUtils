@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:04 AM -0400
+# Last Change: Sun Oct 20, 2019 at 03:06 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -174,9 +174,9 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
                            ax1_yscale='linear',
                            ax2_yscale='linear',
                            xtick_formatter=tick_formatter_simple,
-                           height_ratio=[5, 1]):
+                           height_ratios=[5, 1]):
     fig = plt.figure(constrained_layout=True)
-    spec = fig.add_gridspec(ncols=1, nrows=2, height_ratio=height_ratio)
+    spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
 
     ax1 = fig.add_subplot(spec[0, 0])
     ax1.set_yscale(ax1_yscale)
