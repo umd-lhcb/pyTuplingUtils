@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:25 AM -0400
+# Last Change: Sun Oct 20, 2019 at 03:43 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -191,6 +191,8 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
                xtick_formatter=xtick_formatter)
     plot_histo(histo2, bins2, histo2_add_args, figure=fig, axis=ax1,
                xtick_formatter=xtick_formatter)
+
+    ax1.legend()
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     ax2.set_yscale(ax2_yscale)
