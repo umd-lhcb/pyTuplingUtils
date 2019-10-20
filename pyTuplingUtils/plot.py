@@ -2,11 +2,12 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:06 AM -0400
+# Last Change: Sun Oct 20, 2019 at 03:22 AM -0400
 
 import numpy as np
 import matplotlib as mp
 
+from functools import wraps
 from matplotlib import pyplot as plt
 
 
@@ -14,25 +15,24 @@ from matplotlib import pyplot as plt
 # General helpers #
 ###################
 
-def decorate_output(tight_layout=True, pad=0.1):
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            result = f(*args, **kwargs)
-            output = result[0]
-            data = result[1:]
+def decorate_output(f, tight_layout=True, pad=0.1):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        result = f(*args, **kwargs)
+        output = result[0]
+        data = result[1:]
 
-            if not output:
-                return data
-            else:
-                fig = data[0]
-                if tight_layout:
-                    plt.tight_layout(pad=pad)
-                fig.savefig(output)
-                fig.clf()
-                plt.close(fig)
+        if not output:
+            return data
+        else:
+            fig = data[0]
+            if tight_layout:
+                plt.tight_layout(pad=pad)
+            fig.savefig(output)
+            fig.clf()
+            plt.close(fig)
 
-        return wrapper
-    return decorator
+    return wrapper
 
 
 ################
