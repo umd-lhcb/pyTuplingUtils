@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:43 AM -0400
+# Last Change: Sun Oct 20, 2019 at 04:04 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -90,7 +90,7 @@ def ax_add_args_simple(label, color='blue', edgecolor=None):
 ################
 
 @decorate_output
-def plot_pts(pts, width, pts_add_args,
+def plot_pts(pts, bins, pts_add_args,
              marker='_',
              output=None,
              figure=None, axis=None,
@@ -106,10 +106,10 @@ def plot_pts(pts, width, pts_add_args,
     else:
         ax = axis
 
-    ax.scatter(width[:-1]+(np.diff(width)/2), pts, marker=marker,
+    ax.scatter(bins[:-1]+(np.diff(bins)/2), pts, marker=marker,
                **pts_add_args)
 
-    if not title:
+    if title:
         ax.set_title(title)
 
     ax.get_xaxis().set_major_formatter(
@@ -138,7 +138,7 @@ def plot_histo(histo, bins, histo_add_args,
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
 
-    if not title:
+    if title:
         ax.set_title(title)
 
     ax.get_xaxis().set_major_formatter(
