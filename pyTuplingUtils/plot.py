@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 06:52 PM -0400
+# Last Change: Sun Oct 20, 2019 at 07:16 PM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -95,8 +95,8 @@ def plot_pts(pts, bins, pts_add_args,
              output=None,
              figure=None, axis=None,
              title=None,
-             xtick_formatter=tick_formatter_simple,
-             ytick_formatter=tick_formatter_simple,
+             xtick_formatter=None,
+             ytick_formatter=None,
              yscale='linear',
              ):
     fig = plt.figure() if not figure else figure
@@ -113,12 +113,14 @@ def plot_pts(pts, bins, pts_add_args,
     if title:
         ax.set_title(title)
 
-    ax.get_xaxis().set_major_formatter(
-        mp.ticker.FuncFormatter(xtick_formatter)
-    )
-    ax.get_yaxis().set_major_formatter(
-        mp.ticker.FuncFormatter(ytick_formatter)
-    )
+    if xtick_formatter:
+        ax.get_xaxis().set_major_formatter(
+            mp.ticker.FuncFormatter(xtick_formatter)
+        )
+    if ytick_formatter:
+        ax.get_yaxis().set_major_formatter(
+            mp.ticker.FuncFormatter(ytick_formatter)
+        )
 
     return output, fig, ax
 
@@ -129,7 +131,7 @@ def plot_histo(histo, bins, histo_add_args,
                figure=None, axis=None,
                title=None,
                xtick_formatter=tick_formatter_short,
-               ytick_formatter=tick_formatter_simple,
+               ytick_formatter=None,
                yscale='linear',
                ):
     fig = plt.figure() if not figure else figure
@@ -146,12 +148,14 @@ def plot_histo(histo, bins, histo_add_args,
     if title:
         ax.set_title(title)
 
-    ax.get_xaxis().set_major_formatter(
-        mp.ticker.FuncFormatter(xtick_formatter)
-    )
-    ax.get_yaxis().set_major_formatter(
-        mp.ticker.FuncFormatter(ytick_formatter)
-    )
+    if xtick_formatter:
+        ax.get_xaxis().set_major_formatter(
+            mp.ticker.FuncFormatter(xtick_formatter)
+        )
+    if ytick_formatter:
+        ax.get_yaxis().set_major_formatter(
+            mp.ticker.FuncFormatter(ytick_formatter)
+        )
 
     return output, fig, ax
 
@@ -185,9 +189,9 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
                            output,
                            ax1_yscale='linear',
                            ax2_yscale='linear',
-                           xtick_formatter=tick_formatter_simple,
-                           top_ytick_formatter=tick_formatter_simple,
-                           bot_ytick_formatter=tick_formatter_simple,
+                           xtick_formatter=None,
+                           top_ytick_formatter=None,
+                           bot_ytick_formatter=None,
                            height_ratios=[5, 1]):
     fig = plt.figure(constrained_layout=True)
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
