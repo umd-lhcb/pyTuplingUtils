@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:22 AM -0400
+# Last Change: Sun Oct 20, 2019 at 03:25 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -103,6 +103,8 @@ def plot_pts(pts, width, pts_add_args,
     if not axis:
         ax = fig.add_subplot()
         ax.set_yscale(yscale)
+    else:
+        ax = axis
 
     ax.scatter(width[:-1]+(np.diff(width)/2), pts, marker=marker,
                **pts_add_args)
@@ -130,6 +132,8 @@ def plot_histo(histo, bins, histo_add_args,
     if not axis:
         ax = fig.add_subplot()
         ax.set_yscale(yscale)
+    else:
+        ax = axis
 
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
