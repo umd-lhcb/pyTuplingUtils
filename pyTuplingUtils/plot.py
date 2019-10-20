@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 04:15 AM -0400
+# Last Change: Sun Oct 20, 2019 at 06:52 PM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -96,6 +96,7 @@ def plot_pts(pts, bins, pts_add_args,
              figure=None, axis=None,
              title=None,
              xtick_formatter=tick_formatter_simple,
+             ytick_formatter=tick_formatter_simple,
              yscale='linear',
              ):
     fig = plt.figure() if not figure else figure
@@ -115,6 +116,9 @@ def plot_pts(pts, bins, pts_add_args,
     ax.get_xaxis().set_major_formatter(
         mp.ticker.FuncFormatter(xtick_formatter)
     )
+    ax.get_yaxis().set_major_formatter(
+        mp.ticker.FuncFormatter(ytick_formatter)
+    )
 
     return output, fig, ax
 
@@ -125,6 +129,7 @@ def plot_histo(histo, bins, histo_add_args,
                figure=None, axis=None,
                title=None,
                xtick_formatter=tick_formatter_short,
+               ytick_formatter=tick_formatter_simple,
                yscale='linear',
                ):
     fig = plt.figure() if not figure else figure
@@ -143,6 +148,9 @@ def plot_histo(histo, bins, histo_add_args,
 
     ax.get_xaxis().set_major_formatter(
         mp.ticker.FuncFormatter(xtick_formatter)
+    )
+    ax.get_yaxis().set_major_formatter(
+        mp.ticker.FuncFormatter(ytick_formatter)
     )
 
     return output, fig, ax
@@ -178,6 +186,8 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
                            ax1_yscale='linear',
                            ax2_yscale='linear',
                            xtick_formatter=tick_formatter_simple,
+                           top_ytick_formatter=tick_formatter_simple,
+                           bot_ytick_formatter=tick_formatter_simple,
                            height_ratios=[5, 1]):
     fig = plt.figure(constrained_layout=True)
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
@@ -188,9 +198,13 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     ax1.set_ylabel(ax1_ylabel)
 
     plot_histo(histo1, bins1, histo1_add_args,
-               figure=fig, axis=ax1, xtick_formatter=xtick_formatter)
+               figure=fig, axis=ax1,
+               xtick_formatter=xtick_formatter,
+               ytick_formatter=top_ytick_formatter)
     plot_histo(histo2, bins2, histo2_add_args,
-               figure=fig, axis=ax1, xtick_formatter=xtick_formatter)
+               figure=fig, axis=ax1,
+               xtick_formatter=xtick_formatter,
+               ytick_formatter=top_ytick_formatter)
 
     ax1.legend()
 
@@ -200,6 +214,8 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     ax2.set_ylabel(ax2_ylabel)
 
     plot_pts(pts, width, pts_add_args,
-             figure=fig, axis=ax2, xtick_formatter=xtick_formatter)
+             figure=fig, axis=ax2,
+             xtick_formatter=xtick_formatter,
+             ytick_formatter=bot_ytick_formatter)
 
     fig.savefig(output)
