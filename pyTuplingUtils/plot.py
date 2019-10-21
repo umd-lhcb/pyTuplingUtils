@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 08:45 PM -0400
+# Last Change: Mon Oct 21, 2019 at 12:44 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -39,8 +39,8 @@ def decorate_output(f, tight_layout=True, pad=0.1):
 # Plot helpers #
 ################
 
-def plot_style(text_usetex=True,
-               font_family='serif', font_weight='normal', font_size=12,
+def plot_style(text_usetex=False,
+               font_family='monospace', font_weight='normal', font_size=12,
                style='classic'):
     plt.style.use(style)
     plt.rcParams.update({'text.usetex': text_usetex})
