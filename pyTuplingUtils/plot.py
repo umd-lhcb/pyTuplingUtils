@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 02:21 AM -0400
+# Last Change: Mon Oct 21, 2019 at 02:42 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -120,7 +120,7 @@ def plot_pts(pts, bins, pts_add_args, *args,
 @decorate_output
 def plot_histo(histo, bins, histo_add_args, *args,
                output=None, xtick_formatter=tick_formatter_short, **kwargs):
-    fig, ax = plot_prepare(*args, **kwargs, xtick_formatter=xtick_formatter)
+    fig, ax = plot_prepare(*args, xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
 
