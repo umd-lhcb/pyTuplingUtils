@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 02:09 AM -0400
+# Last Change: Mon Oct 21, 2019 at 02:21 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -81,11 +81,13 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 ################
 
 def plot_prepare(figure=None, axis=None, title=None,
-                 xtick_formatter=None, ytick_formatter=None, yscale='linear'):
+                 xtick_formatter=None, ytick_formatter=None,
+                 xscale='linear', yscale='linear'):
     fig = plt.figure() if not figure else figure
 
     if not axis:
         ax = fig.add_subplot()
+        ax.set_xscale(xscale)
         ax.set_yscale(yscale)
     else:
         ax = axis
