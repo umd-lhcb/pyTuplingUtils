@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 02:42 AM -0400
+# Last Change: Mon Oct 21, 2019 at 02:58 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -80,7 +80,8 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 # Simple plots #
 ################
 
-def plot_prepare(figure=None, axis=None, title=None,
+def plot_prepare(*args,
+                 figure=None, axis=None, title=None,
                  xtick_formatter=None, ytick_formatter=None,
                  xscale='linear', yscale='linear'):
     fig = plt.figure() if not figure else figure
