@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 02:05 AM -0400
+# Last Change: Mon Oct 21, 2019 at 02:09 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -49,10 +49,6 @@ def plot_style(text_usetex=False,
     plt.rcParams.update({'font.size': int(font_size)})
 
 
-def tick_formatter_simple(x, p):
-    return x
-
-
 def tick_formatter_short(x, p):
     X = str(x)
     if len(X) > 4:
@@ -83,7 +79,6 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 ################
 # Simple plots #
 ################
-
 
 def plot_prepare(figure=None, axis=None, title=None,
                  xtick_formatter=None, ytick_formatter=None, yscale='linear'):
