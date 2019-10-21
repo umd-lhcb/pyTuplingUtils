@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 12:44 AM -0400
+# Last Change: Mon Oct 21, 2019 at 01:52 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -61,19 +61,6 @@ def tick_formatter_short(x, p):
         return x
 
 
-def ax_add_args_default(num, mean, std, color='blue', edgecolor=None):
-    if not edgecolor:
-        edgecolor = color
-
-    return {
-        'color': color,
-        'edgecolor': edgecolor,
-        'label': 'tot: {:.4g} mean {:.2g} std: {:.2g}'.format(
-            num, mean, std
-        )
-    }
-
-
 def ax_add_args_simple(label, color='blue', edgecolor=None):
     if not edgecolor:
         edgecolor = color
@@ -83,6 +70,14 @@ def ax_add_args_simple(label, color='blue', edgecolor=None):
         'edgecolor': edgecolor,
         'label': label
     }
+
+
+def ax_add_args_default(num, mean, std, *args, **kwargs):
+    return ax_add_args_simple(
+        'tot: {:.4g} mean {:.2g} std: {:.2g}'.format(
+            num, mean, std
+        ),
+        *args, **kwargs)
 
 
 ################
