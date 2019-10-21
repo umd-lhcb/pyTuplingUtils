@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 08:44 PM -0400
+# Last Change: Sun Oct 20, 2019 at 08:45 PM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -114,11 +114,11 @@ def plot_pts(pts, bins, pts_add_args,
         ax.set_title(title)
 
     if xtick_formatter:
-        ax.get_xaxis().set_minor_formatter(
+        ax.get_xaxis().set_major_formatter(
             mp.ticker.FuncFormatter(xtick_formatter)
         )
     if ytick_formatter:
-        ax.get_yaxis().set_minor_formatter(
+        ax.get_yaxis().set_major_formatter(
             mp.ticker.FuncFormatter(ytick_formatter)
         )
 
@@ -149,11 +149,11 @@ def plot_histo(histo, bins, histo_add_args,
         ax.set_title(title)
 
     if xtick_formatter:
-        ax.get_xaxis().set_minor_formatter(
+        ax.get_xaxis().set_major_formatter(
             mp.ticker.FuncFormatter(xtick_formatter)
         )
     if ytick_formatter:
-        ax.get_yaxis().set_minor_formatter(
+        ax.get_yaxis().set_major_formatter(
             mp.ticker.FuncFormatter(ytick_formatter)
         )
 
