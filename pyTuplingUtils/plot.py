@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 03:09 AM -0400
+# Last Change: Mon Oct 21, 2019 at 03:33 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -80,8 +80,7 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 # Simple plots #
 ################
 
-def plot_prepare(*args,
-                 figure=None, axis=None, title=None,
+def plot_prepare(figure=None, axis=None, title=None,
                  xtick_formatter=None, ytick_formatter=None,
                  xscale='linear', yscale='linear'):
     fig = plt.figure() if not figure else figure
@@ -109,9 +108,9 @@ def plot_prepare(*args,
 
 
 @decorate_output
-def plot_pts(pts, bins, pts_add_args, *args,
+def plot_pts(pts, bins, pts_add_args,
              marker='_', output=None, **kwargs):
-    fig, ax = plot_prepare(*args, **kwargs)
+    fig, ax = plot_prepare(**kwargs)
     ax.scatter(bins[:-1]+(np.diff(bins)/2), pts, marker=marker,
                **pts_add_args)
 
@@ -119,9 +118,9 @@ def plot_pts(pts, bins, pts_add_args, *args,
 
 
 @decorate_output
-def plot_histo(histo, bins, histo_add_args, *args,
+def plot_histo(histo, bins, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short, **kwargs):
-    fig, ax = plot_prepare(*args, xtick_formatter=xtick_formatter, **kwargs)
+    fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
 
