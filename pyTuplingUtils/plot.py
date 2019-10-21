@@ -2,13 +2,13 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 02:58 AM -0400
+# Last Change: Mon Oct 21, 2019 at 03:09 AM -0400
 
 import numpy as np
 import matplotlib as mp
+import matplotlib.pyplot as plt
 
 from functools import wraps
-from matplotlib import pyplot as plt
 
 
 ###################
