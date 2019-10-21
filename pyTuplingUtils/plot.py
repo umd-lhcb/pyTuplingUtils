@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 01:52 AM -0400
+# Last Change: Mon Oct 21, 2019 at 02:05 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -84,16 +84,9 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 # Simple plots #
 ################
 
-@decorate_output
-def plot_pts(pts, bins, pts_add_args,
-             marker='_',
-             output=None,
-             figure=None, axis=None,
-             title=None,
-             xtick_formatter=None,
-             ytick_formatter=None,
-             yscale='linear',
-             ):
+
+def plot_prepare(figure=None, axis=None, title=None,
+                 xtick_formatter=None, ytick_formatter=None, yscale='linear'):
     fig = plt.figure() if not figure else figure
 
     if not axis:
@@ -101,9 +94,6 @@ def plot_pts(pts, bins, pts_add_args,
         ax.set_yscale(yscale)
     else:
         ax = axis
-
-    ax.scatter(bins[:-1]+(np.diff(bins)/2), pts, marker=marker,
-               **pts_add_args)
 
     if title:
         ax.set_title(title)
@@ -116,41 +106,26 @@ def plot_pts(pts, bins, pts_add_args,
         ax.get_yaxis().set_major_formatter(
             mp.ticker.FuncFormatter(ytick_formatter)
         )
+
+    return fig, ax
+
+
+@decorate_output
+def plot_pts(pts, bins, pts_add_args, *args,
+             marker='_', output=None, **kwargs):
+    fig, ax = plot_prepare(*args, **kwargs)
+    ax.scatter(bins[:-1]+(np.diff(bins)/2), pts, marker=marker,
+               **pts_add_args)
 
     return output, fig, ax
 
 
 @decorate_output
-def plot_histo(histo, bins, histo_add_args,
-               output=None,
-               figure=None, axis=None,
-               title=None,
-               xtick_formatter=tick_formatter_short,
-               ytick_formatter=None,
-               yscale='linear',
-               ):
-    fig = plt.figure() if not figure else figure
-
-    if not axis:
-        ax = fig.add_subplot()
-        ax.set_yscale(yscale)
-    else:
-        ax = axis
-
+def plot_histo(histo, bins, histo_add_args, *args,
+               output=None, xtick_formatter=tick_formatter_short, **kwargs):
+    fig, ax = plot_prepare(*args, **kwargs, xtick_formatter=xtick_formatter)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
-
-    if title:
-        ax.set_title(title)
-
-    if xtick_formatter:
-        ax.get_xaxis().set_major_formatter(
-            mp.ticker.FuncFormatter(xtick_formatter)
-        )
-    if ytick_formatter:
-        ax.get_yaxis().set_major_formatter(
-            mp.ticker.FuncFormatter(ytick_formatter)
-        )
 
     return output, fig, ax
 
@@ -158,9 +133,7 @@ def plot_histo(histo, bins, histo_add_args,
 @decorate_output
 def plot_two_histos(histo1, bins1, histo2, bins2,
                     histo1_add_args, histo2_add_args,
-                    output=None,
-                    figure=None,
-                    **kwargs):
+                    output=None, figure=None, **kwargs):
     fig = plt.figure() if not figure else figure
 
     _, ax1 = plot_histo(histo1, bins1, output, histo1_add_args,
@@ -182,11 +155,9 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
                            ax1_xlabel, ax1_ylabel,
                            ax2_xlabel, ax2_ylabel,
                            output,
-                           ax1_yscale='linear',
-                           ax2_yscale='linear',
+                           ax1_yscale='linear', ax2_yscale='linear',
                            xtick_formatter=None,
-                           top_ytick_formatter=None,
-                           bot_ytick_formatter=None,
+                           top_ytick_formatter=None, bot_ytick_formatter=None,
                            height_ratios=[5, 1]):
     fig = plt.figure(constrained_layout=True)
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
