@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Oct 21, 2019 at 03:33 AM -0400
+# Last Change: Thu Oct 24, 2019 at 03:10 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -82,6 +82,7 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
 
 def plot_prepare(figure=None, axis=None, title=None,
                  xtick_formatter=None, ytick_formatter=None,
+                 xlabel=None, ylabel=None,
                  xscale='linear', yscale='linear'):
     fig = plt.figure() if not figure else figure
 
@@ -104,6 +105,11 @@ def plot_prepare(figure=None, axis=None, title=None,
             mp.ticker.FuncFormatter(ytick_formatter)
         )
 
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if ylabel:
+        ax.set_ylabel(ylabel)
+
     return fig, ax
 
 
@@ -123,6 +129,21 @@ def plot_histo(histo, bins, histo_add_args,
     fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
+
+    return output, fig, ax
+
+
+@decorate_output
+def plot_hexbin(x, y, gridsize, hexbin_add_args,
+                output=None, cmap='inferno', bins='log', colorbar_label=None,
+                **kwargs):
+    fig, ax = plot_prepare(**kwargs)
+    hb = ax.hexbin(x, y,
+                   gridsize=gridsize, cmap=cmap, bins=bins, **hexbin_add_args)
+    cb = fig.colorbar(hb, ax=ax)
+
+    if colorbar_label:
+        cb.set_label(colorbar_label)
 
     return output, fig, ax
 
@@ -160,10 +181,6 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
 
     ax1 = fig.add_subplot(spec[0, 0])
-    ax1.set_yscale(ax1_yscale)
-    ax1.set_xlabel(ax1_xlabel)
-    ax1.set_ylabel(ax1_ylabel)
-
     plot_histo(histo1, bins1, histo1_add_args,
                figure=fig, axis=ax1,
                xtick_formatter=xtick_formatter,
@@ -171,18 +188,15 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     plot_histo(histo2, bins2, histo2_add_args,
                figure=fig, axis=ax1,
                xtick_formatter=xtick_formatter,
-               ytick_formatter=top_ytick_formatter)
-
+               ytick_formatter=top_ytick_formatter,
+               xlabel=ax1_xlabel, ylabel=ax1_ylabel, yscale=ax1_yscale)
     ax1.legend()
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
-    ax2.set_yscale(ax2_yscale)
-    ax2.set_xlabel(ax2_xlabel)
-    ax2.set_ylabel(ax2_ylabel)
-
     plot_pts(pts, width, pts_add_args,
              figure=fig, axis=ax2,
              xtick_formatter=xtick_formatter,
-             ytick_formatter=bot_ytick_formatter)
+             ytick_formatter=bot_ytick_formatter,
+             xlabel=ax2_xlabel, ylabel=ax2_ylabel, yscale=ax2_ylabel)
 
     fig.savefig(output)
