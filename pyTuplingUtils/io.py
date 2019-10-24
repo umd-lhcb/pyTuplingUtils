@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 24, 2019 at 02:44 AM -0400
+# Last Change: Thu Oct 24, 2019 at 02:45 AM -0400
 
 import numpy as np
 
@@ -23,6 +23,6 @@ def read_branches(ntp, tree, branches, idx=None, transpose=False):
         data = [d[idx] for d in data]
 
     if transpose:
-        return np.colunm_stack(data)
+        return np.column_stack(data)
     else:
         return data
