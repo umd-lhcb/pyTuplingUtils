@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 24, 2019 at 02:42 AM -0400
+# Last Change: Thu Oct 24, 2019 at 02:44 AM -0400
 
 import numpy as np
 
@@ -17,7 +17,7 @@ def read_branch(ntp, tree, branch, idx=None):
 
 
 def read_branches(ntp, tree, branches, idx=None, transpose=False):
-    data = ntp[tree].array(branches).values()
+    data = ntp[tree].arrays(branches).values()
 
     if idx is not None:
         data = [d[idx] for d in data]
