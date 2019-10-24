@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:06 AM -0400
+# Last Change: Thu Oct 24, 2019 at 02:43 AM -0400
 
 name = 'pyTuplingUtils'
-version = '0.1.9'
+version = '0.2.0'
