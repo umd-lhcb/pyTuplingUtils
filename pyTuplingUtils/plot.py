@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 24, 2019 at 03:10 AM -0400
+# Last Change: Tue Dec 31, 2019 at 02:44 AM -0500
 
 import numpy as np
 import matplotlib as mp
@@ -125,10 +125,15 @@ def plot_pts(pts, bins, pts_add_args,
 
 @decorate_output
 def plot_histo(histo, bins, histo_add_args,
-               output=None, xtick_formatter=tick_formatter_short, **kwargs):
+               output=None, xtick_formatter=tick_formatter_short,
+               show_legend=True,
+               **kwargs):
     fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
+
+    if show_legend:
+        ax.legend()
 
     return output, fig, ax
 
@@ -183,10 +188,12 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
     ax1 = fig.add_subplot(spec[0, 0])
     plot_histo(histo1, bins1, histo1_add_args,
                figure=fig, axis=ax1,
+               show_legend=False,
                xtick_formatter=xtick_formatter,
                ytick_formatter=top_ytick_formatter)
     plot_histo(histo2, bins2, histo2_add_args,
                figure=fig, axis=ax1,
+               show_legend=False,
                xtick_formatter=xtick_formatter,
                ytick_formatter=top_ytick_formatter,
                xlabel=ax1_xlabel, ylabel=ax1_ylabel, yscale=ax1_yscale)
