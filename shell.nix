@@ -27,7 +27,7 @@ pkgs.mkShell {
     SOURCE_DATE_EPOCH=$(date +%s)
 
     if test -d $HOME/build/python-venv; then
-      VENV=$HOME/build/python-venv/lfuv
+      VENV=$HOME/build/python-venv/pyTuplingUtil
     else
       VENV=./.virtualenv
     fi
