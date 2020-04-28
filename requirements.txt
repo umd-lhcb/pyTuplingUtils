@@ -1,0 +1,5 @@
+uproot
+lz4
+numpy
+matplotlib
+pyparsing

@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 03:00 AM -0400
+# Last Change: Wed Apr 29, 2020 at 03:02 AM +0800
 
 import setuptools
 
@@ -36,7 +36,9 @@ setup(
     install_requires=[
         'uproot',
         'lz4',
-        'numpy'
+        'numpy',
+        'matplotlib',
+        'pyparsing'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
