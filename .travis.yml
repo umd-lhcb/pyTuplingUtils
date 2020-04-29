@@ -4,11 +4,10 @@ python: 3.8
 
 install:
     - pip install -r ./requirements.txt
-    # For code coverage
-    - pip install codecov
+    - pip install codecov  # For code coverage tests
 
 script:
-    - ./test/test_boolean_syntax.py
+    - coverage run -m unittest discover -s test
 
 after_success:
     - codecov
