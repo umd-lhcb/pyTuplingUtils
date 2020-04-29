@@ -2,29 +2,22 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 29, 2020 at 06:41 PM +0800
+# Last Change: Wed Apr 29, 2020 at 07:41 PM +0800
 
-import pyparsing as pp
-
-from pyparsing import Suppress, Literal, Word
+from pyparsing import Word, Combine
 from pyparsing import alphanums, nums
-from pyparsing import infixNotation, opAssoc, oneOf
-from pyparsing import pyparsing_common as ppc
+from pyparsing import infixNotation, opAssoc, oneOf, ZeroOrMore
 
 ##########
 # Tokens #
 ##########
 
-# LPAR = Suppress('(')
-# RPAR = Suppress(')')
-
-# ADD = Literal('+')
-# SUB = Literal('-')
-
 VAR = Word(alphanums + '_')
-NUM = ppc.number
+INT = Word(nums).setParseAction(lambda x: int(x[0]))
+FLOAT = Combine(ZeroOrMore(Word(nums))+'.'+Word(nums)).setParseAction(
+    lambda x: float(x[0]))
 
-TERMINAL = VAR | NUM.setParseAction(pp.traceParseAction(lambda x: int(x)))
+TERMINAL = FLOAT | INT | VAR
 
 
 #############
