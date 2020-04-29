@@ -4,4 +4,4 @@
 [![coverage](https://codecov.io/gh/umd-lhcb/pyTuplingUtils/branch/master/graph/badge.svg)](https://codecov.io/gh/umd-lhcb/pyTuplingUtils)
 
 Utilities for ntuples, such as plotting and simple debugging, with the help of
-uproot.
+`uproot`.
