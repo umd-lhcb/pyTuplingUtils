@@ -2,12 +2,14 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 29, 2020 at 04:37 PM +0800
+# Last Change: Wed Apr 29, 2020 at 06:41 PM +0800
+
+import pyparsing as pp
 
 from pyparsing import Suppress, Literal, Word
 from pyparsing import alphanums, nums
 from pyparsing import infixNotation, opAssoc, oneOf
-
+from pyparsing import pyparsing_common as ppc
 
 ##########
 # Tokens #
@@ -20,10 +22,9 @@ from pyparsing import infixNotation, opAssoc, oneOf
 # SUB = Literal('-')
 
 VAR = Word(alphanums + '_')
+NUM = ppc.number
 
-INT = Word(nums)
-
-TERMINAL = VAR | INT
+TERMINAL = VAR | NUM.setParseAction(pp.traceParseAction(lambda x: int(x)))
 
 
 #############
@@ -60,7 +61,8 @@ class BinOp(OpNode):
 EXPR = infixNotation(
     TERMINAL,
     [
-        (oneOf('* /'), 2, opAssoc.LEFT, BinOp),
-        (oneOf('+ -'), 2, opAssoc.LEFT, BinOp)
+        (oneOf('+ -'), 1, opAssoc.RIGHT, UnOp),
+        (oneOf('* /'), 2, opAssoc.LEFT,  BinOp),
+        (oneOf('+ -'), 2, opAssoc.LEFT,  BinOp)
     ]
 )
