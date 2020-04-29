@@ -3,4 +3,3 @@ lz4
 numpy
 matplotlib
 pyparsing
-pyparsing_common
