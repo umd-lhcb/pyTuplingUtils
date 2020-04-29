@@ -2,12 +2,12 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 03:37 AM +0800
+# Last Change: Thu Apr 30, 2020 at 03:47 AM +0800
 
 from lark import Lark
 
 
-boolean_grammer = '''
+boolean_grammar = '''
     ?start: sum
 
     ?sum: product
@@ -30,4 +30,4 @@ boolean_grammer = '''
     %ignore WS_INLINE
 '''
 
-boolean_parser = Lark(boolean_grammer, parser='lalr')
+boolean_parser = Lark(boolean_grammar, parser='lalr')
