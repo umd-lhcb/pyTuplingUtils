@@ -2,41 +2,89 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 29, 2020 at 07:46 PM +0800
+# Last Change: Thu Apr 30, 2020 at 03:59 AM +0800
 
 import unittest
 
 from context import pyTuplingUtils as ptu
 
+parser = ptu.boolean.syntax.boolean_parser.parse
+
 
 class AddSubTest(unittest.TestCase):
+    def test_var(self):
+        self.assertEqual(
+            parser('a').pretty(),
+            "var\ta\n"
+        )
+        self.assertEqual(
+            parser('a1').pretty(),
+            "var\ta1\n"
+        )
+        self.assertEqual(
+            parser('a_1b').pretty(),
+            "var\ta_1b\n"
+        )
+
+    def test_num(self):
+        self.assertEqual(
+            parser('1').pretty(),
+            "num\t1\n"
+        )
+
+    def test_negative_num(self):
+        self.assertEqual(
+            parser('-1.6').pretty(),
+            "neg\n"
+            "  num\t1.6\n"
+        )
+        self.assertEqual(
+            parser('-1').pretty(),
+            "neg\n"
+            "  num\t1\n"
+        )
+
     def test_add(self):
-        result = ptu.boolean.EXPR.parseString('a + 3').asList()
+        self.assertEqual(
+            parser('-1 +2.3').pretty(),
+            "add\n"
+            "  neg\n"
+            "    num\t1\n"
+            "  num\t2.3\n"
+        )
 
-        self.assertEqual(result[0].operator, '+')
-        self.assertEqual(result[0].operands, ['a', 3])
+    def test_add_sub(self):
+        self.assertEqual(
+            parser('-1 +2.3 - 10').pretty(),
+            "sub\n"
+            "  add\n"
+            "    neg\n"
+            "      num\t1\n"
+            "    num\t2.3\n"
+            "  num\t10\n"
+        )
 
-    def test_mul(self):
-        result = ptu.boolean.EXPR.parseString('a * 3').asList()
+    def test_add_mul(self):
+        self.assertEqual(
+            parser('-1 +2.3 * 10').pretty(),
+            "add\n"
+            "  neg\n"
+            "    num\t1\n"
+            "  mul\n"
+            "    num\t2.3\n"
+            "    num\t10\n"
+        )
 
-        self.assertEqual(result[0].operator, '*')
-        self.assertEqual(result[0].operands, ['a', 3])
-
-    def test_add_mul_precedence1(self):
-        result = ptu.boolean.EXPR.parseString('a * 3+b').asList()
-
-        self.assertEqual(result[0].operator, '+')
-        self.assertEqual(result[0].operands[1], 'b')
-        self.assertEqual(result[0].operands[0].operator, '*')
-        self.assertEqual(result[0].operands[0].operands, ['a', 3])
-
-    def test_add_mul_precedence2(self):
-        result = ptu.boolean.EXPR.parseString('a * (3+b)').asList()
-
-        self.assertEqual(result[0].operator, '*')
-        self.assertEqual(result[0].operands[0], 'a')
-        self.assertEqual(result[0].operands[1].operator, '+')
-        self.assertEqual(result[0].operands[1].operands, [3, 'b'])
+    def test_add_mul_par(self):
+        self.assertEqual(
+            parser('-(1 +2.3) * 10').pretty(),
+            "mul\n"
+            "  neg\n"
+            "    add\n"
+            "      num\t1\n"
+            "      num\t2.3\n"
+            "  num\t10\n"
+        )
 
 
 if __name__ == '__main__':
