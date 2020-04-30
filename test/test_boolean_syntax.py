@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 06:17 PM +0800
+# Last Change: Thu Apr 30, 2020 at 06:31 PM +0800
 
 import unittest
 
@@ -100,6 +100,28 @@ class BooleanTest(unittest.TestCase):
             "    neg\n"
             "      var\ta_2\n"
             "    num\t2.3\n"
+        )
+
+    def test_eq(self):
+        self.assertEqual(
+            parser('a == b').pretty(),
+            "eq\n"
+            "  var\ta\n"
+            "  var\tb\n"
+        )
+        self.assertEqual(
+            parser('a == 1').pretty(),
+            "eq\n"
+            "  var\ta\n"
+            "  num\t1\n"
+        )
+        self.assertEqual(
+            parser('a == -1+x').pretty(),
+            "eq\n"
+            "  var\ta\n"
+            "  add\n"
+            "    num\t-1\n"
+            "    var\tx\n"
         )
 
 

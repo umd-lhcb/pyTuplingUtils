@@ -2,13 +2,21 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 06:16 PM +0800
+# Last Change: Thu Apr 30, 2020 at 06:28 PM +0800
 
 from lark import Lark
 
 
 boolean_grammar = '''
-    ?start: expr
+    ?start: cond
+
+    ?cond: expr
+        | cond "==" cond    -> eq
+        | cond "!=" cond    -> neq
+        | cond ">"  cond    -> gt
+        | cond ">=" cond    -> gte
+        | cond "<"  cond    -> lt
+        | cond "<=" cond    -> lte
 
     ?expr: sum
         | "!" sum           -> comp  // logical complement
