@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 11:38 PM +0800
+# Last Change: Fri May 01, 2020 at 12:12 AM +0800
 
 from lark import Transformer, v_args
 
@@ -31,11 +31,15 @@ class TransForTupling(Transformer):
     @v_args(inline=True)
     def var(self, val):
         try:
-            return self.cache[val]
+            return self.cache[val.value]
         except KeyError:
-            result = read_branch(self.ntp, self.tree, val)
+            result = read_branch(self.ntp, self.tree, val.value)
             self.cache[val] = result
             return result
+
+    @v_args(inline=True)
+    def neg(self, val):
+        return -val
 
 
 class BooleanEvaluator(object):
