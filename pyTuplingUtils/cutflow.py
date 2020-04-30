@@ -51,7 +51,7 @@ class CutflowGen(object):
             if r.name:
                 cut_result['name'] = r.name
 
-            self.result[cond] = cut_result
+            self.result[r.cond] = cut_result
 
         return self.result
 
