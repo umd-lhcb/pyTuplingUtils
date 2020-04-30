@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 10:58 PM +0800
+# Last Change: Thu Apr 30, 2020 at 11:38 PM +0800
 
 from lark import Transformer, v_args
 
@@ -36,3 +36,16 @@ class TransForTupling(Transformer):
             result = read_branch(self.ntp, self.tree, val)
             self.cache[val] = result
             return result
+
+
+class BooleanEvaluator(object):
+    def __init__(self, *args, transformer=TransForTupling, **kwargs):
+        self.parser = boolean_parser.parse
+        self.transformer = transformer(*args, **kwargs)
+
+    def parse(self, s):
+        return self.parser(s)
+
+    def eval(self, s):
+        tree = self.parse(s)
+        return self.transformer.transform(tree)
