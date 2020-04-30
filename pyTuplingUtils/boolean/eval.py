@@ -2,10 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:01 AM +0800
+# Last Change: Fri May 01, 2020 at 03:49 AM +0800
 
 from lark import Transformer, v_args
 
+from numpy import logical_and as AND, logical_or as OR, logical_not as NOT
 from pyTuplingUtils.io import read_branch
 from pyTuplingUtils.boolean.syntax import boolean_parser
 
@@ -75,7 +76,7 @@ class TransForTupling(Transformer):
 
     @v_args(inline=True)
     def comp(self, cond):
-        return not cond
+        return NOT(cond)
 
     ##############
     # comparison #
@@ -111,11 +112,11 @@ class TransForTupling(Transformer):
 
     @v_args(inline=True)
     def andop(self, cond1, cond2):
-        return cond1 and cond2
+        return AND(cond1, cond2)
 
     @v_args(inline=True)
     def orop(self, cond1, cond2):
-        return cond1 or cond2
+        return OR(cond1, cond2)
 
 
 class BooleanEvaluator(object):
