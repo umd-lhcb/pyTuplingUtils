@@ -7,7 +7,7 @@ install:
     - pip install codecov  # For code coverage tests
 
 script:
-    - coverage run -m unittest discover -s test
+    - make test
 
 after_success:
     - codecov
