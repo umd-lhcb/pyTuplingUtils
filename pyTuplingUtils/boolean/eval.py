@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:39 AM +0800
+# Last Change: Fri May 01, 2020 at 01:49 AM +0800
 
 from lark import Transformer, v_args
 
@@ -76,6 +76,34 @@ class TransForTupling(Transformer):
     @v_args(inline=True)
     def comp(self, cond):
         return not cond
+
+    ##############
+    # comparison #
+    ##############
+
+    @v_args(inline=True)
+    def eq(self, lhs, rhs):
+        return lhs == rhs
+
+    @v_args(inline=True)
+    def neq(self, lhs, rhs):
+        return lhs != rhs
+
+    @v_args(inline=True)
+    def gt(self, lhs, rhs):
+        return lhs > rhs
+
+    @v_args(inline=True)
+    def gte(self, lhs, rhs):
+        return lhs >= rhs
+
+    @v_args(inline=True)
+    def lt(self, lhs, rhs):
+        return lhs < rhs
+
+    @v_args(inline=True)
+    def lte(self, lhs, rhs):
+        return lhs <= rhs
 
 
 class BooleanEvaluator(object):

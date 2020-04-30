@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:39 AM +0800
+# Last Change: Fri May 01, 2020 at 01:52 AM +0800
 
 import unittest
 import uproot
@@ -30,6 +30,8 @@ class ArithmeticTest(unittest.TestCase):
 
     def test_num(self):
         self.assertEqual(self.exe.eval('-1'), -1)
+        self.assertEqual(type(self.exe.eval('-1')), int)
+        self.assertEqual(type(self.exe.eval('1.85')), float)
 
     def test_bool(self):
         self.assertTrue(self.exe.eval('true'))
@@ -86,7 +88,23 @@ class BooleanTest(unittest.TestCase):
     ##############
 
     def test_comp(self):
-        self.assertEqual(self.exe.eval('!true'), False)
+        self.assertFalse(self.exe.eval('!true'))
+
+    ##############
+    # comparison #
+    ##############
+
+    def test_eq(self):
+        self.assertTrue(self.exe.eval('!true == false'))
+
+    def test_neq(self):
+        self.assertFalse(self.exe.eval('!true != false'))
+
+    def test_gt(self):
+        self.assertTrue(self.exe.eval('3 > 2'))
+
+    def test_gte(self):
+        self.assertTrue(self.exe.eval('pi >= 3'))
 
 
 if __name__ == '__main__':
