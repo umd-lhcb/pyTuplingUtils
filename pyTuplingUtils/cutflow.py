@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:03 AM +0800
+# Last Change: Fri May 01, 2020 at 04:08 AM +0800
 
 import uproot
 
@@ -48,12 +48,12 @@ class CutflowGen(object):
             output = sum(self.exe.eval(cond))
             cut_result = {'input': prev_output, 'output': output}
 
-            if cond.name:
-                cut_result['name'] = cond.name
+            if r.name:
+                cut_result['name'] = r.name
 
             self.result[cond] = cut_result
 
-        return result
+        return self.result
 
     @staticmethod
     def find_idx(raw_idx):
