@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 06:33 PM +0800
+# Last Change: Thu Apr 30, 2020 at 07:53 PM +0800
 
 import unittest
 
@@ -122,6 +122,28 @@ class BooleanTest(unittest.TestCase):
             "  add\n"
             "    num\t-1\n"
             "    var\tx\n"
+        )
+
+    def test_bool(self):
+        self.assertEqual(
+            parser('a & 1').pretty(),
+            "and\n"
+            "  var\ta\n"
+            "  num\t1\n"
+        )
+        self.assertEqual(
+            parser('True | False').pretty(),
+            "or\n"
+            "  bool\tTrue\n"
+            "  bool\tFalse\n"
+        )
+        self.assertEqual(
+            parser('True | False & True').pretty(),
+            "or\n"
+            "  bool\tTrue\n"
+            "  and\n"
+            "    bool\tFalse\n"
+            "    bool\tTrue\n"
         )
 
     def test_comb(self):
