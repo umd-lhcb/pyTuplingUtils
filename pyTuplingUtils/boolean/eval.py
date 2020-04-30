@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:49 AM +0800
+# Last Change: Fri May 01, 2020 at 01:56 AM +0800
 
 from lark import Transformer, v_args
 
@@ -11,11 +11,11 @@ from pyTuplingUtils.boolean.syntax import boolean_parser
 
 
 class TransForTupling(Transformer):
-    def __init__(self, ntp, tree, known_syml=dict()):
+    def __init__(self, ntp, tree, known_sym=dict()):
         self.ntp = ntp
         self.tree = tree
         self.cache = {}
-        self.cache.update(known_syml)
+        self.cache.update(known_sym)
 
     ########
     # atom #

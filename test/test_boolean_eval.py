@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:52 AM +0800
+# Last Change: Fri May 01, 2020 at 01:57 AM +0800
 
 import unittest
 import uproot
@@ -17,12 +17,12 @@ rb = ptu.io.read_branch
 class ArithmeticTest(unittest.TestCase):
     ntp = uproot.open('samples/sample.root')
     tree = 'TupleB0/DecayTree'
-    known_syml = {
+    known_sym = {
         'pi': 3.14,
         'e': 2.72,
         'g': 9.8,
     }
-    exe = evaluator(ntp, tree, known_syml=known_syml)
+    exe = evaluator(ntp, tree, known_sym=known_sym)
 
     ########
     # atom #
@@ -76,12 +76,12 @@ class ArithmeticTest(unittest.TestCase):
 class BooleanTest(unittest.TestCase):
     ntp = uproot.open('samples/sample.root')
     tree = 'TupleB0/DecayTree'
-    known_syml = {
+    known_sym = {
         'pi': 3.14,
         'e': 2.72,
         'g': 9.8,
     }
-    exe = evaluator(ntp, tree, known_syml=known_syml)
+    exe = evaluator(ntp, tree, known_sym=known_sym)
 
     ##############
     # complement #
