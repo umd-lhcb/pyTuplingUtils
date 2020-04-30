@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 03:47 AM +0800
+# Last Change: Thu Apr 30, 2020 at 04:23 PM +0800
 
 from lark import Lark
 
@@ -23,7 +23,7 @@ boolean_grammar = '''
         | NAME              -> var
         | "(" sum ")"
 
-    %import common.NUMBER
+    %import common.SIGNED_NUMBER -> NUMBER
     %import common.WS_INLINE
     %import common.CNAME -> NAME
 

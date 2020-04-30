@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 03:59 AM +0800
+# Last Change: Thu Apr 30, 2020 at 04:29 PM +0800
 
 import unittest
 
@@ -16,6 +16,11 @@ class AddSubTest(unittest.TestCase):
         self.assertEqual(
             parser('a').pretty(),
             "var\ta\n"
+        )
+        self.assertEqual(
+            parser('-a').pretty(),
+            "neg\n"
+            "  var\ta\n"
         )
         self.assertEqual(
             parser('a1').pretty(),
@@ -35,21 +40,18 @@ class AddSubTest(unittest.TestCase):
     def test_negative_num(self):
         self.assertEqual(
             parser('-1.6').pretty(),
-            "neg\n"
-            "  num\t1.6\n"
+            "num\t-1.6\n"
         )
         self.assertEqual(
-            parser('-1').pretty(),
-            "neg\n"
-            "  num\t1\n"
+            parser('+1').pretty(),
+            "num\t+1\n"
         )
 
     def test_add(self):
         self.assertEqual(
             parser('-1 +2.3').pretty(),
             "add\n"
-            "  neg\n"
-            "    num\t1\n"
+            "  num\t-1\n"
             "  num\t2.3\n"
         )
 
@@ -58,8 +60,7 @@ class AddSubTest(unittest.TestCase):
             parser('-1 +2.3 - 10').pretty(),
             "sub\n"
             "  add\n"
-            "    neg\n"
-            "      num\t1\n"
+            "    num\t-1\n"
             "    num\t2.3\n"
             "  num\t10\n"
         )
@@ -68,8 +69,7 @@ class AddSubTest(unittest.TestCase):
         self.assertEqual(
             parser('-1 +2.3 * 10').pretty(),
             "add\n"
-            "  neg\n"
-            "    num\t1\n"
+            "  num\t-1\n"
             "  mul\n"
             "    num\t2.3\n"
             "    num\t10\n"
