@@ -1,6 +1,6 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:41 AM +0800
+# Last Change: Fri May 01, 2020 at 01:53 AM +0800
 
 .PHONY: sdist install test unittest
 
@@ -12,7 +12,7 @@ install:
 
 clean:
 	@rm -rf ./dist
-	@rm -rf ./pyBabyMaker.egg-info
+	@rm -rf ./pyTuplingUtils.egg-info
 
 test: unittest
 
