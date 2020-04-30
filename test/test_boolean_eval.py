@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:02 AM +0800
+# Last Change: Fri May 01, 2020 at 02:06 AM +0800
 
 import unittest
 import uproot
@@ -121,6 +121,14 @@ class BooleanTest(unittest.TestCase):
         self.assertTrue(self.exe.eval('true | false'))
         self.assertTrue(self.exe.eval('false | true'))
         self.assertFalse(self.exe.eval('false | false'))
+
+    def test_andop_orop(self):
+        self.assertTrue(self.exe.eval('false | true & true'))
+        self.assertFalse(self.exe.eval('false | false & true'))
+
+    def test_bool(self):
+        self.assertTrue(self.exe.eval('(pi > e) & true | false'))
+        self.assertFalse(self.exe.eval('(pi <= e) & (true | false)'))
 
 
 if __name__ == '__main__':
