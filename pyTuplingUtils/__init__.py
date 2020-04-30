@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 29, 2020 at 03:37 PM +0800
+# Last Change: Fri May 01, 2020 at 03:32 AM +0800
 
 name = 'pyTuplingUtils'
 author = 'Yipeng Sun <syp@umd.edu>'
@@ -16,3 +16,4 @@ import pyTuplingUtils.io
 import pyTuplingUtils.parse
 import pyTuplingUtils.plot
 import pyTuplingUtils.utils
+import pyTuplingUtils.cutflow
