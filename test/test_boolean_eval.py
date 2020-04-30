@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:29 AM +0800
+# Last Change: Fri May 01, 2020 at 01:33 AM +0800
 
 import unittest
 import uproot
@@ -15,7 +15,7 @@ rb = ptu.io.read_branch
 
 
 class ArithmeticTest(unittest.TestCase):
-    ntp = uproot.open('../samples/sample.root')
+    ntp = uproot.open('samples/sample.root')
     tree = 'TupleB0/DecayTree'
     known_syml = {
         'pi': 3.14,
