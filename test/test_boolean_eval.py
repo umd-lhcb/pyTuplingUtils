@@ -2,20 +2,24 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:19 AM +0800
+# Last Change: Fri May 01, 2020 at 04:34 AM +0800
 
 import unittest
 import uproot
+import os.path as osp
 import numpy as np
 
 from context import pyTuplingUtils as ptu
+from context import pwd
+
+print(pwd)
 
 evaluator = ptu.boolean.eval.BooleanEvaluator
 rb = ptu.io.read_branch
 
 
 class ArithmeticTest(unittest.TestCase):
-    ntp = uproot.open('samples/sample.root')
+    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
     tree = 'TupleB0/DecayTree'
     known_sym = {
         'pi': 3.14,
@@ -74,7 +78,7 @@ class ArithmeticTest(unittest.TestCase):
 
 
 class BooleanTest(unittest.TestCase):
-    ntp = uproot.open('samples/sample.root')
+    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
     tree = 'TupleB0/DecayTree'
     known_sym = {
         'pi': 3.14,

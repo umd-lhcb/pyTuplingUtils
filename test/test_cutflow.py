@@ -2,11 +2,13 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:18 AM +0800
+# Last Change: Fri May 01, 2020 at 04:35 AM +0800
 
 import unittest
+import os.path as osp
 
 from context import pyTuplingUtils as ptu
+from context import pwd
 
 rule = ptu.cutflow.CutflowRule
 cfg = ptu.cutflow.CutflowGen
@@ -14,7 +16,7 @@ evaluator = ptu.boolean.eval.BooleanEvaluator
 
 
 class CutflowTest(unittest.TestCase):
-    ntp_path = 'samples/sample.root'
+    ntp_path = osp.join(pwd, '../samples/sample.root')
     tree = 'TupleB0/DecayTree'
     exe = evaluator(ntp_path, tree)
 
