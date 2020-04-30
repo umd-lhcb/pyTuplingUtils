@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 07:52 PM +0800
+# Last Change: Thu Apr 30, 2020 at 08:01 PM +0800
 
 from lark import Lark
 
@@ -39,7 +39,7 @@ boolean_grammar = '''
         | "-" atom           -> neg
         | BOOL               -> bool
         | NAME               -> var
-        | "(" sum ")"
+        | "(" boolor ")"
 
     %import common.SIGNED_NUMBER -> NUMBER
     %import common.WS_INLINE
@@ -47,7 +47,7 @@ boolean_grammar = '''
 
     %ignore WS_INLINE
 
-    BOOL.100: "True" | "False"  // These keywords have higher priority
+    BOOL.100: "True" | "False" | "true" | "false"  // These keywords have higher priority
     NAME.1: CNAME
 '''
 

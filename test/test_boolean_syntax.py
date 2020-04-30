@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 07:53 PM +0800
+# Last Change: Thu Apr 30, 2020 at 08:06 PM +0800
 
 import unittest
 
@@ -145,6 +145,17 @@ class BooleanTest(unittest.TestCase):
             "    bool\tFalse\n"
             "    bool\tTrue\n"
         )
+        self.assertEqual(
+            parser('(True | False) & !True | false').pretty(),
+            "or\n"
+            "  and\n"
+            "    or\n"
+            "      bool\tTrue\n"
+            "      bool\tFalse\n"
+            "    comp\n"
+            "      bool\tTrue\n"
+            "  bool\tfalse\n"
+        )
 
     def test_comb(self):
         self.assertEqual(
@@ -157,6 +168,32 @@ class BooleanTest(unittest.TestCase):
             "        num\t-1\n"
             "        var\tx\n"
             "      num\t3\n"
+        )
+        self.assertEqual(
+            parser('a >= !(-1+x)*3 | x<8 & y != -(z+3)').pretty(),
+            "or\n"
+            "  gte\n"
+            "    var\ta\n"
+            "    comp\n"
+            "      mul\n"
+            "        add\n"
+            "          num\t-1\n"
+            "          var\tx\n"
+            "        num\t3\n"
+            "  and\n"
+            "    lt\n"
+            "      var\tx\n"
+            "      num\t8\n"
+            "    neq\n"
+            "      var\ty\n"
+            "      neg\n"
+            "        add\n"
+            "          var\tz\n"
+            "          num\t3\n"
+        )
+        self.assertEqual(
+            parser('a >= !(-1+x)*3 | x<8 & y != -(z+3)').pretty(),
+            parser('a >= !(-1+x)*3 | (x<8 & y != -(z+3))').pretty()
         )
 
 
