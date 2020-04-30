@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 08:01 PM +0800
+# Last Change: Thu Apr 30, 2020 at 09:14 PM +0800
 
 from lark import Lark
 
@@ -43,12 +43,11 @@ boolean_grammar = '''
 
     %import common.SIGNED_NUMBER -> NUMBER
     %import common.WS_INLINE
-    %import common.CNAME
+    %import common.CNAME -> NAME
 
     %ignore WS_INLINE
 
-    BOOL.100: "True" | "False" | "true" | "false"  // These keywords have higher priority
-    NAME.1: CNAME
+    BOOL.2: "True" | "False" | "true" | "false"  // These keywords have higher priority
 '''
 
 boolean_parser = Lark(boolean_grammar, parser='lalr')
