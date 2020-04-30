@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 09:14 PM +0800
+# Last Change: Fri May 01, 2020 at 01:58 AM +0800
 
 from lark import Lark
 
@@ -11,10 +11,10 @@ boolean_grammar = '''
     ?start: boolor
 
     ?boolor: booland
-        | boolor "|" booland -> or
+        | boolor "|" booland -> orop
 
     ?booland: cond  // '&' binds tigher than '|'
-        | booland "&" cond   -> and
+        | booland "&" cond   -> andop
 
     ?cond: expr
         | cond "==" expr     -> eq

@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:56 AM +0800
+# Last Change: Fri May 01, 2020 at 02:01 AM +0800
 
 from lark import Transformer, v_args
 
@@ -104,6 +104,18 @@ class TransForTupling(Transformer):
     @v_args(inline=True)
     def lte(self, lhs, rhs):
         return lhs <= rhs
+
+    ###########
+    # boolean #
+    ###########
+
+    @v_args(inline=True)
+    def andop(self, cond1, cond2):
+        return cond1 and cond2
+
+    @v_args(inline=True)
+    def orop(self, cond1, cond2):
+        return cond1 or cond2
 
 
 class BooleanEvaluator(object):

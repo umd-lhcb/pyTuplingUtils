@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #
-# Author: Yipeng Sun
+# Authorop: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 08:06 PM +0800
+# Last Change: Fri May 01, 2020 at 02:03 AM +0800
 
 import unittest
 
@@ -127,29 +127,29 @@ class BooleanTest(unittest.TestCase):
     def test_bool(self):
         self.assertEqual(
             parser('a & 1').pretty(),
-            "and\n"
+            "andop\n"
             "  var\ta\n"
             "  num\t1\n"
         )
         self.assertEqual(
             parser('True | False').pretty(),
-            "or\n"
+            "orop\n"
             "  bool\tTrue\n"
             "  bool\tFalse\n"
         )
         self.assertEqual(
             parser('True | False & True').pretty(),
-            "or\n"
+            "orop\n"
             "  bool\tTrue\n"
-            "  and\n"
+            "  andop\n"
             "    bool\tFalse\n"
             "    bool\tTrue\n"
         )
         self.assertEqual(
             parser('(True | False) & !True | false').pretty(),
-            "or\n"
-            "  and\n"
-            "    or\n"
+            "orop\n"
+            "  andop\n"
+            "    orop\n"
             "      bool\tTrue\n"
             "      bool\tFalse\n"
             "    comp\n"
@@ -171,7 +171,7 @@ class BooleanTest(unittest.TestCase):
         )
         self.assertEqual(
             parser('a >= !(-1+x)*3 | x<8 & y != -(z+3)').pretty(),
-            "or\n"
+            "orop\n"
             "  gte\n"
             "    var\ta\n"
             "    comp\n"
@@ -180,7 +180,7 @@ class BooleanTest(unittest.TestCase):
             "          num\t-1\n"
             "          var\tx\n"
             "        num\t3\n"
-            "  and\n"
+            "  andop\n"
             "    lt\n"
             "      var\tx\n"
             "      num\t8\n"
