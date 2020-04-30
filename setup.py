@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 02:54 AM +0800
+# Last Change: Thu Apr 30, 2020 at 11:43 PM +0800
 
 import setuptools
 
@@ -26,7 +26,7 @@ setup(
     version=version,
     author='Yipeng Sun',
     author_email='syp@umd.edu',
-    description='Utilities for n-tuples, such as plotting and simple debugging, with the help of uproot',
+    description='Utilities for ntuples, such as plotting and simple debugging, with the help of uproot',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/umd-lhcb/pyTuplingUtils',
