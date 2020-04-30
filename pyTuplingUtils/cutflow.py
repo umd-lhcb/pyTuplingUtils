@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:08 AM +0800
+# Last Change: Fri May 01, 2020 at 04:14 AM +0800
 
 import uproot
 
@@ -31,11 +31,11 @@ class CutflowGen(object):
         self.prev_conds = []
 
     def do(self):
-        for r in self.rules:
-            idx = self.find_idx(r.compare_to)
+        for idx, r in enumerate(self.rules):
+            prev_idx = idx + self.find_idx(r.compare_to)
 
             try:
-                prev_output = self.result[self.rules[idx].cond].output
+                prev_output = self.result[self.rules[prev_idx].cond]['output']
             except Exception:
                 prev_output = self.init_num
 
