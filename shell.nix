@@ -11,6 +11,9 @@ pkgs.mkShell {
     # Compilers and other build dependencies
     pkgs.stdenv
 
+    # Travis CI util
+    travis
+
     # Auto completion
     jedi
 
