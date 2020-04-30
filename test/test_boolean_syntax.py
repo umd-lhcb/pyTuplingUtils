@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 06:31 PM +0800
+# Last Change: Thu Apr 30, 2020 at 06:33 PM +0800
 
 import unittest
 
@@ -116,12 +116,25 @@ class BooleanTest(unittest.TestCase):
             "  num\t1\n"
         )
         self.assertEqual(
-            parser('a == -1+x').pretty(),
-            "eq\n"
+            parser('a <= -1+x').pretty(),
+            "lte\n"
             "  var\ta\n"
             "  add\n"
             "    num\t-1\n"
             "    var\tx\n"
+        )
+
+    def test_comb(self):
+        self.assertEqual(
+            parser('a >= !(-1+x)*3').pretty(),
+            "gte\n"
+            "  var\ta\n"
+            "  comp\n"
+            "    mul\n"
+            "      add\n"
+            "        num\t-1\n"
+            "        var\tx\n"
+            "      num\t3\n"
         )
 
 
