@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 04:29 PM +0800
+# Last Change: Thu Apr 30, 2020 at 06:17 PM +0800
 
 import unittest
 
@@ -11,7 +11,7 @@ from context import pyTuplingUtils as ptu
 parser = ptu.boolean.syntax.boolean_parser.parse
 
 
-class AddSubTest(unittest.TestCase):
+class ArithmeticTest(unittest.TestCase):
     def test_var(self):
         self.assertEqual(
             parser('a').pretty(),
@@ -35,6 +35,10 @@ class AddSubTest(unittest.TestCase):
         self.assertEqual(
             parser('1').pretty(),
             "num\t1\n"
+        )
+        self.assertEqual(
+            parser('+1').pretty(),
+            "num\t+1\n"
         )
 
     def test_negative_num(self):
@@ -84,6 +88,18 @@ class AddSubTest(unittest.TestCase):
             "      num\t1\n"
             "      num\t2.3\n"
             "  num\t10\n"
+        )
+
+
+class BooleanTest(unittest.TestCase):
+    def test_comp(self):
+        self.assertEqual(
+            parser('!(-a_2 +2.3) ').pretty(),
+            "comp\n"
+            "  add\n"
+            "    neg\n"
+            "      var\ta_2\n"
+            "    num\t2.3\n"
         )
 
 
