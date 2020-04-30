@@ -2,10 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 12:37 AM +0800
+# Last Change: Fri May 01, 2020 at 12:44 AM +0800
 
 import unittest
 import uproot
+import numpy as np
 
 from context import pyTuplingUtils as ptu
 
@@ -39,8 +40,9 @@ class ArithmeticTest(unittest.TestCase):
         self.assertEqual(self.exe.eval('-pi'), -3.14)
 
     def test_var(self):
-        self.assertEqual(self.exe.eval('Y_ISOLATION_BDT3').all(),
-                         rb(self.ntp, self.tree, 'Y_ISOLATION_BDT3').all())
+        self.assertTrue(np.array_equal(
+            self.exe.eval('Y_ISOLATION_BDT3'),
+            rb(self.ntp, self.tree, 'Y_ISOLATION_BDT3')))
 
 
 if __name__ == '__main__':
