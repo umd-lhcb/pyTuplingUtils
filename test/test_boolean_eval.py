@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:33 AM +0800
+# Last Change: Fri May 01, 2020 at 01:39 AM +0800
 
 import unittest
 import uproot
@@ -69,6 +69,24 @@ class ArithmeticTest(unittest.TestCase):
 
     def test_arith(self):
         self.assertEqual(self.exe.eval('3*(pi+3)/(g-2)'), 3*(3.14+3)/(9.8-2))
+
+
+class BooleanTest(unittest.TestCase):
+    ntp = uproot.open('samples/sample.root')
+    tree = 'TupleB0/DecayTree'
+    known_syml = {
+        'pi': 3.14,
+        'e': 2.72,
+        'g': 9.8,
+    }
+    exe = evaluator(ntp, tree, known_syml=known_syml)
+
+    ##############
+    # complement #
+    ##############
+
+    def test_comp(self):
+        self.assertEqual(self.exe.eval('!true'), False)
 
 
 if __name__ == '__main__':

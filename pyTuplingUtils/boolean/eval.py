@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:28 AM +0800
+# Last Change: Fri May 01, 2020 at 01:39 AM +0800
 
 from lark import Transformer, v_args
 
@@ -68,6 +68,14 @@ class TransForTupling(Transformer):
     @v_args(inline=True)
     def sub(self, arg1, arg2):
         return arg1 - arg2
+
+    ##############
+    # complement #
+    ##############
+
+    @v_args(inline=True)
+    def comp(self, cond):
+        return not cond
 
 
 class BooleanEvaluator(object):
