@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:14 AM +0800
+# Last Change: Fri May 01, 2020 at 04:18 AM +0800
 
 import unittest
 
@@ -34,6 +34,11 @@ class CutflowTest(unittest.TestCase):
 
         result = cfg(self.ntp_path, self.tree, rules, 2333).do()
 
+        self.assertEqual(result['muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)']['input'], 2333)
+        self.assertEqual(result['muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)']['output'], 176)
+        self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['input'], 176)
+        self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['output'], 167)
+        self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['name'], r'$\mu$ PID')
         self.assertEqual(result['Y_M < 5280']['input'], 119)
         self.assertEqual(result['Y_M < 5280']['output'], 119)
 
