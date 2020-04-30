@@ -2,20 +2,22 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 03:24 AM +0800
+# Last Change: Fri May 01, 2020 at 03:59 AM +0800
 
 import uproot
 
 from dataclasses import dataclass
+from typing import Union, Optional
+from numpy import sum
 from pyTuplingUtils.boolean.eval import BooleanEvaluator
 
 
 @dataclass
 class CutflowRule:
-    cond = 'true'
-    name = None
-    compare_to = 'r:-1'
-    explicit = False
+    cond: str = 'true'
+    name: Optional[str]=None
+    compare_to: Union[str, int] = 'r:-1'
+    explicit: bool = False
 
 
 class CutflowGen(object):
@@ -43,7 +45,7 @@ class CutflowGen(object):
             else:
                 cond = r.cond
 
-            output = self.exe.eval(cond)
+            output = sum(self.exe.eval(cond))
             cut_result = {'input': prev_output, 'output': output}
 
             if cond.name:
