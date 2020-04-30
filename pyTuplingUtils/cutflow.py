@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 03:59 AM +0800
+# Last Change: Fri May 01, 2020 at 04:03 AM +0800
 
 import uproot
 
@@ -15,7 +15,7 @@ from pyTuplingUtils.boolean.eval import BooleanEvaluator
 @dataclass
 class CutflowRule:
     cond: str = 'true'
-    name: Optional[str]=None
+    name: Optional[str] = None
     compare_to: Union[str, int] = 'r:-1'
     explicit: bool = False
 
@@ -40,8 +40,8 @@ class CutflowGen(object):
                 prev_output = self.init_num
 
             if not r.explicit:
-                cond = '&'.join(self.prev_conds) + '&' + r.cond
-                self.prev_conds.append(cond)
+                self.prev_conds.append(r.cond)
+                cond = '&'.join(self.prev_conds)
             else:
                 cond = r.cond
 
@@ -52,6 +52,8 @@ class CutflowGen(object):
                 cut_result['name'] = cond.name
 
             self.result[cond] = cut_result
+
+        return result
 
     @staticmethod
     def find_idx(raw_idx):
