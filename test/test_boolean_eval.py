@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:06 AM +0800
+# Last Change: Fri May 01, 2020 at 02:19 AM +0800
 
 import unittest
 import uproot
@@ -98,7 +98,7 @@ class BooleanTest(unittest.TestCase):
         self.assertTrue(self.exe.eval('!true == false'))
 
     def test_neq(self):
-        self.assertFalse(self.exe.eval('!true != false'))
+        self.assertFalse(self.exe.eval('!True != False'))  # case doesn't matter
 
     def test_gt(self):
         self.assertTrue(self.exe.eval('3 > 2'))
