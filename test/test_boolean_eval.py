@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 12:44 AM +0800
+# Last Change: Fri May 01, 2020 at 01:29 AM +0800
 
 import unittest
 import uproot
@@ -43,6 +43,32 @@ class ArithmeticTest(unittest.TestCase):
         self.assertTrue(np.array_equal(
             self.exe.eval('Y_ISOLATION_BDT3'),
             rb(self.ntp, self.tree, 'Y_ISOLATION_BDT3')))
+
+    ###########
+    # product #
+    ###########
+
+    def test_mul(self):
+        self.assertEqual(self.exe.eval('3*pi'), 3*3.14)
+
+    def test_div(self):
+        self.assertEqual(self.exe.eval('g/pi'), 9.8/3.14)
+
+    def test_mul_div(self):
+        self.assertEqual(self.exe.eval('3*(g/pi)'), 3*(9.8/3.14))
+
+    #######
+    # sum #
+    #######
+
+    def test_add(self):
+        self.assertEqual(self.exe.eval('-3+pi'), -3+3.14)
+
+    def test_sub(self):
+        self.assertEqual(self.exe.eval('3-pi'), 3-3.14)
+
+    def test_arith(self):
+        self.assertEqual(self.exe.eval('3*(pi+3)/(g-2)'), 3*(3.14+3)/(9.8-2))
 
 
 if __name__ == '__main__':

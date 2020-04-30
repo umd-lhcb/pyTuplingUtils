@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 12:36 AM +0800
+# Last Change: Fri May 01, 2020 at 01:28 AM +0800
 
 from lark import Transformer, v_args
 
@@ -16,6 +16,10 @@ class TransForTupling(Transformer):
         self.tree = tree
         self.cache = {}
         self.cache.update(known_syml)
+
+    ########
+    # atom #
+    ########
 
     @v_args(inline=True)
     def num(self, val):
@@ -41,9 +45,29 @@ class TransForTupling(Transformer):
     def neg(self, val):
         return -val
 
+    ###########
+    # product #
+    ###########
+
     @v_args(inline=True)
     def mul(self, arg1, arg2):
         return arg1 * arg2
+
+    @v_args(inline=True)
+    def div(self, arg1, arg2):
+        return arg1 / arg2
+
+    #######
+    # sum #
+    #######
+
+    @v_args(inline=True)
+    def add(self, arg1, arg2):
+        return arg1 + arg2
+
+    @v_args(inline=True)
+    def sub(self, arg1, arg2):
+        return arg1 - arg2
 
 
 class BooleanEvaluator(object):
