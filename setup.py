@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:57 PM +0800
+# Last Change: Fri May 01, 2020 at 07:12 PM +0800
 
 import setuptools
 import codecs
@@ -53,7 +53,8 @@ setup(
         'lz4',
         'numpy',
         'matplotlib',
-        'lark-parser'
+        'lark-parser',
+        'tabulate'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
