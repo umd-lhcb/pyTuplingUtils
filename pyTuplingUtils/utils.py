@@ -2,11 +2,26 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Oct 20, 2019 at 03:32 AM -0400
+# Last Change: Fri May 01, 2020 at 07:11 PM +0800
 
 import numpy as np
+import tabulate as tabl
 
+from functools import partial
 from .io import read_branch
+
+
+# Disable LaTeX character escaping
+tabl._table_formats["latex_booktabs_raw"] = tabl.TableFormat(
+    lineabove=partial(tabl._latex_line_begin_tabular, booktabs=True),
+    linebelowheader=tabl.Line("\\midrule", "", "", ""),
+    linebetweenrows=None,
+    linebelow=tabl.Line("\\bottomrule\n\\end{tabular}", "", "", ""),
+    headerrow=partial(tabl._latex_row, escrules={}),
+    datarow=partial(tabl._latex_row, escrules={}),
+    padding=1,
+    with_header_hide=None,
+)
 
 
 def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber'):
