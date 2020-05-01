@@ -1,11 +1,12 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:42 PM +0800
+# Last Change: Fri May 01, 2020 at 04:57 PM +0800
 
 import setuptools
+import codecs
+import os.path
 
 from distutils.core import setup
-from pyTuplingUtils.version import version
 
 
 ###########
@@ -16,13 +17,28 @@ with open('README.md', 'r') as ld:
     long_description = ld.read()
 
 
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
+
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
+
+
 #########
 # Setup #
 #########
 
 setup(
     name='pyTuplingUtils',
-    version=version,
+    version=get_version('pyTuplingUtils/__init__.py'),
     author='Yipeng Sun',
     author_email='syp@umd.edu',
     description='Utilities for ntuples, such as plotting and simple debugging, with the help of uproot',

@@ -8,8 +8,7 @@ install:
 
 script:
     - export VERSION=$(git describe --tags --abbrev=0)
-    - echo "${VERSION}"
-    - sed -i "s/0.0.1/${VERSION}/" ./pyTuplingUtils/version.py
+    - sed -i "s/0.0.1/${VERSION}/" ./pyTuplingUtils/__init__.py
     - make test
 
 after_success:

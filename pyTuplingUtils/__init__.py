@@ -2,9 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:41 PM +0800
+# Last Change: Fri May 01, 2020 at 04:58 PM +0800
 
-from pyTuplingUtils.version import name, author, version
+__name__ = 'pyTuplingUtils'
+__author__ = 'Yipeng Sun <syp@umd.edu>'
+__version__ = '0.0.1'
 
 import pyTuplingUtils.boolean
 import pyTuplingUtils.io
