@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:38 PM +0800
+# Last Change: Fri May 01, 2020 at 07:03 PM +0800
 
 import unittest
 import os.path as osp
@@ -22,9 +22,9 @@ class CutflowTest(unittest.TestCase):
 
     def test_cutflow_canonical(self):
         rules = [
-            rule('muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)', 'L0'),
-            rule('Kplus_Hlt1Phys_Dec', 'Hlt1'),
-            rule('D0_Hlt2XcMuXForTauB2XcMuDecision_Dec', 'Hlt2'),
+            rule('muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)', key='L0'),
+            rule('Kplus_Hlt1Phys_Dec', key='Hlt1'),
+            rule('D0_Hlt2XcMuXForTauB2XcMuDecision_Dec', key='Hlt2'),
             rule('muplus_isMuon & muplus_PIDmu > 2', r'$\mu$ PID'),
             rule('Y_ISOLATION_BDT < 0.15', r'$\text{IsoBDT}_{\Upsilon(\text{4s})} < 0.15$'),
             rule('Y_M < 5280', r'$m_{\Upsilon(\text{4s})} < 5280$'),
@@ -32,8 +32,8 @@ class CutflowTest(unittest.TestCase):
 
         result = cfg(self.ntp_path, self.tree, rules, 2333).do()
 
-        self.assertEqual(result['muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)']['input'], 2333)
-        self.assertEqual(result['muplus_L0Global_TIS & (Y_L0Global_TIS | Dst_2010_minus_L0HadronDecision_TOS)']['output'], 176)
+        self.assertEqual(result['L0']['input'], 2333)
+        self.assertEqual(result['L0']['output'], 176)
         self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['input'], 176)
         self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['output'], 167)
         self.assertEqual(result['muplus_isMuon & muplus_PIDmu > 2']['name'], r'$\mu$ PID')
