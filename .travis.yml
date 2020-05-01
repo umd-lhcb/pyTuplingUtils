@@ -8,6 +8,7 @@ install:
 
 script:
     - export PYTUPLINGUTILS_VERSION=$(git describe --tags --abbrev=0)
+    - echo "${PYTUPLINGUTILS_VERSION}"
     - echo 'version = "'"${PYTUPLINGUTILS_VERSION}"'"' >> ./pyTuplingUtils/__init__.py
     - make test
 
@@ -17,7 +18,7 @@ after_success:
 deploy:
     provider: pypi
     user: __token__
+    password:
+        secure: eMoLN9ychc0JlHUVXrxiJhTEsqXUri66dgocWc4qb90BZbB1l0pDI5PZOybxv69Tj/zs7dVCWKiELSlfl0vPJ65iVzzYRHEa7HK8KR4JzotBDHnxcgJFkMy9KVtlDTmsOwPKKfu2n5iENxAp36lPA46KTQuLrFrAu1ocLNzlUQYgGh94mWWlogEIDCU8PiT+cvt9WMkzM14xT6OIWCegCW4D/4Ejp9xxyABAMZRtXIfqTqewkIjHhaU1RyOdMsRw1hMe4Cy/R/Op4oDq3gVSd6yPlAM5IpWw2ffzsa29QUftCMFgn5ttuOugoyGYrFfwc1wXJQ91ekGFCUeKPm4PgaNtitdEQA1CRgm8jWF2IBPu+F2Wh0I5HwtaxQahNXBYEeA00c6yKIG2FvLKxmULmj7O9ZleTLt0nQ1TgOVAGooh5KDvRd9uuRl4x7RKTaHXpo2y4wc1aZi34dl5JEN0IwGJ1+pWf6HwE7gFQajIphLjwmBcTAck30sToJr+HmtjMgZCl4PUS2qqK8QzvPoGS9BVtCUvT0CSBozbG/cwvYxWAV15BvHXlln74pkYTjMQZ4KsaaMYVKvMBdNoU8y9Os/DJarYxB3ncl5diYuV0aoBcrQ2iX4c+lGsjPXLHMGISqaz/rP+AiY+fNtf8f1ltIEpLjRSeY59dpNXmNvyUKs=
     on:
         tags: true
-    password:
-        secure: cX4lXWAjSz4TpWu2M8/KlXya4dajJnFn6Vu/FIFFh97CD6jHWjARmtqMYun2pfBk/kgxWalrm/fNqLsp+KW1bpIGdz7h7sz9x5UkrcZ0oGObst6rVsXR6UNpbcWhwrmiPA7WTRnygDy3zlQ59zHDMl9HE0tpPNzOtqNuc4nPk3jreSJ9CdwAgVsWM7jjc7H4iVbGGAnSTVlS4iNIqUX7MO9nWMAbInXW1xeczOG6tL/3frc6wymUZBpZLlBuEytRSpFQDn23Yh0TbGWFLbIyYoc02w+8e2WbKMr1FJiniKOZxw27dliHn4i2+dZ/Bdk4s6/0r3yEhrYcrTI32pheD6PlaoSQ7KM+vA94dSQ1HSFsnoll8BjmUInDrxVi3dO462nfYsvZIPqdus6Mloe+MU1iuGJqRO9Trgv+cVZ2H+hOBzfcDAFmmJjKYeY0Ltt1mMwxAH0uFZzayheXuIYXgtaqSZAXYEyy+lkgjG4IkvuDWAjc5hzCmrWP5KftshB/YXYgb7Ikg4grw6LyuP9tQQQf6fu6OeX5firmQnU4rC9H5BHtjEsGhzvJfAIDs2dBoymO/SSZeM8ALT60QswTgHzJ+5cUnSvc+BdbfVg0QOs8HBPbOd5rl+WELxqf+J0hGTQsjr/UNYHFA9BbNVg5mrL9/Zrn5nMJD4wxljKiqNc=
