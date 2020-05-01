@@ -4,7 +4,7 @@ python: 3.8
 
 install:
     - pip install -r ./requirements.txt
-    - pip install codecov  # For code coverage tests
+    - pip install codecov
 
 script:
     - export PYTUPLINGUTILS_VERSION=$(git describe --tags --abbrev=0)
@@ -21,4 +21,4 @@ deploy:
     on:
         tags: true
     password:
-        secure: hBm1jYib+sZhPcKGAOct/jVbXc8GNnvg04oTDTzRJVLPam1F8jI9Nx3398EHqtY0frotYQLmef/8JOW6BOEgzy+u9cfClYRlNtLfpHHA5WvTNR9SHAD+P0F5jj0O0qMaznw/hDp1BfqSTuB4k3Wymr3x9RR4LT1qwnzWnC7/aRKdt2nXYya+STsSJ9JGp5dD238HDnsdjd0q2iaps0aL3b3hotfbjqwAFVftGFMED/5UFWOoOZMr1KVPiBsTIYcn2p8dkWNgWbEHHI0C5qK2BYTsPYnLnfpebiDZYQR4XVQEV+splMH53m7ueOoQu76EpHOySYJsch0GilGxW8n4jYzmySedApvcslzzTBa8KNEjO+47MFBaKEFBoI2WzBxbKF3qM973Xgbvm1mXMa/WvgCAOZCYZc8EJymjrrgjJA2bACnqOIemN9b+80i83SrBbpE1pB8oeWYn1Nfw1K4o8NuJ3i8emySIvCCFH2QJ9g1+ojWn6TL2Qf7XO3fpbuMSaZYEDX3X6sI8uzeug2MjzrPM/sHszUrtv8jm/RNvuwJQ/dG2NY34HFb68CDZrL0X8v2bpzWWhTb4JSGQR44ybb3shyzheam7cXdrvyhT+AL5pYxa/kyiyVydBFf5ZNdaQQEaqseFlq0FS9jYWwbY+G3GU1iGmJVmqEBYP00uNNk=
+        secure: cX4lXWAjSz4TpWu2M8/KlXya4dajJnFn6Vu/FIFFh97CD6jHWjARmtqMYun2pfBk/kgxWalrm/fNqLsp+KW1bpIGdz7h7sz9x5UkrcZ0oGObst6rVsXR6UNpbcWhwrmiPA7WTRnygDy3zlQ59zHDMl9HE0tpPNzOtqNuc4nPk3jreSJ9CdwAgVsWM7jjc7H4iVbGGAnSTVlS4iNIqUX7MO9nWMAbInXW1xeczOG6tL/3frc6wymUZBpZLlBuEytRSpFQDn23Yh0TbGWFLbIyYoc02w+8e2WbKMr1FJiniKOZxw27dliHn4i2+dZ/Bdk4s6/0r3yEhrYcrTI32pheD6PlaoSQ7KM+vA94dSQ1HSFsnoll8BjmUInDrxVi3dO462nfYsvZIPqdus6Mloe+MU1iuGJqRO9Trgv+cVZ2H+hOBzfcDAFmmJjKYeY0Ltt1mMwxAH0uFZzayheXuIYXgtaqSZAXYEyy+lkgjG4IkvuDWAjc5hzCmrWP5KftshB/YXYgb7Ikg4grw6LyuP9tQQQf6fu6OeX5firmQnU4rC9H5BHtjEsGhzvJfAIDs2dBoymO/SSZeM8ALT60QswTgHzJ+5cUnSvc+BdbfVg0QOs8HBPbOd5rl+WELxqf+J0hGTQsjr/UNYHFA9BbNVg5mrL9/Zrn5nMJD4wxljKiqNc=
