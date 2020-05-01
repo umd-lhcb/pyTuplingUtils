@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 07:06 PM +0800
+# Last Change: Fri May 01, 2020 at 09:30 PM +0800
 
 import uproot
 
@@ -22,17 +22,16 @@ class CutflowRule:
 
 
 class CutflowGen(object):
-    def __init__(self, ntp_path, tree, rules, init_num,
-                 result=dict(), **kwargs):
+    def __init__(self, ntp_path, tree, rules, init_num, **kwargs):
         self.rules = rules
         self.init_num = init_num
-        self.result = result
 
         self.exe = BooleanEvaluator(uproot.open(ntp_path), tree, **kwargs)
         self.prev_conds = []
 
     def do(self):
         ref = {}
+        result = {}
 
         for idx, r in enumerate(self.rules):
             prev_idx = self.find_idx(idx, r.compare_to)
@@ -59,13 +58,13 @@ class CutflowGen(object):
                 cut_result['name'] = r.name
 
             if r.key:
-                self.result[r.key] = cut_result
+                result[r.key] = cut_result
             else:
-                self.result[r.cond] = cut_result
+                result[r.cond] = cut_result
 
             ref[r.cond] = cut_result
 
-        return self.result
+        return result
 
     @staticmethod
     def find_idx(ref_idx, raw_idx):
