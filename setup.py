@@ -1,12 +1,11 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 30, 2020 at 11:43 PM +0800
+# Last Change: Fri May 01, 2020 at 04:42 PM +0800
 
 import setuptools
 
 from distutils.core import setup
-
-from pyTuplingUtils import version
+from pyTuplingUtils.version import version
 
 
 ###########
