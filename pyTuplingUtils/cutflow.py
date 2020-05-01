@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:14 AM +0800
+# Last Change: Fri May 01, 2020 at 02:38 PM +0800
 
 import uproot
 
@@ -32,7 +32,7 @@ class CutflowGen(object):
 
     def do(self):
         for idx, r in enumerate(self.rules):
-            prev_idx = idx + self.find_idx(r.compare_to)
+            prev_idx = self.find_idx(idx, r.compare_to)
 
             try:
                 prev_output = self.result[self.rules[prev_idx].cond]['output']
@@ -56,10 +56,11 @@ class CutflowGen(object):
         return self.result
 
     @staticmethod
-    def find_idx(raw_idx):
+    def find_idx(ref_idx, raw_idx):
         if isinstance(raw_idx, str):  # relative index
             _, idx = raw_idx.split(':')
+            idx = ref_idx + int(idx)
         else:
-            idx = raw_idx
+            idx = int(raw_idx)
 
-        return int(idx)
+        return idx
