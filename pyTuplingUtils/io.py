@@ -2,9 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 05:43 PM +0800
+# Last Change: Fri May 01, 2020 at 05:53 PM +0800
 
 import numpy as np
+
+from collections import OrderedDict as odict
 
 
 def read_branch(ntp, tree, branch, idx=None):
