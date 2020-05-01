@@ -7,16 +7,18 @@ install:
     - pip install codecov  # For code coverage tests
 
 script:
+    - export PYTUPLINGUTILS_VERSION=$(git describe --tags --abbrev=0)
+    - echo 'version = "'"${PYTUPLINGUTILS_VERSION}"'"' >> ./pyTuplingUtils/__init__.py
     - make test
 
 after_success:
     - codecov
 
-#deploy:
-    #provider: pypi
-    #user: yipengsun
-    #skip_cleanup: true
-    #on:
-        #tags: true
-    #password:
-        #secure: hBm1jYib+sZhPcKGAOct/jVbXc8GNnvg04oTDTzRJVLPam1F8jI9Nx3398EHqtY0frotYQLmef/8JOW6BOEgzy+u9cfClYRlNtLfpHHA5WvTNR9SHAD+P0F5jj0O0qMaznw/hDp1BfqSTuB4k3Wymr3x9RR4LT1qwnzWnC7/aRKdt2nXYya+STsSJ9JGp5dD238HDnsdjd0q2iaps0aL3b3hotfbjqwAFVftGFMED/5UFWOoOZMr1KVPiBsTIYcn2p8dkWNgWbEHHI0C5qK2BYTsPYnLnfpebiDZYQR4XVQEV+splMH53m7ueOoQu76EpHOySYJsch0GilGxW8n4jYzmySedApvcslzzTBa8KNEjO+47MFBaKEFBoI2WzBxbKF3qM973Xgbvm1mXMa/WvgCAOZCYZc8EJymjrrgjJA2bACnqOIemN9b+80i83SrBbpE1pB8oeWYn1Nfw1K4o8NuJ3i8emySIvCCFH2QJ9g1+ojWn6TL2Qf7XO3fpbuMSaZYEDX3X6sI8uzeug2MjzrPM/sHszUrtv8jm/RNvuwJQ/dG2NY34HFb68CDZrL0X8v2bpzWWhTb4JSGQR44ybb3shyzheam7cXdrvyhT+AL5pYxa/kyiyVydBFf5ZNdaQQEaqseFlq0FS9jYWwbY+G3GU1iGmJVmqEBYP00uNNk=
+deploy:
+    provider: pypi
+    user: yipengsun
+    skip_cleanup: true
+    on:
+        tags: true
+    password:
+        secure: hBm1jYib+sZhPcKGAOct/jVbXc8GNnvg04oTDTzRJVLPam1F8jI9Nx3398EHqtY0frotYQLmef/8JOW6BOEgzy+u9cfClYRlNtLfpHHA5WvTNR9SHAD+P0F5jj0O0qMaznw/hDp1BfqSTuB4k3Wymr3x9RR4LT1qwnzWnC7/aRKdt2nXYya+STsSJ9JGp5dD238HDnsdjd0q2iaps0aL3b3hotfbjqwAFVftGFMED/5UFWOoOZMr1KVPiBsTIYcn2p8dkWNgWbEHHI0C5qK2BYTsPYnLnfpebiDZYQR4XVQEV+splMH53m7ueOoQu76EpHOySYJsch0GilGxW8n4jYzmySedApvcslzzTBa8KNEjO+47MFBaKEFBoI2WzBxbKF3qM973Xgbvm1mXMa/WvgCAOZCYZc8EJymjrrgjJA2bACnqOIemN9b+80i83SrBbpE1pB8oeWYn1Nfw1K4o8NuJ3i8emySIvCCFH2QJ9g1+ojWn6TL2Qf7XO3fpbuMSaZYEDX3X6sI8uzeug2MjzrPM/sHszUrtv8jm/RNvuwJQ/dG2NY34HFb68CDZrL0X8v2bpzWWhTb4JSGQR44ybb3shyzheam7cXdrvyhT+AL5pYxa/kyiyVydBFf5ZNdaQQEaqseFlq0FS9jYWwbY+G3GU1iGmJVmqEBYP00uNNk=
