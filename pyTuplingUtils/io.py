@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 06:24 PM +0800
+# Last Change: Mon May 04, 2020 at 01:29 AM +0800
 
 import numpy as np
 
@@ -28,17 +28,3 @@ def read_branches(ntp, tree, branches, idx=None, transpose=False):
         return np.column_stack(data)
     else:
         return data
-
-
-def yaml_gen(data, indent='', indent_increment=' '*4):
-    result = ''
-    for key, items in data.items():
-        result += '{}{}:'.format(indent, key)
-        if type(items) in [dict, odict]:
-            result += '\n'
-            result += yaml_gen(items, indent=indent+indent_increment)
-        elif items is None:
-            result += ' null\n'
-        else:
-            result += ' {}\n'.format(items)
-    return result
