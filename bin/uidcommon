@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 03:02 AM -0400
+# Last Change: Mon Jun 08, 2020 at 11:27 PM +0800
 
 import uproot
 
@@ -11,7 +11,7 @@ from pyTuplingUtils.parse import double_ntuple_parser_no_output
 
 
 def parse_input(descr='''
-dump runNumber-eventNumber id for all events in both n-tuples, and find the
+dump runNumber-eventNumber id for all events in both ntuples, and find the
 intersection of unique events in them.
 '''):
     parser = double_ntuple_parser_no_output(descr)
