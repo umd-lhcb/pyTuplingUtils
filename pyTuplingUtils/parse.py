@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Oct 19, 2019 at 03:04 AM -0400
+# Last Change: Mon Jun 08, 2020 at 11:10 PM +0800
 
 from argparse import ArgumentParser
 
@@ -14,13 +14,13 @@ def single_ntuple_parser_no_output(descr, parser=None):
                         nargs='?',
                         required=True,
                         help='''
-path to reference n-tuple.''')
+path to reference ntuple.''')
 
     parser.add_argument('-t', '--ref-tree',
                         nargs='?',
                         required=True,
                         help='''
-tree name for the reference n-tuple.''')
+tree name for the reference ntuple.''')
 
     return parser
 
@@ -38,7 +38,7 @@ path to output file.''')
                         nargs='?',
                         required=True,
                         help='''
-branch name(s) in reference n-tuple. may be separated by ",".''')
+branch name(s) in reference ntuple. may be separated by ",".''')
 
     return parser
 
@@ -50,13 +50,13 @@ def double_ntuple_parser_no_output(descr, parser=None):
                         nargs='?',
                         required=True,
                         help='''
-path to comparison n-tuple.''')
+path to comparison ntuple.''')
 
     parser.add_argument('-T', '--comp-tree',
                         nargs='?',
                         required=True,
                         help='''
-tree name for the comparison n-tuple.''')
+tree name for the comparison ntuple.''')
 
     return parser
 
@@ -70,6 +70,6 @@ def double_ntuple_parser(descr, parser=None):
                         nargs='?',
                         required=True,
                         help='''
-branch name(s) in comparison n-tuple. may be separated by ",".''')
+branch name(s) in comparison ntuple. may be separated by ",".''')
 
     return parser
