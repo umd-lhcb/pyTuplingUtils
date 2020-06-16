@@ -1,6 +1,6 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Mon Jun 08, 2020 at 11:28 PM +0800
+# Last Change: Wed Jun 17, 2020 at 02:53 AM +0800
 
 .PHONY: sdist install test unittest
 
@@ -23,3 +23,6 @@ test: unittest
 
 unittest:
 	@coverage run -m unittest discover -s ./test
+
+unittest-local:
+	@python -m unittest discover -s ./test
