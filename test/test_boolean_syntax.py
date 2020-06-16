@@ -2,7 +2,7 @@
 #
 # Authorop: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jun 17, 2020 at 03:19 AM +0800
+# Last Change: Wed Jun 17, 2020 at 04:14 AM +0800
 
 import unittest
 
@@ -200,7 +200,7 @@ class BooleanTest(unittest.TestCase):
 class FunctionCallTest(unittest.TestCase):
     def test_func_call_zero_arg(self):
         self.assertEqual(
-            parser('some_func0()').pretty(),
+            parser('(some_func0())').pretty(),
             "func_call\tsome_func0\n"
         )
 
@@ -235,6 +235,45 @@ class FunctionCallTest(unittest.TestCase):
             "        num\t2\n"
             "      var\tval3\n"
             "    var\targ2\n"
+        )
+
+    def test_func_call_nested(self):
+        self.assertEqual(
+            parser('arith_func(inner(arg1+2)*val3, arg2)').pretty(),
+            "func_call\n"
+            "  arith_func\n"
+            "  arglist\n"
+            "    mul\n"
+            "      func_call\n"
+            "        inner\n"
+            "        arglist\n"
+            "          add\n"
+            "            var\targ1\n"
+            "            num\t2\n"
+            "      var\tval3\n"
+            "    var\targ2\n"
+        )
+
+    def test_func_call_nested_boolean_op(self):
+        self.assertEqual(
+            parser('arith_func(inner(arg1+2)*val3, arg2) > stuff(a)').pretty(),
+            "gt\n"
+            "  func_call\n"
+            "    arith_func\n"
+            "    arglist\n"
+            "      mul\n"
+            "        func_call\n"
+            "          inner\n"
+            "          arglist\n"
+            "            add\n"
+            "              var\targ1\n"
+            "              num\t2\n"
+            "        var\tval3\n"
+            "      var\targ2\n"
+            "  func_call\n"
+            "    stuff\n"
+            "    arglist\n"
+            "      var\ta\n"
         )
 
 
