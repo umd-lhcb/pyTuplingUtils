@@ -2,7 +2,7 @@
 #
 # Authorop: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 02:03 AM +0800
+# Last Change: Wed Jun 17, 2020 at 03:19 AM +0800
 
 import unittest
 
@@ -194,6 +194,47 @@ class BooleanTest(unittest.TestCase):
         self.assertEqual(
             parser('a >= !(-1+x)*3 | x<8 & y != -(z+3)').pretty(),
             parser('a >= !(-1+x)*3 | (x<8 & y != -(z+3))').pretty()
+        )
+
+
+class FunctionCallTest(unittest.TestCase):
+    def test_func_call_zero_arg(self):
+        self.assertEqual(
+            parser('some_func0()').pretty(),
+            "func_call\tsome_func0\n"
+        )
+
+    def test_func_call_one_arg(self):
+        self.assertEqual(
+            parser('some_func1(arg1)').pretty(),
+            "func_call\n"
+            "  some_func1\n"
+            "  arglist\n"
+            "    var\targ1\n"
+        )
+
+    def test_func_call_two_arg(self):
+        self.assertEqual(
+            parser('some_func2(arg1, arg2)').pretty(),
+            "func_call\n"
+            "  some_func2\n"
+            "  arglist\n"
+            "    var\targ1\n"
+            "    var\targ2\n"
+        )
+
+    def test_func_call_arithmetic(self):
+        self.assertEqual(
+            parser('arith_func((arg1+2)*val3, arg2)').pretty(),
+            "func_call\n"
+            "  arith_func\n"
+            "  arglist\n"
+            "    mul\n"
+            "      add\n"
+            "        var\targ1\n"
+            "        num\t2\n"
+            "      var\tval3\n"
+            "    var\targ2\n"
         )
 
 

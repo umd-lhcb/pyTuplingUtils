@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 01:58 AM +0800
+# Last Change: Wed Jun 17, 2020 at 03:16 AM +0800
 
 from lark import Lark
 
@@ -31,15 +31,20 @@ boolean_grammar = '''
         | sum "+" product    -> add
         | sum "-" product    -> sub
 
-    ?product: atom
-        | product "*" atom   -> mul
-        | product "/" atom   -> div
+    ?product: molecule
+        | product "*" molecule   -> mul
+        | product "/" molecule   -> div
+
+    ?molecule: NAME "(" [arglist] ")" -> func_call
+        | atom
 
     ?atom: NUMBER            -> num
         | "-" atom           -> neg
         | BOOL               -> bool
         | NAME               -> var
         | "(" boolor ")"
+
+    arglist: (boolor ",")* (boolor [","])
 
     %import common.SIGNED_NUMBER -> NUMBER
     %import common.WS_INLINE
