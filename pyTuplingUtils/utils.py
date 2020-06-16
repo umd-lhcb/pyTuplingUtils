@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue Jun 16, 2020 at 08:37 PM +0800
+# Last Change: Tue Jun 16, 2020 at 08:50 PM +0800
 
 import numpy as np
 import tabulate as tabl
@@ -30,14 +30,17 @@ def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber',
     run = read_branch(ntp, tree, run_branch)
     event = read_branch(ntp, tree, event_branch)
 
+    if conditional is not None:
+        run = run[conditional]
+        event = event[conditional]
+
     run = np.char.mod('%d', run)
     event = np.char.mod('%d', event)
 
     run = np.char.add(run, '-')
     ids = np.char.add(run, event)
 
-    uid, idx, count = np.unique(
-        ids, return_index=True, return_counts=True)
+    uid, idx = np.unique(ids, return_index=True)
 
     total_size = ids.size
     uniq_size = uid.size  # The size of all IDs that occurred

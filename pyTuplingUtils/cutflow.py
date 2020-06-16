@@ -2,14 +2,20 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 09:30 PM +0800
+# Last Change: Tue Jun 16, 2020 at 08:50 PM +0800
 
 import uproot
 
 from dataclasses import dataclass
 from typing import Union, Optional
 from numpy import sum
+
 from pyTuplingUtils.boolean.eval import BooleanEvaluator
+from pyTuplingUtils.utils import extract_uid
+
+
+def cutflow_uniq_events(ntp, tree, arr):
+    return extract_uid(ntp, tree, conditional=arr)[3]
 
 
 @dataclass
@@ -26,22 +32,27 @@ class CutflowGen(object):
         self.rules = rules
         self.init_num = init_num
 
-        self.exe = BooleanEvaluator(uproot.open(ntp_path), tree, **kwargs)
+        self.ntp = uproot.open(ntp_path)
+        self.tree = tree
+
+        self.exe = BooleanEvaluator(self.ntp, tree, **kwargs)
         self.prev_conds = []
 
-    def do(self):
+    def do(self, output_regulator=lambda ntp, tree, arr: sum(arr)):
         ref = {}
         result = {}
 
         for idx, r in enumerate(self.rules):
             prev_idx = self.find_idx(idx, r.compare_to)
 
+            # If the 'output' entry does not exist, use the default initial
+            # number of events/candidates.
             try:
                 prev_output = ref[self.rules[prev_idx].cond]['output']
             except Exception:
                 prev_output = self.init_num
 
-            if not r.explicit:
+            if not r.explicit:  # NOTE: This means subsequent cuts always include all previous cuts
                 # always enclose conditions to avoid problems like:
                 #   a & b | c
                 # whereas the correct way is:
@@ -51,7 +62,7 @@ class CutflowGen(object):
             else:
                 cond = r.cond
 
-            output = sum(self.exe.eval(cond))
+            output =output_regulator(self.ntp, self.tree, self.exe.eval(cond))
             cut_result = {'input': prev_output, 'output': output}
 
             if r.name:
