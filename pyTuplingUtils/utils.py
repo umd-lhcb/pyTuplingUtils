@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 07:11 PM +0800
+# Last Change: Tue Jun 16, 2020 at 08:37 PM +0800
 
 import numpy as np
 import tabulate as tabl
@@ -24,7 +24,9 @@ tabl._table_formats["latex_booktabs_raw"] = tabl.TableFormat(
 )
 
 
-def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber'):
+# Find total number of events (unique events) out of total number of candidates.
+def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber',
+                conditional=None):
     run = read_branch(ntp, tree, run_branch)
     event = read_branch(ntp, tree, event_branch)
 
@@ -34,12 +36,11 @@ def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber'):
     run = np.char.add(run, '-')
     ids = np.char.add(run, event)
 
-    uid, idx, count = np.unique(ids, return_index=True, return_counts=True)
-    uid = uid[count == 1]
-    idx = idx[count == 1]
+    uid, idx, count = np.unique(
+        ids, return_index=True, return_counts=True)
 
     total_size = ids.size
-    uniq_size = uid.size
+    uniq_size = uid.size  # The size of all IDs that occurred
     dupl_size = total_size - uniq_size
 
     return uid, idx, total_size, uniq_size, dupl_size
