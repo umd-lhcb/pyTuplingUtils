@@ -2,7 +2,7 @@
 #
 # Authorop: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jun 17, 2020 at 04:14 AM +0800
+# Last Change: Thu Jun 18, 2020 at 02:47 AM +0800
 
 import unittest
 
@@ -213,7 +213,7 @@ class FunctionCallTest(unittest.TestCase):
             "    var\targ1\n"
         )
 
-    def test_func_call_two_arg(self):
+    def test_func_call_two_args(self):
         self.assertEqual(
             parser('some_func2(arg1, arg2)').pretty(),
             "func_call\n"
