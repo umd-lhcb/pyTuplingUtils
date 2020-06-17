@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 02:51 AM +0800
+# Last Change: Thu Jun 18, 2020 at 02:52 AM +0800
 
 import unittest
 import uproot
@@ -151,9 +151,7 @@ class FunctionCallTest(unittest.TestCase):
         self.assertEqual(self.exe.eval('ABS(-pi+ONE())'), np.abs(-np.pi+1))
 
     def test_func_call_nested_boolean_op(self):
-        self.assertTrue(
-            self.exe.eval('ABS(ABS(pi+2)*e) > ABS(ONE()+e)')
-        )
+        self.assertTrue(self.exe.eval('ABS(ABS(pi+2)*e) > ABS(ONE()+e)'))
 
 
 if __name__ == '__main__':
