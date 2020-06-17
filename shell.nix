@@ -6,7 +6,7 @@ let
 in
 
 pkgs.mkShell {
-  name = "pip-env";
+  name = "pyTuplingUtils";
   buildInputs = with pythonPackages; [
     # Compilers and other build dependencies
     pkgs.stdenv
@@ -30,7 +30,7 @@ pkgs.mkShell {
     SOURCE_DATE_EPOCH=$(date +%s)
 
     if test -d $HOME/build/python-venv; then
-      VENV=$HOME/build/python-venv/pyTuplingUtil
+      VENV=$HOME/build/python-venv/pyTuplingUtils
     else
       VENV=./.virtualenv
     fi
