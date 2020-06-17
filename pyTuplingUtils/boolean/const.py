@@ -2,12 +2,15 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 01:44 AM +0800
+# Last Change: Thu Jun 18, 2020 at 01:48 AM +0800
 
 import numpy as np
 
 
 KNOWN_SYMB = {
+    # Mathematical constants
+    'pi': np.pi,
+    'e': np.e,
     # Units
     'MeV': 1.0,
     'GeV': 1000.0,
@@ -21,4 +24,5 @@ KNOWN_SYMB = {
 
 KNOWN_FUNC = {
     'ABS': np.abs,
+    'ONE': lambda: 1
 }

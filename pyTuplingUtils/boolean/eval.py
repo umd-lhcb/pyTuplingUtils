@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 01:44 AM +0800
+# Last Change: Thu Jun 18, 2020 at 02:30 AM +0800
 
 from lark import Transformer, v_args
 
@@ -126,8 +126,11 @@ class TransForTupling(Transformer):
     #################
 
     @v_args(inline=True)
-    def func_call(self, func_name, arglist):
-        return self.known_func[func_name](*arglist)
+    def func_call(self, func_name, arglist=None):
+        if arglist is not None:
+            return self.known_func[str(func_name)](*arglist.children)
+        else:
+            return self.known_func[str(func_name)]()
 
 
 class BooleanEvaluator(object):

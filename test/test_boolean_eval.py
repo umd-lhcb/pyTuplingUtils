@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 04:34 AM +0800
+# Last Change: Thu Jun 18, 2020 at 02:18 AM +0800
 
 import unittest
 import uproot
@@ -21,12 +21,12 @@ rb = ptu.io.read_branch
 class ArithmeticTest(unittest.TestCase):
     ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
     tree = 'TupleB0/DecayTree'
-    known_sym = {
+    known_symb = {
         'pi': 3.14,
         'e': 2.72,
         'g': 9.8,
     }
-    exe = evaluator(ntp, tree, known_sym=known_sym)
+    exe = evaluator(ntp, tree, known_symb=known_symb)
 
     ########
     # atom #
@@ -80,12 +80,7 @@ class ArithmeticTest(unittest.TestCase):
 class BooleanTest(unittest.TestCase):
     ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
     tree = 'TupleB0/DecayTree'
-    known_sym = {
-        'pi': 3.14,
-        'e': 2.72,
-        'g': 9.8,
-    }
-    exe = evaluator(ntp, tree, known_sym=known_sym)
+    exe = evaluator(ntp, tree)
 
     ##############
     # complement #
@@ -133,6 +128,72 @@ class BooleanTest(unittest.TestCase):
     def test_bool(self):
         self.assertTrue(self.exe.eval('(pi > e) & true | false'))
         self.assertFalse(self.exe.eval('(pi <= e) & (true | false)'))
+
+
+class FunctionCallTest(unittest.TestCase):
+    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
+    tree = 'TupleB0/DecayTree'
+    exe = evaluator(ntp, tree)
+
+    def test_func_call_zero_arg(self):
+        self.assertEqual(self.exe.eval('(ONE())'), 1)
+
+    def test_func_call_one_arg(self):
+        self.assertEqual(self.exe.eval('ABS(-1)'), 1)
+        self.assertEqual(self.exe.eval('ABS(-1-3*8)'), 25)
+
+    # def test_func_call_arithmetic(self):
+        # self.assertEqual(
+            # parser('arith_func((arg1+2)*val3, arg2)').pretty(),
+            # "func_call\n"
+            # "  arith_func\n"
+            # "  arglist\n"
+            # "    mul\n"
+            # "      add\n"
+            # "        var\targ1\n"
+            # "        num\t2\n"
+            # "      var\tval3\n"
+            # "    var\targ2\n"
+        # )
+
+    # def test_func_call_nested(self):
+        # self.assertEqual(
+            # parser('arith_func(inner(arg1+2)*val3, arg2)').pretty(),
+            # "func_call\n"
+            # "  arith_func\n"
+            # "  arglist\n"
+            # "    mul\n"
+            # "      func_call\n"
+            # "        inner\n"
+            # "        arglist\n"
+            # "          add\n"
+            # "            var\targ1\n"
+            # "            num\t2\n"
+            # "      var\tval3\n"
+            # "    var\targ2\n"
+        # )
+
+    # def test_func_call_nested_boolean_op(self):
+        # self.assertEqual(
+            # parser('arith_func(inner(arg1+2)*val3, arg2) > stuff(a)').pretty(),
+            # "gt\n"
+            # "  func_call\n"
+            # "    arith_func\n"
+            # "    arglist\n"
+            # "      mul\n"
+            # "        func_call\n"
+            # "          inner\n"
+            # "          arglist\n"
+            # "            add\n"
+            # "              var\targ1\n"
+            # "              num\t2\n"
+            # "        var\tval3\n"
+            # "      var\targ2\n"
+            # "  func_call\n"
+            # "    stuff\n"
+            # "    arglist\n"
+            # "      var\ta\n"
+        # )
 
 
 if __name__ == '__main__':
