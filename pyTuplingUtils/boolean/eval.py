@@ -2,21 +2,24 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 03:49 AM +0800
+# Last Change: Thu Jun 18, 2020 at 01:44 AM +0800
 
 from lark import Transformer, v_args
 
 from numpy import logical_and as AND, logical_or as OR, logical_not as NOT
 from pyTuplingUtils.io import read_branch
 from pyTuplingUtils.boolean.syntax import boolean_parser
+from pyTuplingUtils.boolean.const import KNOWN_SYMB, KNOWN_FUNC
 
 
 class TransForTupling(Transformer):
-    def __init__(self, ntp, tree, known_sym=dict()):
+    def __init__(self, ntp, tree,
+                 known_symb=KNOWN_SYMB, known_func=KNOWN_FUNC):
         self.ntp = ntp
         self.tree = tree
         self.cache = {}
-        self.cache.update(known_sym)
+        self.cache.update(known_symb)
+        self.known_func = known_func
 
     ########
     # atom #
@@ -117,6 +120,14 @@ class TransForTupling(Transformer):
     @v_args(inline=True)
     def orop(self, cond1, cond2):
         return OR(cond1, cond2)
+
+    #################
+    # Function call #
+    #################
+
+    @v_args(inline=True)
+    def func_call(self, func_name, arglist):
+        return self.known_func[func_name](*arglist)
 
 
 class BooleanEvaluator(object):
