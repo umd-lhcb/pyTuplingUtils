@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 02:18 AM +0800
+# Last Change: Thu Jun 18, 2020 at 02:51 AM +0800
 
 import unittest
 import uproot
@@ -140,60 +140,20 @@ class FunctionCallTest(unittest.TestCase):
 
     def test_func_call_one_arg(self):
         self.assertEqual(self.exe.eval('ABS(-1)'), 1)
+
+    def test_func_call_one_arg_with_arithmetic(self):
         self.assertEqual(self.exe.eval('ABS(-1-3*8)'), 25)
 
-    # def test_func_call_arithmetic(self):
-        # self.assertEqual(
-            # parser('arith_func((arg1+2)*val3, arg2)').pretty(),
-            # "func_call\n"
-            # "  arith_func\n"
-            # "  arglist\n"
-            # "    mul\n"
-            # "      add\n"
-            # "        var\targ1\n"
-            # "        num\t2\n"
-            # "      var\tval3\n"
-            # "    var\targ2\n"
-        # )
+    def test_func_call_two_args(self):
+        self.assertTrue(self.exe.eval('GT(pi, e)'))
 
-    # def test_func_call_nested(self):
-        # self.assertEqual(
-            # parser('arith_func(inner(arg1+2)*val3, arg2)').pretty(),
-            # "func_call\n"
-            # "  arith_func\n"
-            # "  arglist\n"
-            # "    mul\n"
-            # "      func_call\n"
-            # "        inner\n"
-            # "        arglist\n"
-            # "          add\n"
-            # "            var\targ1\n"
-            # "            num\t2\n"
-            # "      var\tval3\n"
-            # "    var\targ2\n"
-        # )
+    def test_func_call_nested(self):
+        self.assertEqual(self.exe.eval('ABS(-pi+ONE())'), np.abs(-np.pi+1))
 
-    # def test_func_call_nested_boolean_op(self):
-        # self.assertEqual(
-            # parser('arith_func(inner(arg1+2)*val3, arg2) > stuff(a)').pretty(),
-            # "gt\n"
-            # "  func_call\n"
-            # "    arith_func\n"
-            # "    arglist\n"
-            # "      mul\n"
-            # "        func_call\n"
-            # "          inner\n"
-            # "          arglist\n"
-            # "            add\n"
-            # "              var\targ1\n"
-            # "              num\t2\n"
-            # "        var\tval3\n"
-            # "      var\targ2\n"
-            # "  func_call\n"
-            # "    stuff\n"
-            # "    arglist\n"
-            # "      var\ta\n"
-        # )
+    def test_func_call_nested_boolean_op(self):
+        self.assertTrue(
+            self.exe.eval('ABS(ABS(pi+2)*e) > ABS(ONE()+e)')
+        )
 
 
 if __name__ == '__main__':
