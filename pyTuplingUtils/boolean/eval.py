@@ -2,12 +2,12 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 02:30 AM +0800
+# Last Change: Wed Jun 24, 2020 at 09:08 PM +0800
 
 from lark import Transformer, v_args
 
 from numpy import logical_and as AND, logical_or as OR, logical_not as NOT
-from pyTuplingUtils.io import read_branch
+from pyTuplingUtils.io import read_branches_dict
 from pyTuplingUtils.boolean.syntax import boolean_parser
 from pyTuplingUtils.boolean.const import KNOWN_SYMB, KNOWN_FUNC
 
@@ -19,6 +19,7 @@ class TransForTupling(Transformer):
         self.tree = tree
         self.cache = {}
         self.cache.update(known_symb)
+        self.known_symb = known_symb
         self.known_func = known_func
 
     ########
@@ -38,12 +39,7 @@ class TransForTupling(Transformer):
 
     @v_args(inline=True)
     def var(self, val):
-        try:
-            return self.cache[val.value]
-        except KeyError:
-            result = read_branch(self.ntp, self.tree, val.value)
-            self.cache[val.value] = result
-            return result
+        return self.cache[val.value]
 
     @v_args(inline=True)
     def neg(self, val):
@@ -143,4 +139,12 @@ class BooleanEvaluator(object):
 
     def eval(self, s):
         tree = self.parse(s)
+
+        # Load all variables in the expression in batch
+        vars_to_load = [str(n.children[0]) for n in tree.find_data('var')
+                        if str(n.children[0]) not in
+                        self.transformer.known_symb.keys()]
+        self.transformer.cache.update(read_branches_dict(
+            self.transformer.ntp, self.transformer.tree, vars_to_load))
+
         return self.transformer.transform(tree)
