@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 06:27 PM +0800
+# Last Change: Wed Jun 24, 2020 at 09:24 PM +0800
 
 import uproot
 
@@ -14,10 +14,18 @@ from copy import deepcopy
 
 from pyTuplingUtils.boolean.eval import BooleanEvaluator
 from pyTuplingUtils.utils import extract_uid
+from pyTuplingUtils.io import read_branches
 
 
-def cutflow_uniq_events(ntp, tree, arr):
-    return extract_uid(ntp, tree, conditional=arr)[3]
+def cutflow_uniq_events_outer(
+        ntp, tree, run_branch='runNumber', event_branch='eventNumber'):
+    run, event = read_branches(ntp, tree, (run_branch, event_branch))
+
+    def inner(ntp_i, tree_i, arr):
+        return extract_uid(ntp_i, tree_i, conditional=arr,
+                           run_array=run, event_array=event)[3]
+
+    return inner
 
 
 @dataclass
@@ -54,10 +62,12 @@ class CutflowGen(object):
                 prev_output = self.init_num
                 prev_raw_output = True
 
+            # Note that 'raw_output' is an array of boolean
             raw_output = self.exe.eval(r.cond)
             if not r.explicit:
                 raw_output = AND(prev_raw_output, raw_output)
 
+            # Here, 'output' is a number
             output = output_regulator(self.ntp, self.tree, raw_output)
             cut_result = {'input': prev_output, 'output': output}
 

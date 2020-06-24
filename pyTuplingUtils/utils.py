@@ -2,13 +2,13 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue Jun 16, 2020 at 08:50 PM +0800
+# Last Change: Wed Jun 24, 2020 at 09:27 PM +0800
 
 import numpy as np
 import tabulate as tabl
 
 from functools import partial
-from .io import read_branch
+from .io import read_branches
 
 
 # Disable LaTeX character escaping
@@ -26,9 +26,11 @@ tabl._table_formats["latex_booktabs_raw"] = tabl.TableFormat(
 
 # Find total number of events (unique events) out of total number of candidates.
 def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber',
-                conditional=None):
-    run = read_branch(ntp, tree, run_branch)
-    event = read_branch(ntp, tree, event_branch)
+                conditional=None, run_array=None, event_array=None):
+    if run_array is None or event_array is None:
+        run, event = read_branches(ntp, tree, (run_branch, event_branch))
+    else:
+        run, event = run_array, event_array
 
     if conditional is not None:
         run = run[conditional]
