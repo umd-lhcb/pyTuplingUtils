@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 02:44 AM +0800
+# Last Change: Thu Jun 25, 2020 at 11:55 PM +0800
 
 import numpy as np
 
@@ -25,6 +25,6 @@ KNOWN_SYMB = {
 KNOWN_FUNC = {
     'ABS': np.abs,
     'ONE': lambda: 1,
-    'GT': lambda x, y: True if x > y else False,
-    'LT': lambda x, y: True if x < y else False,
+    'GT': lambda x, y: x > y,
+    'LT': lambda x, y: x < y,
 }
