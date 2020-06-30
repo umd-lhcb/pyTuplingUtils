@@ -23,8 +23,14 @@ KNOWN_SYMB = {
 }
 
 KNOWN_FUNC = {
-    'ABS': np.abs,
+    ## Convention is lowercase for functions that ROOT can parse, and uppercase otherwise
+    'ABS': np.abs,  ## Has to be made lowercase
+    'log': np.log,
+    'sin': np.sin,
     'ONE': lambda: 1,
+    'LOG10pp': lambda p1x, p1y, p1z, p2x, p2y, p2z: np.log10(1-(p1x*p2x + p1y*p2y + p1z*p2z)/np.sqrt(p1x*p1x+p1y*p1y+p1z*p1z)/np.sqrt(p2x*p2x+p2y*p2y+p2z*p2z)),
+    'ETA': lambda p, pz: np.log((p+pz)/(p-pz))/2.,
+    'NORM2': lambda x, y: np.sqrt(x*x + y*y),
     'GT': lambda x, y: x > y,
     'LT': lambda x, y: x < y,
 }
