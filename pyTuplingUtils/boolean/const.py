@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 25, 2020 at 11:55 PM +0800
+# Last Change: Thu Jul 30, 2020 at 04:03 AM +0800
 
 import numpy as np
 
@@ -23,8 +23,8 @@ KNOWN_SYMB = {
 }
 
 KNOWN_FUNC = {
-    ## Convention is lowercase for functions that ROOT can parse, and uppercase otherwise
-    'ABS': np.abs,  ## Has to be made lowercase
+    # NOTE: Convention is lowercase for functions that ROOT can parse, and uppercase otherwise
+    'abs': np.abs,
     'log': np.log,
     'sin': np.sin,
     'ONE': lambda: 1,
