@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 18, 2020 at 02:52 AM +0800
+# Last Change: Fri Jul 31, 2020 at 10:42 PM +0800
 
 import unittest
 import uproot
@@ -139,19 +139,19 @@ class FunctionCallTest(unittest.TestCase):
         self.assertEqual(self.exe.eval('(ONE())'), 1)
 
     def test_func_call_one_arg(self):
-        self.assertEqual(self.exe.eval('ABS(-1)'), 1)
+        self.assertEqual(self.exe.eval('abs(-1)'), 1)
 
     def test_func_call_one_arg_with_arithmetic(self):
-        self.assertEqual(self.exe.eval('ABS(-1-3*8)'), 25)
+        self.assertEqual(self.exe.eval('abs(-1-3*8)'), 25)
 
     def test_func_call_two_args(self):
         self.assertTrue(self.exe.eval('GT(pi, e)'))
 
     def test_func_call_nested(self):
-        self.assertEqual(self.exe.eval('ABS(-pi+ONE())'), np.abs(-np.pi+1))
+        self.assertEqual(self.exe.eval('abs(-pi+ONE())'), np.abs(-np.pi+1))
 
     def test_func_call_nested_boolean_op(self):
-        self.assertTrue(self.exe.eval('ABS(ABS(pi+2)*e) > ABS(ONE()+e)'))
+        self.assertTrue(self.exe.eval('abs(abs(pi+2)*e) > abs(ONE()+e)'))
 
 
 if __name__ == '__main__':
