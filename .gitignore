@@ -1,5 +1,3 @@
-.python-version
-.envrc
 __pycache__
 *.egg-info
 
