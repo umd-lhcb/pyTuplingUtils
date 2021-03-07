@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 01, 2020 at 07:17 PM +0800
+# Last Change: Sun Mar 07, 2021 at 08:57 PM +0100
 
 import setuptools
 import codecs
@@ -50,8 +50,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'uproot',
+        'awkward',
         'lz4',
-        'numpy',
         'matplotlib',
         'lark-parser',
         'tabulate'

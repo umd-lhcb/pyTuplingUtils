@@ -1,6 +1,6 @@
 uproot
+awkward
 lz4
-numpy
 matplotlib
 lark-parser
 tabulate
