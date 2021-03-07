@@ -1,6 +1,6 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Wed Jun 17, 2020 at 02:53 AM +0800
+# Last Change: Sun Mar 07, 2021 at 09:12 PM +0100
 
 .PHONY: sdist install test unittest
 
@@ -14,8 +14,6 @@ clean:
 	@rm -rf ./dist
 	@rm -rf ./pyTuplingUtils.egg-info
 	@rm -rf ./build
-
-test: unittest
 
 ##############
 # Unit tests #
