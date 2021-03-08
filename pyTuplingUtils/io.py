@@ -2,33 +2,28 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jun 24, 2020 at 08:35 PM +0800
+# Last Change: Mon Mar 08, 2021 at 01:20 AM +0100
 
 import numpy as np
 
-from collections import OrderedDict as odict
+ARRAY_TYPE = 'np'
 
 
 def read_branch(ntp, tree, branch, idx=None):
-    data = ntp[tree].array(branch)
+    data = ntp[tree].array(branch, library=ARRAY_TYPE)
 
-    if not idx:
-        return data
-    else:
-        return data[idx]
+    return data if not idx else data[idx]
 
 
 def read_branches_dict(ntp, tree, branches):
-    return {k.decode('utf-8'): v for k, v in ntp[tree].arrays(branches).items()}
+    return {k: v for k, v
+            in ntp[tree].arrays(branches, library=ARRAY_TYPE).items()}
 
 
 def read_branches(ntp, tree, branches, idx=None, transpose=False):
-    data = ntp[tree].arrays(branches).values()
+    data = ntp[tree].arrays(branches, library=ARRAY_TYPE).values()
 
     if idx is not None:
         data = [d[idx] for d in data]
 
-    if transpose:
-        return np.column_stack(data)
-    else:
-        return list(data)
+    return np.column_stack(data) if transpose else list(data)
