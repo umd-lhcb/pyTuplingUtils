@@ -18,7 +18,6 @@ buildPythonPackage rec {
   propagatedBuildInputs = [
     uproot
     lz4
-    numpy
     matplotlib
     lark-parser
     tabulate

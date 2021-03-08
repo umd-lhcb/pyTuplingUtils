@@ -1,5 +1,4 @@
 uproot
-awkward
 lz4
 matplotlib
 lark-parser
