@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Mar 08, 2021 at 01:20 AM +0100
+# Last Change: Mon Mar 08, 2021 at 01:29 AM +0100
 
 import numpy as np
 
@@ -10,7 +10,7 @@ ARRAY_TYPE = 'np'
 
 
 def read_branch(ntp, tree, branch, idx=None):
-    data = ntp[tree].array(branch, library=ARRAY_TYPE)
+    data = ntp[tree][branch].array(library=ARRAY_TYPE)
 
     return data if not idx else data[idx]
 
