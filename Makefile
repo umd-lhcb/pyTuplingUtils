@@ -1,6 +1,6 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Mon Mar 08, 2021 at 01:29 AM +0100
+# Last Change: Wed Mar 31, 2021 at 10:58 PM +0200
 
 .PHONY: sdist install test unittest
 
@@ -8,6 +8,9 @@ sdist:
 	@python ./setup.py sdist
 
 install:
+	@pip install . --force-reinstall
+
+install-egg:
 	@python ./setup.py install
 
 clean:
