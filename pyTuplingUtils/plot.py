@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue Dec 31, 2019 at 02:44 AM -0500
+# Last Change: Tue Apr 13, 2021 at 07:26 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -159,10 +159,10 @@ def plot_two_histos(histo1, bins1, histo2, bins2,
                     output=None, figure=None, **kwargs):
     fig = plt.figure() if not figure else figure
 
-    _, ax1 = plot_histo(histo1, bins1, output, histo1_add_args,
+    _, ax1 = plot_histo(histo1, bins1, histo1_add_args,
                         figure=fig,
                         **kwargs)
-    _, ax2 = plot_histo(histo2, bins2, output, histo2_add_args,
+    _, ax2 = plot_histo(histo2, bins2, histo2_add_args,
                         figure=fig, axis=ax1,
                         **kwargs)
 
