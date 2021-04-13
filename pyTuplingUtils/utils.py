@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Aug 05, 2020 at 11:55 PM +0800
+# Last Change: Tue Apr 13, 2021 at 06:12 PM +0200
 
 import numpy as np
 import tabulate as tabl
@@ -69,14 +69,14 @@ def find_common_uid(ntp1, ntp2, tree1, tree2, **kwargs):
     return uid_comm, idx1[uid_comm_idx1], idx2[uid_comm_idx2]
 
 
-def gen_histo(array, bins=200, scale=1.05, range=None):
-    if range is None:
-        min = array.min()
-        max = array.max()
+def gen_histo(array, bins=200, scale=1.05, data_range=None, **kwargs):
+    if data_range is None:
+        data_min = array.min()
+        data_max = array.max()
 
-        min = min*scale if min < 0 else min/scale
-        max = max/scale if max < 0 else max*scale
+        data_min = data_min*scale if data_min < 0 else data_min/scale
+        data_max = data_max/scale if data_max < 0 else data_max*scale
 
-        return np.histogram(array, bins, (min, max))
-    else:
-        return np.histogram(array, bins, range)
+        return np.histogram(array, bins, (data_min, data_max), **kwargs)
+
+    return np.histogram(array, bins, data_range, **kwargs)
