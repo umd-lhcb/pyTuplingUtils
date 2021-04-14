@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue Apr 13, 2021 at 07:26 PM +0200
+# Last Change: Wed Apr 14, 2021 at 02:57 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -113,12 +113,19 @@ def plot_prepare(figure=None, axis=None, title=None,
     return fig, ax
 
 
+def convert_bins_to_central_pos(bins):
+    return bins[:-1] + (np.diff(bins)/2)
+
+
 @decorate_output
 def plot_pts(pts, bins, pts_add_args,
-             marker='_', output=None, **kwargs):
+             marker='_', output=None, convert_bin=True, **kwargs):
     fig, ax = plot_prepare(**kwargs)
-    ax.scatter(bins[:-1]+(np.diff(bins)/2), pts, marker=marker,
-               **pts_add_args)
+
+    if convert_bin:
+        bins = convert_bins_to_central_pos(bins)
+
+    ax.scatter(bins, pts, marker=marker, **pts_add_args)
 
     return output, fig, ax
 
@@ -165,6 +172,35 @@ def plot_two_histos(histo1, bins1, histo2, bins2,
     _, ax2 = plot_histo(histo2, bins2, histo2_add_args,
                         figure=fig, axis=ax1,
                         **kwargs)
+
+    return output, fig, ax1, ax2
+
+
+@decorate_output
+def plot_errorbar(x, y, errorbar_add_args, output=None, show_legend=True,
+                  convert_x=True, **kwargs):
+    fig, ax = plot_prepare(**kwargs)
+
+    if convert_x:
+        x = convert_bins_to_central_pos(x)
+
+    ax.errorbar(x, y, **errorbar_add_args)
+
+    if show_legend:
+        ax.legend()
+
+    return output, fig, ax
+
+
+@decorate_output
+def plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
+                      output=None, figure=None, **kwargs):
+    fig = plt.figure() if not figure else figure
+
+    _, ax1 = plot_errorbar(x1, y1, errorbar1_add_args, figure=fig,
+                           show_legend=False, **kwargs)
+    _, ax2 = plot_errorbar(x2, y2, errorbar2_add_args, figure=fig, axis=ax1,
+                           **kwargs)
 
     return output, fig, ax1, ax2
 
