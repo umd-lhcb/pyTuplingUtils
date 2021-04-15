@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 14, 2021 at 02:57 PM +0200
+# Last Change: Thu Apr 15, 2021 at 02:55 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -187,7 +187,7 @@ def plot_errorbar(x, y, errorbar_add_args, output=None, show_legend=True,
     ax.errorbar(x, y, **errorbar_add_args)
 
     if show_legend:
-        ax.legend()
+        ax.legend(numpoints=1)
 
     return output, fig, ax
 
@@ -197,8 +197,7 @@ def plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
                       output=None, figure=None, **kwargs):
     fig = plt.figure() if not figure else figure
 
-    _, ax1 = plot_errorbar(x1, y1, errorbar1_add_args, figure=fig,
-                           show_legend=False, **kwargs)
+    _, ax1 = plot_errorbar(x1, y1, errorbar1_add_args, figure=fig, **kwargs)
     _, ax2 = plot_errorbar(x2, y2, errorbar2_add_args, figure=fig, axis=ax1,
                            **kwargs)
 
