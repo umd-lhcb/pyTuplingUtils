@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 15, 2021 at 02:55 AM +0200
+# Last Change: Tue Apr 27, 2021 at 07:19 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -240,5 +240,31 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
              xtick_formatter=xtick_formatter,
              ytick_formatter=bot_ytick_formatter,
              xlabel=ax2_xlabel, ylabel=ax2_ylabel, yscale=ax2_ylabel)
+
+    fig.savefig(output)
+
+
+def plot_top_errorbar_bot_pts(x1, y1, x2, y2, x_ratio, y_ratio,
+                              errorbar1_add_args, errorbar2_add_args,
+                              ratio_add_args,
+                              output,
+                              ax1_yscale='linear', ax2_yscale='linear',
+                              height_ratios=[5, 1]):
+    fig = plt.figure(constrained_layout=True)
+    spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
+
+    ax1 = fig.add_subplot(spec[0, 0])
+    plot_errorbar(x1, y1, errorbar1_add_args,
+                  figure=fig, axis=ax1,
+                  show_legend=False)
+    plot_errorbar(x2, y2, errorbar2_add_args,
+                  figure=fig, axis=ax1,
+                  show_legend=False)
+    ax1.legend()
+
+    ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
+    plot_errorbar(x_ratio, y_ratio, ratio_add_args,
+                  figure=fig, axis=ax2,
+                  show_legend=False)
 
     fig.savefig(output)
