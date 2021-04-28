@@ -2,13 +2,14 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 29, 2021 at 12:05 AM +0200
+# Last Change: Thu Apr 29, 2021 at 01:00 AM +0200
 
 import numpy as np
 import matplotlib as mp
 import matplotlib.pyplot as plt
 
 from functools import wraps
+from inspect import getfullargspec
 
 
 ###################
@@ -57,7 +58,7 @@ def tick_formatter_short(x, p):
         return x
 
 
-def ax_add_args_simple(label, color='blue', edgecolor=None):
+def ax_add_args_histo(label, color='blue', edgecolor=None):
     if not edgecolor:
         edgecolor = color
 
@@ -68,6 +69,20 @@ def ax_add_args_simple(label, color='blue', edgecolor=None):
     }
 
 
+ax_add_args_simple = ax_add_args_histo  # For backward compatibility
+
+
+def ax_add_args_errorbar(label, color, yerr=None, marker='o'):
+       return {
+        'label': label,
+        'ls': 'none',
+        'color': color,
+        'marker': marker,
+        'markeredgecolor': 'none',
+        'yerr': yerr
+    }
+
+
 def ax_add_args_default(num, mean, std, *args, **kwargs):
     return ax_add_args_simple(
         'tot: {:.4g} mean {:.2g} std: {:.2g}'.format(
@@ -75,10 +90,6 @@ def ax_add_args_default(num, mean, std, *args, **kwargs):
         ),
         *args, **kwargs)
 
-
-################
-# Simple plots #
-################
 
 def plot_prepare(figure=None, axis=None, title=None,
                  xtick_formatter=None, ytick_formatter=None,
@@ -112,6 +123,19 @@ def plot_prepare(figure=None, axis=None, title=None,
 
     return fig, ax
 
+
+def filter_kwargs_plot_prepare(kwargs):
+    known_kwargs = getfullargspec(plot_prepare).args
+
+    kw_plot_prepare = {k: kwargs[k] for k in known_kwargs if k in kwargs}
+    kw_rest = {k: kwargs[k] for k in kwargs if k not in kw_plot_prepare}
+
+    return kw_plot_prepare, kw_rest
+
+
+################
+# Simple plots #
+################
 
 def convert_bins_to_central_pos(bins):
     return bins[:-1] + (np.diff(bins)/2)
@@ -177,8 +201,11 @@ def plot_two_histos(histo1, bins1, histo2, bins2,
 
 
 @decorate_output
-def plot_errorbar(x, y, errorbar_add_args, output=None, show_legend=True,
-                  convert_x=True, **kwargs):
+def plot_errorbar(x, y, errorbar_add_args,
+                  output=None,
+                  convert_x=True,
+                  show_legend=True, legend_loc='best',
+                  **kwargs):
     fig, ax = plot_prepare(**kwargs)
 
     if convert_x:
@@ -187,19 +214,23 @@ def plot_errorbar(x, y, errorbar_add_args, output=None, show_legend=True,
     ax.errorbar(x, y, **errorbar_add_args)
 
     if show_legend:
-        ax.legend(numpoints=1)
+        ax.legend(numpoints=1, loc=legend_loc)
 
     return output, fig, ax
 
 
 @decorate_output
 def plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
-                      output=None, **kwargs):
-    fig, ax = plot_prepare(**kwargs)
+                      output=None,
+                      **kwargs):
+    kw_plot_prepare, kw_rest = filter_kwargs_plot_prepare(kwargs)
+
+    fig, ax = plot_prepare(**kw_plot_prepare)
 
     _, ax1 = plot_errorbar(x1, y1, errorbar1_add_args, figure=fig, axis=ax,
                            show_legend=False)
-    _, ax2 = plot_errorbar(x2, y2, errorbar2_add_args, figure=fig, axis=ax1)
+    _, ax2 = plot_errorbar(x2, y2, errorbar2_add_args, figure=fig, axis=ax1,
+                           **kw_rest)
 
     return output, fig, ax1, ax2
 
@@ -267,12 +298,6 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                   figure=fig, axis=ax2,
                   xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False)
 
-    # No offset (like +1 on top of the axis)
-    ax2.ticklabel_format(axis='y', useOffset=False)
-
-    # Remove the upper most vertical tick for the bottom plot
-    ax2.yaxis.get_major_ticks()[-1].label1.set_visible(False)
-
     # Add a horizontal line
     if not hline_pos:
        hline_pos = y_ratio[y_ratio != 0].mean()
@@ -281,6 +306,12 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     # Remove the horizontal labels for the top plot
     for tick in ax1.xaxis.get_major_ticks():
         tick.label1.set_visible(False)
+
+    # No offset (like +1 on top of the axis)
+    ax2.ticklabel_format(axis='y', useOffset=False)
+
+    # Remove the upper most vertical tick for the bottom plot
+    ax2.yaxis.get_major_ticks()[-1].label1.set_visible(False)
 
     # Align y labels
     fig.align_ylabels()
