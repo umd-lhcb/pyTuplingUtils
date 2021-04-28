@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 03:52 PM +0200
+# Last Change: Wed Apr 28, 2021 at 04:16 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -254,7 +254,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    hline_pos=None,
                                    height_ratios=[5, 1],
                                    **kwargs):
-    fig = plt.figure(constrained_layout=True)
+    fig = plt.figure()
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
 
     ax1 = fig.add_subplot(spec[0, 0])
@@ -263,7 +263,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                       ylabel=ax1_ylabel, title=title)
 
     # Remove the horizontal labels for the top plot
-    ax1.set_xticklabels(visible=False)
+    ax1.set_xticklabels(ax1.get_xticklabels(), visible=False)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
@@ -274,10 +274,17 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     bot_ylabels = ax2.yaxis.get_major_ticks()
     bot_ylabels[-1].label1.set_visible(False)
 
+    #ax2.ticklabel_format(useOffset=False)  # So that no "+1" on the top of tick
+
     # Add a horizontal line
     if not hline_pos:
-        hline_pos = y_ratio[y_ratio != 0].mean()
+       hline_pos = y_ratio[y_ratio != 0].mean()
     ax2.axhline(hline_pos, color='gray')
-    ax2.ticklabel_format(useOffset=False)  # So that no "+1" on the top of tick
+
+    # Remove surrounding padding
+    fig.set_tight_layout({"pad": 0.})
+
+    # Remove gaps between subplots
+    fig.subplots_adjust(hspace=0.)
 
     fig.savefig(output)
