@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 01:51 AM +0200
+# Last Change: Wed Apr 28, 2021 at 02:13 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -251,7 +251,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    title=None,
                                    ax1_xlabel=None, ax1_ylabel=None,
                                    ax2_xlabel=None, ax2_ylabel=None,
-                                   hline_pos=1,
+                                   hline_pos=None,
                                    height_ratios=[5, 1],
                                    **kwargs):
     fig = plt.figure(constrained_layout=True)
@@ -268,6 +268,8 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                   xlabel=ax2_xlabel, ylabel=ax2_ylabel, show_legend=False)
 
     # Add a horizontal line
-    ax2.axhline(1, color='gray')
+    if not hline_pos:
+        hline_pos = y_ratio[y_ratio != 0].mean()
+    ax2.axhline(hline_pos, color='gray')
 
     fig.savefig(output)
