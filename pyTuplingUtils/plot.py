@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 04:18 PM +0200
+# Last Change: Wed Apr 28, 2021 at 11:44 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -249,8 +249,8 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    ratio_add_args,
                                    output,
                                    title=None,
-                                   ax1_xlabel=None, ax1_ylabel=None,
-                                   ax2_xlabel=None, ax2_ylabel=None,
+                                   xlabel=None,
+                                   ax1_ylabel=None, ax2_ylabel=None,
                                    hline_pos=None,
                                    height_ratios=[5, 1],
                                    **kwargs):
@@ -263,18 +263,19 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                       ylabel=ax1_ylabel, title=title)
 
     # Remove the horizontal labels for the top plot
-    ax1.set_xticklabels(ax1.get_xticklabels(), visible=False)
+    ax1.set_xticklabels([])
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
                   figure=fig, axis=ax2,
-                  xlabel=ax2_xlabel, ylabel=ax2_ylabel, show_legend=False)
+                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False)
+
+    # No offset (like +1 on top of the axis)
+    ax2.ticklabel_format(axis='y', useOffset=False)
 
     # Remove the upper most vertical tick for the bottom plot
     bot_ylabels = ax2.yaxis.get_major_ticks()
     bot_ylabels[-1].label1.set_visible(False)
-
-    #ax2.ticklabel_format(useOffset=False)  # So that no "+1" on the top of tick
 
     # Add a horizontal line
     if not hline_pos:
