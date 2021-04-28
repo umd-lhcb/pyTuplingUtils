@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 02:13 AM +0200
+# Last Change: Wed Apr 28, 2021 at 02:39 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -271,5 +271,6 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     if not hline_pos:
         hline_pos = y_ratio[y_ratio != 0].mean()
     ax2.axhline(hline_pos, color='gray')
+    ax2.ticklabel_format(useOffset=False)  # So that no "+1" on the top of tick
 
     fig.savefig(output)
