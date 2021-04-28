@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 11:44 PM +0200
+# Last Change: Thu Apr 29, 2021 at 12:05 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -262,9 +262,6 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                       figure=fig, axis=ax1,
                       ylabel=ax1_ylabel, title=title)
 
-    # Remove the horizontal labels for the top plot
-    ax1.set_xticklabels([])
-
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
                   figure=fig, axis=ax2,
@@ -274,13 +271,19 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     ax2.ticklabel_format(axis='y', useOffset=False)
 
     # Remove the upper most vertical tick for the bottom plot
-    bot_ylabels = ax2.yaxis.get_major_ticks()
-    bot_ylabels[-1].label1.set_visible(False)
+    ax2.yaxis.get_major_ticks()[-1].label1.set_visible(False)
 
     # Add a horizontal line
     if not hline_pos:
        hline_pos = y_ratio[y_ratio != 0].mean()
     ax2.axhline(hline_pos, color='gray')
+
+    # Remove the horizontal labels for the top plot
+    for tick in ax1.xaxis.get_major_ticks():
+        tick.label1.set_visible(False)
+
+    # Align y labels
+    fig.align_ylabels()
 
     # Remove surrounding padding
     fig.set_tight_layout({"pad": 0.})
