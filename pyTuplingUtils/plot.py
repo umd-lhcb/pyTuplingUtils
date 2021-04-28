@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 29, 2021 at 01:03 AM +0200
+# Last Change: Thu Apr 29, 2021 at 01:09 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -134,12 +134,16 @@ def filter_kwargs_plot_prepare(kwargs):
 
 
 ################
-# Simple plots #
+# Data helpers #
 ################
 
 def convert_bins_to_central_pos(bins):
     return bins[:-1] + (np.diff(bins)/2)
 
+
+################
+# Simple plots #
+################
 
 @decorate_output
 def plot_pts(pts, bins, pts_add_args,
