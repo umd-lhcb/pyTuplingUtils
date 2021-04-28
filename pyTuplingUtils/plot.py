@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 02:39 AM +0200
+# Last Change: Wed Apr 28, 2021 at 03:52 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -260,12 +260,19 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     ax1 = fig.add_subplot(spec[0, 0])
     plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
                       figure=fig, axis=ax1,
-                      xlabel=ax1_xlabel, ylabel=ax1_ylabel, title=title)
+                      ylabel=ax1_ylabel, title=title)
+
+    # Remove the horizontal labels for the top plot
+    ax1.set_xticklabels(visible=False)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
                   figure=fig, axis=ax2,
                   xlabel=ax2_xlabel, ylabel=ax2_ylabel, show_legend=False)
+
+    # Remove the upper most vertical tick for the bottom plot
+    bot_ylabels = ax2.yaxis.get_major_ticks()
+    bot_ylabels[-1].label1.set_visible(False)
 
     # Add a horizontal line
     if not hline_pos:
