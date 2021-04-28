@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 29, 2021 at 01:00 AM +0200
+# Last Change: Thu Apr 29, 2021 at 01:03 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -277,8 +277,9 @@ def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
 
 def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    errorbar1_add_args, errorbar2_add_args,
-                                   ratio_add_args,
                                    output,
+                                   ratio_add_args=ax_add_args_errorbar(
+                                       'Ratio', 'black'),
                                    title=None,
                                    xlabel=None,
                                    ax1_ylabel=None, ax2_ylabel=None,
@@ -291,7 +292,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     ax1 = fig.add_subplot(spec[0, 0])
     plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
                       figure=fig, axis=ax1,
-                      ylabel=ax1_ylabel, title=title)
+                      ylabel=ax1_ylabel, title=title, **kwargs)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
