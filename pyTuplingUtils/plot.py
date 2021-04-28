@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Apr 28, 2021 at 04:16 PM +0200
+# Last Change: Wed Apr 28, 2021 at 04:18 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -15,7 +15,7 @@ from functools import wraps
 # General helpers #
 ###################
 
-def decorate_output(f, tight_layout=True, pad=0.1):
+def decorate_output(f, tight_layout=True, pad=0.):
     @wraps(f)
     def wrapper(*args, **kwargs):
         result = f(*args, **kwargs)
