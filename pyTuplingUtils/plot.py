@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 29, 2021 at 01:50 PM +0200
+# Last Change: Thu Apr 29, 2021 at 02:24 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -288,7 +288,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    xlabel=None,
                                    ax1_ylabel=None, ax2_ylabel=None,
                                    hline_pos=None,
-                                   height_ratios=[5, 1],
+                                   height_ratios=[4, 1],
                                    **kwargs):
     fig = plt.figure()
     fig.set_tight_layout({"pad": 0.})  # Remove surrounding padding
@@ -318,16 +318,8 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     # No offset (like +1 on top of the axis)
     ax2.ticklabel_format(axis='y', useOffset=False)
 
-    # Change plot offset if the lowest tick label of the top plot is at 0
-    # fig.canvas.draw()  # Need to first draw the figure to find tick positions
-
-    # top_y_ticklabel = ax1.yaxis.get_majorticklabels()[0]
-    # top_y_ticklabel_pos = top_y_ticklabel.get_position()
-    # if (top_y_ticklabel_pos[1] <= 0.1):
-        # top_y_ticklabel.set_y(0.15)
-
     # Remove the upper most vertical tick for the bottom plot
-    ax2.yaxis.get_majorticklabels()[-1].set_visible(False)
+    ax2.get_ymajorticklabels()[-1].set_visible(False)
 
     # Align y labels
     fig.align_ylabels()
