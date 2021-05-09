@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Mar 08, 2021 at 01:29 AM +0100
+# Last Change: Sun May 09, 2021 at 02:52 AM +0200
 
 import numpy as np
 
@@ -16,14 +16,13 @@ def read_branch(ntp, tree, branch, idx=None):
 
 
 def read_branches_dict(ntp, tree, branches):
-    return {k: v for k, v
-            in ntp[tree].arrays(branches, library=ARRAY_TYPE).items()}
+    return ntp[tree].arrays(branches, library=ARRAY_TYPE)
 
 
 def read_branches(ntp, tree, branches, idx=None, transpose=False):
-    data = ntp[tree].arrays(branches, library=ARRAY_TYPE).values()
+    data = list(ntp[tree].arrays(branches, library=ARRAY_TYPE).values())
 
     if idx is not None:
         data = [d[idx] for d in data]
 
-    return np.column_stack(data) if transpose else list(data)
+    return np.column_stack(data) if transpose else data
