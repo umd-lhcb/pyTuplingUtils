@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu May 13, 2021 at 06:50 PM +0200
+# Last Change: Thu May 13, 2021 at 06:53 PM +0200
 
 import uproot
 
@@ -36,7 +36,8 @@ if __name__ == '__main__':
 
     _, _, num_of_evt, num_of_ids, num_of_dupl_ids, num_of_evt_w_dupl_id = \
         extract_uid(ntp, args.ref_tree, args.runNumber, args.eventNumber)
-    print('Num of events: {}, Mum of UIDs: {}'.format(num_of_evt, num_of_ids))
-    print('Num of duplicated UIDs: {}, Num of duplicated events: {}, duplicate rate: {:.2f}%'.format(
+    print('Num of events: {}, Num of IDs: {}, Num of UIDs: {}'.format(
+        num_of_evt, num_of_ids, num_of_ids-num_of_dupl_ids))
+    print('Num of duplicated IDs: {}, Num of duplicated events: {}, duplicate rate: {:.2f}%'.format(
         num_of_dupl_ids, num_of_evt_w_dupl_id,
         num_of_evt_w_dupl_id/num_of_evt*100))

@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 08, 2020 at 11:27 PM +0800
+# Last Change: Thu May 13, 2021 at 06:54 PM +0200
 
 import uproot
 
@@ -39,4 +39,4 @@ if __name__ == '__main__':
     uid_comm, idx1, idx2 = find_common_uid(
         ntp1, ntp2, args.ref_tree, args.comp_tree,
         run_branch=args.runNumber, event_branch=args.eventNumber)
-    print('Total common UIDs: {}'.format(uid_comm.size))
+    print('Total common IDs: {}'.format(uid_comm.size))
