@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue Apr 13, 2021 at 06:12 PM +0200
+# Last Change: Thu May 13, 2021 at 06:41 PM +0200
 
 import numpy as np
 import tabulate as tabl
@@ -26,8 +26,7 @@ tabl._table_formats["latex_booktabs_raw"] = tabl.TableFormat(
 
 # Find total number of events (unique events) out of total number of candidates.
 def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber',
-                conditional=None, run_array=None, event_array=None,
-                keep_single_candidate_events_only=False):
+                conditional=None, run_array=None, event_array=None):
     if run_array is None or event_array is None:
         run, event = read_branches(ntp, tree, (run_branch, event_branch))
     else:
@@ -45,24 +44,19 @@ def extract_uid(ntp, tree, run_branch='runNumber', event_branch='eventNumber',
 
     uid, idx, count = np.unique(ids, return_index=True, return_counts=True)
 
-    if keep_single_candidate_events_only:
-        uid = uid[count == 1]
-        idx = idx[count == 1]
+    num_of_evt = ids.size
+    num_of_ids = uid.size
+    num_of_dupl_ids = uid[count > 1].size
+    # num_of_evt_w_dupl_id = np.sum(count[count > 1]) - num_of_dupl_ids
+    num_of_evt_w_dupl_id = num_of_evt - num_of_ids
 
-    total_size = ids.size
-    uniq_size = uid.size
-    dupl_size = total_size - uniq_size
-
-    return uid, idx, total_size, uniq_size, dupl_size
+    return uid, idx, num_of_evt, num_of_ids, \
+        num_of_dupl_ids, num_of_evt_w_dupl_id
 
 
 def find_common_uid(ntp1, ntp2, tree1, tree2, **kwargs):
-    uid1, idx1, _, _, _ = extract_uid(ntp1, tree1,
-                                      keep_single_candidate_events_only=True,
-                                      **kwargs)
-    uid2, idx2, _, _, _ = extract_uid(ntp2, tree2,
-                                      keep_single_candidate_events_only=True,
-                                      **kwargs)
+    uid1, idx1 = extract_uid(ntp1, tree1, **kwargs)[0:2]
+    uid2, idx2 = extract_uid(ntp2, tree2, **kwargs)[0:2]
     uid_comm, uid_comm_idx1, uid_comm_idx2 = np.intersect1d(
         uid1, uid2, assume_unique=True, return_indices=True)
 
