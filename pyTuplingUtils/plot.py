@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Apr 29, 2021 at 02:24 PM +0200
+# Last Change: Fri May 14, 2021 at 10:06 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -73,7 +73,7 @@ ax_add_args_simple = ax_add_args_histo  # For backward compatibility
 
 
 def ax_add_args_errorbar(label, color, yerr=None, marker='o'):
-       return {
+    return {
         'label': label,
         'ls': 'none',
         'color': color,
@@ -159,21 +159,6 @@ def plot_pts(pts, bins, pts_add_args,
 
 
 @decorate_output
-def plot_histo(histo, bins, histo_add_args,
-               output=None, xtick_formatter=tick_formatter_short,
-               show_legend=True,
-               **kwargs):
-    fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
-    ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
-           **histo_add_args)
-
-    if show_legend:
-        ax.legend()
-
-    return output, fig, ax
-
-
-@decorate_output
 def plot_hexbin(x, y, gridsize, hexbin_add_args,
                 output=None, cmap='inferno', bins='log', colorbar_label=None,
                 **kwargs):
@@ -189,17 +174,32 @@ def plot_hexbin(x, y, gridsize, hexbin_add_args,
 
 
 @decorate_output
+def plot_histo(histo, bins, histo_add_args,
+               output=None, xtick_formatter=tick_formatter_short,
+               show_legend=True,
+               **kwargs):
+    fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
+    ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
+           **histo_add_args)
+
+    if show_legend:
+        ax.legend()
+
+    return output, fig, ax
+
+
+@decorate_output
 def plot_two_histos(histo1, bins1, histo2, bins2,
                     histo1_add_args, histo2_add_args,
-                    output=None, figure=None, **kwargs):
-    fig = plt.figure() if not figure else figure
+                    output=None,
+                    **kwargs):
+    kw_plot_prepare, kw_rest = filter_kwargs_plot_prepare(kwargs)
+    fig, ax = plot_prepare(**kw_plot_prepare)
 
-    _, ax1 = plot_histo(histo1, bins1, histo1_add_args,
-                        figure=fig,
-                        **kwargs)
-    _, ax2 = plot_histo(histo2, bins2, histo2_add_args,
-                        figure=fig, axis=ax1,
-                        **kwargs)
+    _, ax1 = plot_histo(histo1, bins1, histo1_add_args, figure=fig, axis=ax,
+                        show_legend=False, **kw_rest)
+    _, ax2 = plot_histo(histo2, bins2, histo2_add_args, figure=fig, axis=ax1,
+                        **kw_rest)
 
     return output, fig, ax1, ax2
 
@@ -228,11 +228,10 @@ def plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
                       output=None,
                       **kwargs):
     kw_plot_prepare, kw_rest = filter_kwargs_plot_prepare(kwargs)
-
     fig, ax = plot_prepare(**kw_plot_prepare)
 
     _, ax1 = plot_errorbar(x1, y1, errorbar1_add_args, figure=fig, axis=ax,
-                           show_legend=False)
+                           show_legend=False, **kw_rest)
     _, ax2 = plot_errorbar(x2, y2, errorbar2_add_args, figure=fig, axis=ax1,
                            **kw_rest)
 
@@ -243,38 +242,51 @@ def plot_two_errorbar(x1, y1, x2, y2, errorbar1_add_args, errorbar2_add_args,
 # Grid plots #
 ##############
 
-def plot_top_histo_bot_pts(histo1, bins1, histo2, bins2, pts, width,
-                           histo1_add_args, histo2_add_args, pts_add_args,
-                           ax1_xlabel, ax1_ylabel,
-                           ax2_xlabel, ax2_ylabel,
-                           output,
-                           ax1_yscale='linear', ax2_yscale='linear',
-                           xtick_formatter=None,
-                           top_ytick_formatter=None, bot_ytick_formatter=None,
-                           height_ratios=[5, 1]):
-    fig = plt.figure(constrained_layout=True)
+def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
+                                histo1_add_args, histo2_add_args,
+                                output,
+                                ratio_add_args=ax_add_args_errorbar(
+                                    'Ratio', 'black'),
+                                title=None,
+                                xlabel=None,
+                                ax1_ylabel=None, ax2_ylabel=None,
+                                ax1_yscale='linear', ax2_yscale='linear',
+                                xtick_formatter=None,
+                                top_ytick_formatter=None,
+                                bot_ytick_formatter=None,
+                                height_ratios=[3, 1],
+                                **kwargs):
+    fig = plt.figure()
+    fig.set_tight_layout({'pad': 0.})
+
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
+    spec.update(hspace=0.)
 
     ax1 = fig.add_subplot(spec[0, 0])
-    plot_histo(histo1, bins1, histo1_add_args,
-               figure=fig, axis=ax1,
-               show_legend=False,
-               xtick_formatter=xtick_formatter,
-               ytick_formatter=top_ytick_formatter)
-    plot_histo(histo2, bins2, histo2_add_args,
-               figure=fig, axis=ax1,
-               show_legend=False,
-               xtick_formatter=xtick_formatter,
-               ytick_formatter=top_ytick_formatter,
-               xlabel=ax1_xlabel, ylabel=ax1_ylabel, yscale=ax1_yscale)
-    ax1.legend()
+    plot_two_histos(histo1, bins1, histo2, bins2,
+                    histo1_add_args, histo2_add_args,
+                    figure=fig, axis=ax1,
+                    ylabel=ax1_ylabel, title=title,
+                    ytick_formatter=top_ytick_formatter,
+                    **kwargs)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
-    plot_pts(pts, width, pts_add_args,
-             figure=fig, axis=ax2,
-             xtick_formatter=xtick_formatter,
-             ytick_formatter=bot_ytick_formatter,
-             xlabel=ax2_xlabel, ylabel=ax2_ylabel, yscale=ax2_ylabel)
+    plot_errorbar(x_ratio, y_ratio, ratio_add_args,
+                  figure=fig, axis=ax2,
+                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False)
+
+    # Remove the horizontal labels for the top plot
+    for tick in ax1.xaxis.get_major_ticks():
+        tick.label1.set_visible(False)
+
+    # No offset (like +1 on top of the axis)
+    ax2.ticklabel_format(axis='y', useOffset=False)
+
+    # Remove the upper most vertical tick for the bottom plot
+    ax2.get_ymajorticklabels()[-1].set_visible(False)
+
+    # Align y labels
+    fig.align_ylabels()
 
     fig.savefig(output)
 
@@ -288,10 +300,10 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
                                    xlabel=None,
                                    ax1_ylabel=None, ax2_ylabel=None,
                                    hline_pos=None,
-                                   height_ratios=[4, 1],
+                                   height_ratios=[3, 1],
                                    **kwargs):
     fig = plt.figure()
-    fig.set_tight_layout({"pad": 0.})  # Remove surrounding padding
+    fig.set_tight_layout({'pad': 0.})  # Remove surrounding padding
 
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
     spec.update(hspace=0.)  # Remove gaps between subplots
@@ -308,7 +320,7 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
 
     # Add a horizontal line
     if not hline_pos:
-       hline_pos = y_ratio[y_ratio != 0].mean()
+        hline_pos = y_ratio[y_ratio != 0].mean()
     ax2.axhline(hline_pos, color='gray')
 
     # Remove the horizontal labels for the top plot
