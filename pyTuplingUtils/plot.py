@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 14, 2021 at 10:44 PM +0200
+# Last Change: Sat May 15, 2021 at 01:35 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -146,19 +146,6 @@ def convert_bins_to_central_pos(bins):
 ################
 
 @decorate_output
-def plot_pts(pts, bins, pts_add_args,
-             marker='_', output=None, convert_bin=True, **kwargs):
-    fig, ax = plot_prepare(**kwargs)
-
-    if convert_bin:
-        bins = convert_bins_to_central_pos(bins)
-
-    ax.scatter(bins, pts, marker=marker, **pts_add_args)
-
-    return output, fig, ax
-
-
-@decorate_output
 def plot_hexbin(x, y, gridsize, hexbin_add_args,
                 output=None, cmap='inferno', bins='log', colorbar_label=None,
                 **kwargs):
@@ -177,6 +164,7 @@ def plot_hexbin(x, y, gridsize, hexbin_add_args,
 def plot_histo(histo, bins, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short,
                show_legend=True,
+               xlim=None, ylim=None,
                **kwargs):
     fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
@@ -184,6 +172,12 @@ def plot_histo(histo, bins, histo_add_args,
 
     if show_legend:
         ax.legend()
+
+    if xlim:
+        ax.set_xlim(xlim)
+
+    if ylim:
+        ax.set_ylim(ylim)
 
     return output, fig, ax
 
@@ -209,6 +203,7 @@ def plot_errorbar(x, y, errorbar_add_args,
                   output=None,
                   convert_x=True,
                   show_legend=True, legend_loc='best',
+                  xlim=None, ylim=None,
                   **kwargs):
     fig, ax = plot_prepare(**kwargs)
 
@@ -219,6 +214,12 @@ def plot_errorbar(x, y, errorbar_add_args,
 
     if show_legend:
         ax.legend(numpoints=1, loc=legend_loc)
+
+    if xlim:
+        ax.set_xlim(xlim)
+
+    if ylim:
+        ax.set_ylim(ylim)
 
     return output, fig, ax
 
@@ -264,12 +265,14 @@ def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
                     histo1_add_args, histo2_add_args,
                     figure=fig, axis=ax1,
                     ylabel=ax1_ylabel, title=title,
+                    yscale=ax1_yscale,
                     **kwargs)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
                   figure=fig, axis=ax2,
-                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False)
+                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False,
+                  yscale=ax2_yscale)
 
     # Remove the horizontal labels for the top plot
     for tick in ax1.xaxis.get_major_ticks():
