@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri May 14, 2021 at 10:06 PM +0200
+# Last Change: Fri May 14, 2021 at 10:44 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -251,9 +251,6 @@ def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
                                 xlabel=None,
                                 ax1_ylabel=None, ax2_ylabel=None,
                                 ax1_yscale='linear', ax2_yscale='linear',
-                                xtick_formatter=None,
-                                top_ytick_formatter=None,
-                                bot_ytick_formatter=None,
                                 height_ratios=[3, 1],
                                 **kwargs):
     fig = plt.figure()
@@ -267,7 +264,6 @@ def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
                     histo1_add_args, histo2_add_args,
                     figure=fig, axis=ax1,
                     ylabel=ax1_ylabel, title=title,
-                    ytick_formatter=top_ytick_formatter,
                     **kwargs)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
