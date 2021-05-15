@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat May 15, 2021 at 02:59 AM +0200
+# Last Change: Sun May 16, 2021 at 12:44 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -131,6 +131,44 @@ def filter_kwargs_plot_prepare(kwargs):
     kw_rest = {k: kwargs[k] for k in kwargs if k not in kw_plot_prepare}
 
     return kw_plot_prepare, kw_rest
+
+
+def get_ytick_position_in_ax_coordinate(ax, scale):
+    y_min, y_max = ax.get_ylim()
+    raw_ticks = ax.get_yticks(minor=False)
+
+    if scale == 'linear':
+        ticks = [(tick - y_min)/(y_max - y_min) for tick in raw_ticks]
+    elif scale == 'log':
+        crd = np.vstack((np.zeros_like(raw_ticks), raw_ticks)).T
+        ticks = ax.transAxes.inverted().transform(
+            ax.transData.transform(crd))[:,1]
+    else:
+        raise ValueError('Unknown axis scale: {}'.format(scale))
+
+    return y_min, y_max, ticks
+
+
+def ensure_no_majortick_on_topmost(ax, scale, thresh=0.9, ratio=0.19,
+                                   verbose=False):
+    y_min, y_max, ticks = get_ytick_position_in_ax_coordinate(ax, scale)
+
+    if verbose:
+        print('y range is: {}, {}'.format(y_min, y_max))
+        print('y major ticks are: {}'.format(','.join([str(i) for i in ticks])))
+
+    max_majortick = ticks[-2] if ticks[-1] > 1 else ticks[-1]
+    if verbose:
+        print('Max y tick is at: {}'.format(max_majortick))
+
+    if max_majortick >= thresh:
+        rel_tick_gap = ticks[1] - ticks[0]
+        abs_tick_gap = rel_tick_gap * (y_max-y_min)
+        padding = ratio * abs_tick_gap
+
+        ax.set_ylim((y_min, y_max+padding))
+        if verbose:
+            print('Added y pad. Now y max is: {}'.format(y_max+padding))
 
 
 ################
@@ -282,8 +320,8 @@ def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
     if ax2_yscale == 'linear':
         ax2.ticklabel_format(axis='y', useOffset=False)
 
-    # Remove the upper most vertical tick for the bottom plot
-    ax2.get_ymajorticklabels()[-1].set_visible(False)
+    # Add some padding if the TOPMOST ylabel of bot is too close to the top
+    ensure_no_majortick_on_topmost(ax2, ax2_yscale)
 
     # Align y labels
     fig.align_ylabels()
@@ -334,8 +372,8 @@ def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
     if ax2_yscale == 'linear':
         ax2.ticklabel_format(axis='y', useOffset=False)
 
-    # Remove the upper most vertical tick for the bottom plot
-    ax2.get_ymajorticklabels()[-1].set_visible(False)
+    # Add some padding if the TOPMOST ylabel of bot is too close to the top
+    ensure_no_majortick_on_topmost(ax2, ax2_yscale)
 
     # Align y labels
     fig.align_ylabels()
