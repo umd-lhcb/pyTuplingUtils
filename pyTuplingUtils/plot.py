@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat May 15, 2021 at 01:35 AM +0200
+# Last Change: Sat May 15, 2021 at 01:57 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -261,25 +261,26 @@ def plot_top_histo_bot_errorbar(histo1, bins1, histo2, bins2, x_ratio, y_ratio,
     spec.update(hspace=0.)
 
     ax1 = fig.add_subplot(spec[0, 0])
+    ax1.set_yscale(ax1_yscale)
     plot_two_histos(histo1, bins1, histo2, bins2,
                     histo1_add_args, histo2_add_args,
                     figure=fig, axis=ax1,
                     ylabel=ax1_ylabel, title=title,
-                    yscale=ax1_yscale,
                     **kwargs)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
+    ax2.set_yscale(ax2_yscale)
     plot_errorbar(x_ratio, y_ratio, ratio_add_args,
                   figure=fig, axis=ax2,
-                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False,
-                  yscale=ax2_yscale)
+                  xlabel=xlabel, ylabel=ax2_ylabel, show_legend=False)
 
     # Remove the horizontal labels for the top plot
     for tick in ax1.xaxis.get_major_ticks():
         tick.label1.set_visible(False)
 
     # No offset (like +1 on top of the axis)
-    ax2.ticklabel_format(axis='y', useOffset=False)
+    if ax2_yscale == 'linear':
+        ax2.ticklabel_format(axis='y', useOffset=False)
 
     # Remove the upper most vertical tick for the bottom plot
     ax2.get_ymajorticklabels()[-1].set_visible(False)
