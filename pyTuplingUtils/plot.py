@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue May 18, 2021 at 02:59 AM +0200
+# Last Change: Tue May 18, 2021 at 03:57 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -80,6 +80,14 @@ def ax_add_args_errorbar(label, color, yerr=None, marker='o'):
         'marker': marker,
         'markeredgecolor': 'none',
         'yerr': yerr
+    }
+
+
+def ax_add_args_step(label, color, drawstyle='steps-mid'):
+    return {
+        'label': label,
+        'color': color,
+        'drawstyle': drawstyle
     }
 
 
@@ -257,7 +265,6 @@ def plot_step(x, y, step_add_args,
 
     if convert_x:
         x = convert_bins_to_central_pos(x)
-        step_add_args['drawstyle'] = 'steps-mid'
 
     ax.step(x, y, **step_add_args)
 
