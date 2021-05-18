@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun May 16, 2021 at 12:44 AM +0200
+# Last Change: Tue May 18, 2021 at 02:59 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -221,22 +221,6 @@ def plot_histo(histo, bins, histo_add_args,
 
 
 @decorate_output
-def plot_two_histos(histo1, bins1, histo2, bins2,
-                    histo1_add_args, histo2_add_args,
-                    output=None,
-                    **kwargs):
-    kw_plot_prepare, kw_rest = filter_kwargs_plot_prepare(kwargs)
-    fig, ax = plot_prepare(**kw_plot_prepare)
-
-    _, ax1 = plot_histo(histo1, bins1, histo1_add_args, figure=fig, axis=ax,
-                        show_legend=False, **kw_rest)
-    _, ax2 = plot_histo(histo2, bins2, histo2_add_args, figure=fig, axis=ax1,
-                        **kw_rest)
-
-    return output, fig, ax1, ax2
-
-
-@decorate_output
 def plot_errorbar(x, y, errorbar_add_args,
                   output=None,
                   convert_x=True,
@@ -260,6 +244,53 @@ def plot_errorbar(x, y, errorbar_add_args,
         ax.set_ylim(ylim)
 
     return output, fig, ax
+
+
+@decorate_output
+def plot_step(x, y, step_add_args,
+              output=None,
+              convert_x=True,
+              show_legend=True, legend_loc='best',
+              xlim=None, ylim=None,
+              **kwargs):
+    fig, ax = plot_prepare(**kwargs)
+
+    if convert_x:
+        x = convert_bins_to_central_pos(x)
+        step_add_args['drawstyle'] = 'steps-mid'
+
+    ax.step(x, y, **step_add_args)
+
+    if show_legend:
+        ax.legend(numpoints=1, loc=legend_loc)
+
+    if xlim:
+        ax.set_xlim(xlim)
+
+    if ylim:
+        ax.set_ylim(ylim)
+
+    return output, fig, ax
+
+
+##########################
+# Common composite plots #
+##########################
+
+@decorate_output
+def plot_two_histos(histo1, bins1, histo2, bins2,
+                    histo1_add_args, histo2_add_args,
+                    output=None,
+                    **kwargs):
+    kw_plot_prepare, kw_rest = filter_kwargs_plot_prepare(kwargs)
+    fig, ax = plot_prepare(**kw_plot_prepare)
+
+    _, ax1 = plot_histo(histo1, bins1, histo1_add_args, figure=fig, axis=ax,
+                        show_legend=False, **kw_rest)
+    _, ax2 = plot_histo(histo2, bins2, histo2_add_args, figure=fig, axis=ax1,
+                        **kw_rest)
+
+    return output, fig, ax1, ax2
 
 
 @decorate_output
