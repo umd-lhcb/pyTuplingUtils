@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon May 24, 2021 at 08:26 PM +0200
+# Last Change: Mon May 24, 2021 at 10:06 PM +0200
 
 import uproot
 
@@ -46,6 +46,8 @@ class CutflowGen:
         self.tree = tree
         self.exe = BooleanEvaluator(self.ntp, tree, **kwargs)
 
+        self.debug_raw_output = []
+
     def do(self, output_regulator=lambda ntp, tree, arr: sum(arr)):
         ref = {}
         result = {}
@@ -66,9 +68,14 @@ class CutflowGen:
             raw_output = self.exe.eval(r.cond)
             if not r.explicit:
                 raw_output = AND(prev_raw_output, raw_output)
+            self.debug_raw_output.append(raw_output)
 
             # Here, 'output' is a number
-            output = output_regulator(self.ntp, self.tree, raw_output)
+            if True in raw_output:
+                output = output_regulator(self.ntp, self.tree, raw_output)
+            else:
+                output = 0
+
             cut_result = {'input': prev_output, 'output': output}
 
             if r.name:
