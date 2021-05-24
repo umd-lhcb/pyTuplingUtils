@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jun 24, 2020 at 09:24 PM +0800
+# Last Change: Mon May 24, 2021 at 08:26 PM +0200
 
 import uproot
 
@@ -37,9 +37,9 @@ class CutflowRule:
     key: Optional[str] = None
 
 
-class CutflowGen(object):
+class CutflowGen:
     def __init__(self, ntp_path, tree, rules, init_num, **kwargs):
-        self.rules = rules
+        self.rules = self.strip_multiline_str(rules)
         self.init_num = init_num
 
         self.ntp = uproot.open(ntp_path)
@@ -95,3 +95,14 @@ class CutflowGen(object):
             idx = int(raw_idx)
 
         return idx
+
+    @staticmethod
+    def strip_multiline_str(rules):
+        result = []
+        for r in rules:
+            stripped_rule = CutflowRule(
+                r.cond.replace('\n', ' '),
+                r.name, r.compare_to, r.explicit, r.key
+            )
+            result.append(stripped_rule)
+        return result
