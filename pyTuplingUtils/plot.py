@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Tue May 18, 2021 at 04:09 AM +0200
+# Last Change: Sun May 30, 2021 at 12:25 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -72,13 +72,14 @@ def ax_add_args_histo(label, color='blue', edgecolor=None):
 ax_add_args_simple = ax_add_args_histo  # For backward compatibility
 
 
-def ax_add_args_errorbar(label, color, yerr=None, marker='o'):
+def ax_add_args_errorbar(label, color, yerr=None, marker='o',
+                         markeredgecolor='none', ls='none'):
     return {
         'label': label,
-        'ls': 'none',
+        'ls': ls,
         'color': color,
         'marker': marker,
-        'markeredgecolor': 'none',
+        'markeredgecolor': markeredgecolor,
         'yerr': yerr
     }
 
