@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Jul 31, 2020 at 10:42 PM +0800
+# Last Change: Mon May 31, 2021 at 02:55 AM +0200
 
 import unittest
 import uproot
@@ -11,8 +11,6 @@ import numpy as np
 
 from context import pyTuplingUtils as ptu
 from context import pwd
-
-print(pwd)
 
 evaluator = ptu.boolean.eval.BooleanEvaluator
 rb = ptu.io.read_branch
