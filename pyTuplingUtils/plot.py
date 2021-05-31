@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun May 30, 2021 at 12:25 AM +0200
+# Last Change: Mon May 31, 2021 at 02:59 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -15,6 +15,15 @@ from inspect import getfullargspec
 ###################
 # General helpers #
 ###################
+
+def filter_kwargs_func(kwargs, func):
+    kw_func = getfullargspec(func).args
+
+    kw_known = {k: kwargs[k] for k in kw_func if k in kwargs}
+    kw_rest = {k: kwargs[k] for k in kwargs if k not in kw_known}
+
+    return kw_known, kw_rest
+
 
 def decorate_output(f, tight_layout=True, pad=0.):
     @wraps(f)
@@ -134,12 +143,7 @@ def plot_prepare(figure=None, axis=None, title=None,
 
 
 def filter_kwargs_plot_prepare(kwargs):
-    known_kwargs = getfullargspec(plot_prepare).args
-
-    kw_plot_prepare = {k: kwargs[k] for k in known_kwargs if k in kwargs}
-    kw_rest = {k: kwargs[k] for k in kwargs if k not in kw_plot_prepare}
-
-    return kw_plot_prepare, kw_rest
+    return filter_kwargs_func(kwargs, plot_prepare)
 
 
 def get_ytick_position_in_ax_coordinate(ax, scale):
@@ -151,7 +155,7 @@ def get_ytick_position_in_ax_coordinate(ax, scale):
     elif scale == 'log':
         crd = np.vstack((np.zeros_like(raw_ticks), raw_ticks)).T
         ticks = ax.transAxes.inverted().transform(
-            ax.transData.transform(crd))[:,1]
+            ax.transData.transform(crd))[:, 1]
     else:
         raise ValueError('Unknown axis scale: {}'.format(scale))
 
