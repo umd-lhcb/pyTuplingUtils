@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon May 31, 2021 at 02:59 AM +0200
+# Last Change: Mon May 31, 2021 at 03:10 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -45,6 +45,19 @@ def decorate_output(f, tight_layout=True, pad=0.):
     return wrapper
 
 
+def decorate_ax_style(f, *args, **kwargs):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        kw_known, kw_rest = filter_kwargs_func(kwargs, f)
+
+        result = f(*args, **kw_known)
+        result.update(kw_rest)
+
+        return result
+
+    return wrapper
+
+
 ################
 # Plot helpers #
 ################
@@ -67,13 +80,14 @@ def tick_formatter_short(x, p):
         return x
 
 
-def ax_add_args_histo(label, color='blue', edgecolor=None):
+@decorate_ax_style
+def ax_add_args_histo(label, color='blue', edgecolor='none'):
     if not edgecolor:
         edgecolor = color
 
     return {
         'color': color,
-        'edgecolor': edgecolor,
+        'edgecolor': 'none',
         'label': label
     }
 
@@ -81,6 +95,7 @@ def ax_add_args_histo(label, color='blue', edgecolor=None):
 ax_add_args_simple = ax_add_args_histo  # For backward compatibility
 
 
+@decorate_ax_style
 def ax_add_args_errorbar(label, color, yerr=None, marker='o',
                          markeredgecolor='none', ls='none'):
     return {
@@ -93,6 +108,7 @@ def ax_add_args_errorbar(label, color, yerr=None, marker='o',
     }
 
 
+@decorate_ax_style
 def ax_add_args_step(label, color, where='mid'):
     return {
         'label': label,
@@ -103,7 +119,7 @@ def ax_add_args_step(label, color, where='mid'):
 
 def ax_add_args_default(num, mean, std, *args, **kwargs):
     return ax_add_args_simple(
-        'tot: {:.4g} mean {:.2g} std: {:.2g}'.format(
+        'tot: {:.4g} mean: {:.2g} std: {:.2g}'.format(
             num, mean, std
         ),
         *args, **kwargs)
