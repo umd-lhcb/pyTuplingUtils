@@ -2,12 +2,12 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu May 13, 2021 at 06:53 PM +0200
+# Last Change: Thu Jun 10, 2021 at 02:32 AM +0200
 
 import uproot
 
 from pyTuplingUtils.utils import extract_uid
-from pyTuplingUtils.parse import single_ntuple_parser_no_output
+from pyTuplingUtils.argparse import single_ntuple_parser_no_output
 
 
 def parse_input(descr='''
