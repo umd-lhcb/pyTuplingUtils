@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 01:37 AM +0200
+# Last Change: Sun Jun 13, 2021 at 01:42 AM +0200
 
 import uproot
 
@@ -49,6 +49,10 @@ def parse_input(descr='plot branches from ntuples.'):
                         default='Number of candidates',
                         help='specify y-axis label.')
 
+    parser.add_argument('--title',
+                        default=None,
+                        help='specify title.')
+
     parser.add_argument('-l', '--labels',
                         required=True,
                         action='append',
@@ -93,8 +97,10 @@ if __name__ == '__main__':
         xmin = xmax = 0
     else:
         xmin, xmax = args.x_data_range
-    if not args.y_data_range:
+    if not args.y_data_range and args.yscale == 'linear':
         ymin = ymax = 0
+    if not args.y_data_range and args.yscale == 'log':
+        ymin = ymax = 1
     else:
         ymin, ymax = args.y_data_range
 
@@ -137,7 +143,7 @@ if __name__ == '__main__':
                 figure, axis = plot_histo(
                     histo, bins, histo_args,
                     figure=figure, axis=axis,
-                    xlabel=args.xlabel, ylabel=args.ylabel,
+                    xlabel=args.xlabel, ylabel=args.ylabel, title=args.title,
                     yscale=args.yscale,
                     xlim=(xmin, xmax), ylim=(ymin, ymax), show_legend=False)
 
