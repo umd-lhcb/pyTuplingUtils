@@ -1,12 +1,13 @@
 {
   description = "Utilities for ntuples, such as plotting and simple debugging";
 
-  inputs = rec {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
-    flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    root-curated.url = "github:umd-lhcb/root-curated";
+    nixpkgs.follows = "root-curated/nixpkgs";
+    flake-utils.follows = "root-curated/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, root-curated }:
     {
       overlay = import ./nix/overlay.nix;
     }
