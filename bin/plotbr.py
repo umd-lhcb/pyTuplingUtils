@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 01:42 AM +0200
+# Last Change: Sun Jun 13, 2021 at 01:47 AM +0200
 
 import uproot
 
@@ -93,14 +93,13 @@ if __name__ == '__main__':
     figure = None
     axis = None
 
-    if not args.x_data_range:
-        xmin = xmax = 0
-    else:
-        xmin, xmax = args.x_data_range
-    if not args.y_data_range and args.yscale == 'linear':
-        ymin = ymax = 0
-    if not args.y_data_range and args.yscale == 'log':
-        ymin = ymax = 1
+    xmin, xmax = (0, 0) if not args.x_data_range else args.x_data_range
+
+    if not args.y_data_range:
+        if args.yscale == 'linear':
+            ymin = ymax = 0
+        if args.yscale == 'log':
+            ymin = ymax = 1
     else:
         ymin, ymax = args.y_data_range
 
@@ -122,6 +121,8 @@ if __name__ == '__main__':
                     br_name, clr, lbl))
 
             histo, bins = gen_histo(br, args.bins, data_range=args.x_data_range)
+            norm = br.size if args.normalize else 1
+            histo = histo / norm
 
             if not args.x_data_range:
                 if bins[0] < xmin:
