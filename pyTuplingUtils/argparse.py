@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sat Jun 12, 2021 at 06:26 PM +0200
+# Last Change: Sun Jun 13, 2021 at 12:36 AM +0200
 
 import sys
 from argparse import Action, ArgumentParser
@@ -89,17 +89,10 @@ def single_branch_parser_no_output(descr, parser=None):
 
     parser.add_argument('-n', '--ref',
                         required=True,
-                        action='append',
                         nargs='+',
-                        help='''
-paths to reference ntuples.''')
-
-    parser.add_argument('-t', '--ref-tree',
-                        required=True,
                         action='append',
-                        nargs='+',
                         help='''
-tree names for the reference ntuples.''')
+paths to reference ntuple-tree combos.''')
 
     parser.add_argument('-b', '--ref-branch',
                         required=True,
@@ -122,19 +115,11 @@ def diff_branch_parser_no_output(descr, parser=None):
 
     parser.add_argument('-N', '--comp',
                         required=True,
-                        action='append',
                         nargs='+',
                         help='''
-paths to comparison ntuples.''')
+paths to comparison ntuple-tree combos.''')
 
-    parser.add_argument('-T', '--comp-tree',
-                        required=True,
-                        action='append',
-                        nargs='+',
-                        help='''
-tree names for the comparison ntuples.''')
-
-    parser.add_argument('-b', '--comp-branch',
+    parser.add_argument('-B', '--comp-branch',
                         required=True,
                         action='append',
                         nargs='+',
@@ -142,3 +127,13 @@ tree names for the comparison ntuples.''')
 branch names in comparison trees.''')
 
     return parser
+
+
+###########
+# Helpers #
+###########
+
+def split_ntp_tree(ntp_tree):
+    ntp, tree = ntp_tree.split('.root/')
+    ntp += '.root'
+    return ntp, tree
