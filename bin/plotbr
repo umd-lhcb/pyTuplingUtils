@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 06:22 PM +0200
+# Last Change: Mon Jun 14, 2021 at 12:56 AM +0200
 
 import sys
 import uproot
@@ -102,10 +102,7 @@ if __name__ == '__main__':
     xmin, xmax = (0, 0) if not args.x_data_range else args.x_data_range
 
     if not args.y_data_range:
-        if args.yscale == 'linear':
-            ymin = ymax = 0
-        if args.yscale == 'log':
-            ymin = ymax = 1
+        ymin = ymax = 0 if args.yscale == 'linear' else 1
     else:
         ymin, ymax = args.y_data_range
 
@@ -150,14 +147,11 @@ if __name__ == '__main__':
             histo = histo / norm
 
             if not args.x_data_range:
-                if bins[0] < xmin:
-                    xmin = bins[0]
-                if bins[-1] > xmax:
-                    xmax = bins[-1]
+                xmin = bins[0] if bins[0] < xmin else xmin
+                xmax = bins[-1] if bins[-1] > xmax else xmax
 
             if not args.y_data_range:
-                if ymax < histo.max():
-                    ymax = 1.1*histo.max()
+                ymax = 1.1*histo.max() if ymax < histo.max() else ymax
 
             if args.debug:
                 print('    xmin: {}, xmax: {}'.format(xmin, xmax))

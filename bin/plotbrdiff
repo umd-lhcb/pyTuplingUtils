@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 10:32 PM +0200
+# Last Change: Mon Jun 14, 2021 at 12:58 AM +0200
 
 import sys
 import uproot
@@ -111,10 +111,7 @@ if __name__ == '__main__':
     xmin, xmax = (0, 0) if not args.x_data_range else args.x_data_range
 
     if not args.y_data_range:
-        if args.yscale == 'linear':
-            ymin = ymax = 0
-        if args.yscale == 'log':
-            ymin = ymax = 1
+        ymin = ymax = 0 if args.yscale == 'linear' else 1
     else:
         ymin, ymax = args.y_data_range
 
@@ -190,10 +187,10 @@ if __name__ == '__main__':
             ref_br = ref_br[ref_idx[ref_common_idx]]
             comp_br = comp_br[comp_idx[comp_common_idx]]
 
-            if args.debug and ref_cut:
+            if args.debug and ref_cut is not None:
                 print('    apply cuts: {} on: {}'.format(ref_cut, ref_br_name))
                 print('    after cuts: {}'.format(ref_br.size))
-            if args.debug and comp_cut:
+            if args.debug and comp_cut is not None:
                 print('    apply cuts: {} on: {}'.format(
                     comp_cut, comp_br_name))
                 print('    after cuts: {}'.format(comp_br.size))
