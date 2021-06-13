@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 05:26 PM +0200
+# Last Change: Sun Jun 13, 2021 at 05:42 PM +0200
 
 import sys
 import uproot
@@ -133,16 +133,18 @@ if __name__ == '__main__':
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
 
         for br_name, clr, lbl, cut in zip(branches, colors, labels, cuts):
+            br = cutter.eval(br_name)
+
             if args.debug:
                 print('  with branch: {}, color: {}, label: {}.'.format(
                     br_name, clr, lbl))
-
-            br = cutter.eval(br_name)
+                print('    number of candidates: {}'.format(br.size))
 
             if cut:
-                if args.debug:
-                    print('  > apply cuts: {} on: {}'.format(cut, br_name))
                 br = br[cutter.eval(cut)]
+                if args.debug:
+                    print('    apply cuts: {} on: {}'.format(cut, br_name))
+                    print('    after cuts: {}'.format(br.size))
 
             histo, bins = gen_histo(br, args.bins, data_range=args.x_data_range)
             norm = br.size if args.normalize else 1
@@ -159,8 +161,8 @@ if __name__ == '__main__':
                     ymax = 1.1*histo.max()
 
             if args.debug:
-                print('  > xmin: {}, xmax: {}'.format(xmin, xmax))
-                print('  > ymin: {}, ymax: {}'.format(ymin, ymax))
+                print('    xmin: {}, xmax: {}'.format(xmin, xmax))
+                print('    ymin: {}, ymax: {}'.format(ymin, ymax))
 
             if first_plot:
                 first_plot = False
