@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 02:39 AM +0200
+# Last Change: Sun Jun 13, 2021 at 02:44 AM +0200
 
 import sys
 import uproot
@@ -112,7 +112,7 @@ if __name__ == '__main__':
         ymin, ymax = args.y_data_range
 
     if not args.colors:
-        good_colors = ['cornflowerblue', 'black', 'darkgoldenrod', 'oliverab']
+        good_colors = ['cornflowerblue', 'black', 'crimson', 'darkgoldenrod']
         good_colors.reverse()
         try:
             args.colors = [[good_colors.pop() for _ in br]
