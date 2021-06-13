@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 06:33 PM +0200
+# Last Change: Sun Jun 13, 2021 at 10:32 PM +0200
 
 import sys
 import uproot
@@ -175,27 +175,12 @@ if __name__ == '__main__':
                 print('    before cuts, ref: {}'.format(ref_br.size))
                 print('    before cuts, comp: {}'.format(comp_br.size))
 
-            ref_cut_br = ref_cut  # Default to None
-            if ref_cut:
-                ref_cut_br = ref_cutter.eval(ref_cut)
-                ref_br = ref_br[ref_cut_br]
-                if args.debug:
-                    print('    apply cuts: {} on: {}'.format(
-                        ref_cut, ref_br_name))
-                    print('    after cuts: {}'.format(ref_br.size))
-
+            # Cut defaults to None
+            ref_cut_br = ref_cutter.eval(ref_cut) if ref_cut else ref_cut
             ref_uid, ref_idx, *_ = extract_uid(
                 ref_ntp, ref_tree, conditional=ref_cut_br)
 
-            comp_cut_br = comp_cut  # Same here
-            if comp_cut:
-                comp_cut_br = comp_cutter.eval(comp_cut)
-                comp_br = comp_br[comp_cut_br]
-                if args.debug:
-                    print('    apply cuts: {} on: {}'.format(
-                        comp_cut, comp_br_name))
-                    print('    after cuts: {}'.format(comp_br.size))
-
+            comp_cut_br = comp_cutter.eval(comp_cut) if comp_cut else comp_cut
             comp_uid, comp_idx, *_ = extract_uid(
                 comp_ntp, comp_tree, conditional=comp_cut_br)
 
@@ -204,6 +189,14 @@ if __name__ == '__main__':
                 ref_uid, comp_uid, assume_unique=True, return_indices=True)
             ref_br = ref_br[ref_idx[ref_common_idx]]
             comp_br = comp_br[comp_idx[comp_common_idx]]
+
+            if args.debug and ref_cut:
+                print('    apply cuts: {} on: {}'.format(ref_cut, ref_br_name))
+                print('    after cuts: {}'.format(ref_br.size))
+            if args.debug and comp_cut:
+                print('    apply cuts: {} on: {}'.format(
+                    comp_cut, comp_br_name))
+                print('    after cuts: {}'.format(comp_br.size))
 
             br = ref_br - comp_br
             if args.debug:
@@ -224,8 +217,8 @@ if __name__ == '__main__':
                     ymax = 1.1*histo.max()
 
             if args.debug:
-                print('  > xmin: {}, xmax: {}'.format(xmin, xmax))
-                print('  > ymin: {}, ymax: {}'.format(ymin, ymax))
+                print('    xmin: {}, xmax: {}'.format(xmin, xmax))
+                print('    ymin: {}, ymax: {}'.format(ymin, ymax))
 
             if first_plot:
                 first_plot = False
