@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 03:24 AM +0200
+# Last Change: Sun Jun 13, 2021 at 05:26 PM +0200
 
 import sys
 import uproot
@@ -127,8 +127,7 @@ if __name__ == '__main__':
     for ntp_tree, branches, colors, labels, cuts in zip(
             args.ref, args.ref_branch, args.colors, args.labels, args.cuts):
         ntp_name, tree = split_ntp_tree(ntp_tree)
-        ntp = uproot.open(ntp_name)
-        cutter = BooleanEvaluator(ntp, tree)
+        cutter = BooleanEvaluator(uproot.open(ntp_name), tree)
 
         if args.debug:
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
