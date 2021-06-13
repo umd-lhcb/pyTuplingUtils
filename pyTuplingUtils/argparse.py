@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 12:48 AM +0200
+# Last Change: Sun Jun 13, 2021 at 06:30 PM +0200
 
 import sys
 from argparse import Action, ArgumentParser
@@ -114,6 +114,7 @@ def diff_branch_parser_no_output(descr, parser=None):
 
     parser.add_argument('-N', '--comp',
                         required=True,
+                        action='append',
                         help='''
 paths to comparison ntuple-tree combos.''')
 

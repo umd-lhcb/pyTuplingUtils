@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 06:26 PM +0200
+# Last Change: Sun Jun 13, 2021 at 06:33 PM +0200
 
 import sys
 import uproot
@@ -152,7 +152,7 @@ if __name__ == '__main__':
             comp_cutter = ref_cutter
         else:
             comp_ntp_name, comp_tree = split_ntp_tree(comp_ntp_tree)
-            comp_ntp = uproot.open(comp_ntp_name, comp_tree)
+            comp_ntp = uproot.open(comp_ntp_name)
             comp_cutter = BooleanEvaluator(uproot.open(comp_ntp_name),
                                            comp_tree)
 
@@ -171,6 +171,9 @@ if __name__ == '__main__':
 
             ref_br = ref_cutter.eval(ref_br_name)
             comp_br = comp_cutter.eval(comp_br_name)
+            if args.debug:
+                print('    before cuts, ref: {}'.format(ref_br.size))
+                print('    before cuts, comp: {}'.format(comp_br.size))
 
             ref_cut_br = ref_cut  # Default to None
             if ref_cut:
