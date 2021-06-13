@@ -2,11 +2,10 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 05:42 PM +0200
+# Last Change: Sun Jun 13, 2021 at 06:22 PM +0200
 
 import sys
 import uproot
-
 import mplhep as hep
 import matplotlib.pyplot as plt
 
