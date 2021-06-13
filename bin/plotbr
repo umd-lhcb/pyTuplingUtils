@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 03:16 AM +0200
+# Last Change: Sun Jun 13, 2021 at 03:24 AM +0200
 
 import sys
 import uproot
@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 from pyTuplingUtils.argparse import (
     single_branch_parser_no_output, DataPairAction, split_ntp_tree)
 
-from pyTuplingUtils.io import read_branches_dict
 from pyTuplingUtils.utils import gen_histo
 from pyTuplingUtils.plot import plot_histo, plot_errorbar
 from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_errorbar
@@ -73,13 +72,6 @@ def parse_input(descr='plot branches from ntuples.'):
                         nargs='+',
                         help='specify optional cuts for each branch.')
 
-    parser.add_argument('--multipliers',
-                        default=None,
-                        type=float,
-                        action='append',
-                        nargs='+',
-                        help='specify optional multiplier for each branch.')
-
     parser.add_argument('--yscale',
                         nargs='?',
                         default='linear',
@@ -132,31 +124,21 @@ if __name__ == '__main__':
     if not args.cuts:
         args.cuts = [[None]*len(br) for br in args.ref_branch]
 
-    if not args.multipliers:
-        args.multipliers = [[1.]*len(br) for br in args.ref_branch]
-
-    for ntp_tree, branches, colors, labels, cuts, multipliers in zip(
-            args.ref, args.ref_branch, args.colors, args.labels, args.cuts,
-            args.multipliers):
+    for ntp_tree, branches, colors, labels, cuts in zip(
+            args.ref, args.ref_branch, args.colors, args.labels, args.cuts):
         ntp_name, tree = split_ntp_tree(ntp_tree)
         ntp = uproot.open(ntp_name)
-        loaded_branches_dict = read_branches_dict(ntp, tree, branches)
-        loaded_branches = loaded_branches_dict.values()
-
-        if cuts[0] is not None:
-            cutter = BooleanEvaluator(ntp, tree, loaded_branches_dict)
+        cutter = BooleanEvaluator(ntp, tree)
 
         if args.debug:
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
 
-        for br_name, br, clr, lbl, cut, mul in zip(
-                branches, loaded_branches, colors, labels, cuts, multipliers):
+        for br_name, clr, lbl, cut in zip(branches, colors, labels, cuts):
             if args.debug:
                 print('  with branch: {}, color: {}, label: {}.'.format(
                     br_name, clr, lbl))
-                print('  > apply a multiplier of: {}'.format(mul))
 
-            br = br*mul
+            br = cutter.eval(br_name)
 
             if cut:
                 if args.debug:
