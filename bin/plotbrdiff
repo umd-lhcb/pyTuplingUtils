@@ -1,0 +1,253 @@
+#!/usr/bin/env python3
+#
+# Author: Yipeng Sun
+# License: BSD 2-clause
+# Last Change: Sun Jun 13, 2021 at 06:26 PM +0200
+
+import sys
+import uproot
+import numpy as np
+import mplhep as hep
+import matplotlib.pyplot as plt
+
+from pyTuplingUtils.argparse import (
+    diff_branch_parser_no_output, DataPairAction, split_ntp_tree)
+
+from pyTuplingUtils.utils import gen_histo
+from pyTuplingUtils.utils import extract_uid
+from pyTuplingUtils.plot import plot_histo, plot_errorbar
+from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_errorbar
+from pyTuplingUtils.boolean.eval import BooleanEvaluator
+
+
+################################
+# Command line argument parser #
+################################
+
+def parse_input(
+        descr='plot differences between branches from ntuples, UID-matched.'):
+    parser = diff_branch_parser_no_output(descr)
+
+    parser.add_argument('-o', '--output',
+                        required=True,
+                        help='specify output file.')
+
+    parser.add_argument('-XD', '--x-data-range',
+                        nargs=2,
+                        action=DataPairAction,
+                        default=None,
+                        help='specify x-axis range.')
+
+    parser.add_argument('-YD', '--y-data-range',
+                        nargs=2,
+                        action=DataPairAction,
+                        default=None,
+                        help='specify y-axis range.')
+
+    parser.add_argument('-XL', '--xlabel',
+                        default=None,
+                        help='specify x-axis label.')
+
+    parser.add_argument('-YL', '--ylabel',
+                        default='Number of candidates',
+                        help='specify y-axis label.')
+
+    parser.add_argument('--title',
+                        default=None,
+                        help='specify title.')
+
+    parser.add_argument('-l', '--labels',
+                        required=True,
+                        action='append',
+                        nargs='+',
+                        help='specify plot legend labels.')
+
+    parser.add_argument('-c', '--colors',
+                        default=None,
+                        action='append',
+                        nargs='+',
+                        help='specify plot colors.')
+
+    parser.add_argument('--ref-cuts',
+                        default=None,
+                        action='append',
+                        nargs='+',
+                        help='specify optional cuts for each reference branch.')
+
+    parser.add_argument('--comp-cuts',
+                        default=None,
+                        action='append',
+                        nargs='+',
+                        help='specify optional cuts for each comparison branch.')
+
+    parser.add_argument('--yscale',
+                        nargs='?',
+                        default='linear',
+                        help='y axis scale (linear or log).')
+
+    parser.add_argument('--normalize',
+                        action='store_true',
+                        help='normalize plots to 1.')
+
+    parser.add_argument('--debug',
+                        action='store_true',
+                        help='enable debug mode.')
+
+    return parser.parse_args()
+
+
+########
+# Main #
+########
+
+if __name__ == '__main__':
+    args = parse_input()
+    hep.style.use('LHCb2')
+
+    first_plot = True
+    figure = None
+    axis = None
+
+    xmin, xmax = (0, 0) if not args.x_data_range else args.x_data_range
+
+    if not args.y_data_range:
+        if args.yscale == 'linear':
+            ymin = ymax = 0
+        if args.yscale == 'log':
+            ymin = ymax = 1
+    else:
+        ymin, ymax = args.y_data_range
+
+    if not args.colors:
+        good_colors = ['cornflowerblue', 'black', 'crimson', 'darkgoldenrod']
+        good_colors.reverse()
+        try:
+            args.colors = [[good_colors.pop() for _ in br]
+                           for br in args.ref_branch]
+            # NOTE: The size and shape between ref_branch and comp_branch should
+            #       be identical
+        except IndexError:
+            print('No color specified and we are running out of default colors.')
+            print('Please specify plot colors manually.')
+            sys.exit(255)
+
+    if not args.ref_cuts:
+        args.ref_cuts = [[None]*len(br) for br in args.ref_branch]
+    if not args.comp_cuts:
+        args.comp_cuts = [[None]*len(br) for br in args.comp_branch]
+
+    for ref_ntp_tree, ref_branches, comp_ntp_tree, comp_branches, \
+            ref_cuts, comp_cuts, colors, labels in zip(
+                args.ref, args.ref_branch,
+                args.comp, args.comp_branch,
+                args.ref_cuts, args.comp_cuts,
+                args.colors, args.labels):
+        ref_ntp_name, ref_tree = split_ntp_tree(ref_ntp_tree)
+        ref_ntp = uproot.open(ref_ntp_name)
+        ref_cutter = BooleanEvaluator(ref_ntp, ref_tree)
+
+        if comp_ntp_tree == ref_ntp_tree:
+            comp_ntp_name = ref_ntp_name
+            comp_ntp = ref_ntp
+            comp_cutter = ref_cutter
+        else:
+            comp_ntp_name, comp_tree = split_ntp_tree(comp_ntp_tree)
+            comp_ntp = uproot.open(comp_ntp_name, comp_tree)
+            comp_cutter = BooleanEvaluator(uproot.open(comp_ntp_name),
+                                           comp_tree)
+
+        if args.debug:
+            print('Working on reference: {}, tree: {}'.format(
+                ref_ntp_name, ref_tree))
+            print('Working on comparison: {}, tree: {}'.format(
+                comp_ntp_name, comp_tree))
+
+        for ref_br_name, comp_br_name, ref_cut, comp_cut, clr, lbl in zip(
+                ref_branches, comp_branches, ref_cuts, comp_cuts, colors,
+                labels):
+            if args.debug:
+                print('  with branch: {}-{}, color: {}, label: {}.'.format(
+                    ref_br_name, comp_br_name, clr, lbl))
+
+            ref_br = ref_cutter.eval(ref_br_name)
+            comp_br = comp_cutter.eval(comp_br_name)
+
+            ref_cut_br = ref_cut  # Default to None
+            if ref_cut:
+                ref_cut_br = ref_cutter.eval(ref_cut)
+                ref_br = ref_br[ref_cut_br]
+                if args.debug:
+                    print('    apply cuts: {} on: {}'.format(
+                        ref_cut, ref_br_name))
+                    print('    after cuts: {}'.format(ref_br.size))
+
+            ref_uid, ref_idx, *_ = extract_uid(
+                ref_ntp, ref_tree, conditional=ref_cut_br)
+
+            comp_cut_br = comp_cut  # Same here
+            if comp_cut:
+                comp_cut_br = comp_cutter.eval(comp_cut)
+                comp_br = comp_br[comp_cut_br]
+                if args.debug:
+                    print('    apply cuts: {} on: {}'.format(
+                        comp_cut, comp_br_name))
+                    print('    after cuts: {}'.format(comp_br.size))
+
+            comp_uid, comp_idx, *_ = extract_uid(
+                comp_ntp, comp_tree, conditional=comp_cut_br)
+
+            # Find common UIDs
+            _, ref_common_idx, comp_common_idx = np.intersect1d(
+                ref_uid, comp_uid, assume_unique=True, return_indices=True)
+            ref_br = ref_br[ref_idx[ref_common_idx]]
+            comp_br = comp_br[comp_idx[comp_common_idx]]
+
+            br = ref_br - comp_br
+            if args.debug:
+                print('   number of common candidates: {}'.format(br.size))
+
+            histo, bins = gen_histo(br, args.bins, data_range=args.x_data_range)
+            norm = br.size if args.normalize else 1
+            histo = histo / norm
+
+            if not args.x_data_range:
+                if bins[0] < xmin:
+                    xmin = bins[0]
+                if bins[-1] > xmax:
+                    xmax = bins[-1]
+
+            if not args.y_data_range:
+                if ymax < histo.max():
+                    ymax = 1.1*histo.max()
+
+            if args.debug:
+                print('  > xmin: {}, xmax: {}'.format(xmin, xmax))
+                print('  > ymin: {}, ymax: {}'.format(ymin, ymax))
+
+            if first_plot:
+                first_plot = False
+                histo_args = ax_add_args_histo(lbl, clr)
+                figure, axis = plot_histo(
+                    histo, bins, histo_args,
+                    figure=figure, axis=axis,
+                    xlabel=args.xlabel, ylabel=args.ylabel, title=args.title,
+                    yscale=args.yscale,
+                    xlim=(xmin, xmax), ylim=(ymin, ymax), show_legend=False)
+
+            else:
+                pts_args = ax_add_args_errorbar(
+                    lbl, clr, marker='+', markeredgecolor=clr,
+                    markeredgewidth=3)
+                figure, axis = plot_errorbar(
+                    bins, histo, pts_args,
+                    figure=figure, axis=axis,
+                    yscale=args.yscale,
+                    xlim=(xmin, xmax), ylim=(ymin, ymax), show_legend=False)
+
+    axis.legend()
+    plt.tight_layout(pad=0.)
+    figure.savefig(args.output)
+    plt.close(figure)
+
+    if args.debug:
+        print('Plot saved to: {}'.format(args.output))
