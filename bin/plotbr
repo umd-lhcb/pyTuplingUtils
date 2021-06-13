@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 02:44 AM +0200
+# Last Change: Sun Jun 13, 2021 at 02:57 AM +0200
 
 import sys
 import uproot
@@ -73,6 +73,13 @@ def parse_input(descr='plot branches from ntuples.'):
                         nargs='+',
                         help='specify optional cuts for each branch.')
 
+    parser.add_argument('--multipliers',
+                        default=None,
+                        type=float,
+                        action='append',
+                        nargs='+',
+                        help='specify optional multiplier for each branch.')
+
     parser.add_argument('--yscale',
                         nargs='?',
                         default='linear',
@@ -125,8 +132,12 @@ if __name__ == '__main__':
     if not args.cuts:
         args.cuts = [[None]*len(br) for br in args.ref_branch]
 
-    for ntp_tree, branches, colors, labels, cuts in zip(
-            args.ref, args.ref_branch, args.colors, args.labels, args.cuts):
+    if not args.multipliers:
+        args.multipliers = [[1.]*len(br) for br in args.ref_branch]
+
+    for ntp_tree, branches, colors, labels, cuts, multipliers in zip(
+            args.ref, args.ref_branch, args.colors, args.labels, args.cuts,
+            args.multipliers):
         ntp_name, tree = split_ntp_tree(ntp_tree)
         ntp = uproot.open(ntp_name)
         loaded_branches_dict = read_branches_dict(ntp, tree, branches)
@@ -138,11 +149,14 @@ if __name__ == '__main__':
         if args.debug:
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
 
-        for br_name, br, clr, lbl, cut in zip(
-                branches, loaded_branches, colors, labels, cuts):
+        for br_name, br, clr, lbl, cut, mul in zip(
+                branches, loaded_branches, colors, labels, cuts, multipliers):
             if args.debug:
                 print('  with branch: {}, color: {}, label: {}.'.format(
                     br_name, clr, lbl))
+                print('  > apply a multiplier of: {}'.format(mul))
+
+            br = br*mul
 
             if cut:
                 if args.debug:
