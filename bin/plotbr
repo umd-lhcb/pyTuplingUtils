@@ -2,8 +2,9 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 02:34 AM +0200
+# Last Change: Sun Jun 13, 2021 at 02:39 AM +0200
 
+import sys
 import uproot
 
 import mplhep as hep
@@ -111,7 +112,15 @@ if __name__ == '__main__':
         ymin, ymax = args.y_data_range
 
     if not args.colors:
-        args.colors = [['cornflowerblue', 'black', 'darkgoldenrod', 'oliverab']]
+        good_colors = ['cornflowerblue', 'black', 'darkgoldenrod', 'oliverab']
+        good_colors.reverse()
+        try:
+            args.colors = [[good_colors.pop() for _ in br]
+                           for br in args.ref_branch]
+        except IndexError:
+            print('No color specified and we are running out of default colors.')
+            print('Please specify plot colors manually.')
+            sys.exit(255)
 
     if not args.cuts:
         args.cuts = [[None]*len(br) for br in args.ref_branch]
