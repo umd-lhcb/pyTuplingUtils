@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 02:11 AM +0200
+# Last Change: Sun Jun 13, 2021 at 02:34 AM +0200
 
 import uproot
 
@@ -182,3 +182,6 @@ if __name__ == '__main__':
     plt.tight_layout(pad=0.)
     figure.savefig(args.output)
     plt.close(figure)
+
+    if args.debug:
+        print('Plot saved to: {}'.format(args.output))
