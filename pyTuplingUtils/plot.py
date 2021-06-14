@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 04:43 PM +0200
+# Last Change: Mon Jun 14, 2021 at 04:46 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -259,8 +259,11 @@ def plot_step(x, y, step_add_args,
               output=None, convert_x=True,
               **kwargs):
     if convert_x:
+        bin_widths = np.diff(x)
+        bin_width_l,  bin_width_r = bin_widths[0]/2, bin_widths[-1]/2
         x = convert_bins_to_central_pos(x)
-
+        x[0] = x[0] - bin_width_l
+        x[-1] = x[-1] + bin_width_r
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.step(x, y, **step_add_args)
