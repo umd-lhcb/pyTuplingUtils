@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 04:45 AM +0200
+# Last Change: Mon Jun 14, 2021 at 05:13 AM +0200
 
 import sys
 import uproot
@@ -162,15 +162,14 @@ if __name__ == '__main__':
                 #       variables (e.g. 'histo') to the lambda, they'll all
                 #       point to the last histo and all plots will be the same
                 plotters.append(
-                    lambda fig, ax, h=histo, b=bins, add=histo_args: plot_histo(
-                        h, b, add, figure=fig, axis=ax, show_legend=False))
+                    lambda fig, ax, b=bins, h=histo, add=histo_args: plot_histo(
+                        b, h, add, figure=fig, axis=ax, show_legend=False))
 
             else:
                 step_args = ax_add_args_step(lbl, clr, linewidth=3)
                 plotters.append(
-                    lambda fig, ax, h=histo, b=bins, add=step_args: plot_step(
-                        b, h, add,
-                        figure=fig, axis=ax, show_legend=False))
+                    lambda fig, ax, b=bins, h=histo, add=step_args: plot_step(
+                        b, h, add, figure=fig, axis=ax, show_legend=False))
 
     plot_top(plotters, output=args.output, title=args.title,
              xlim=(xmin, xmax), ylim=(ymin, ymax),

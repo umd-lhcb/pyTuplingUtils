@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:00 AM +0200
+# Last Change: Mon Jun 14, 2021 at 05:13 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -217,12 +217,12 @@ def plot_hexbin(x, y, gridsize, hexbin_add_args,
 
 
 @decorate_output
-def plot_histo(histo, bins, histo_add_args,
+def plot_histo(bins, histo, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short,
                **kwargs):
     fig, ax, legend = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
-    ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
-           **histo_add_args)
+    mid_bins = convert_bins_to_central_pos(bins)
+    ax.bar(mid_bins, histo, width=np.diff(bins), **histo_add_args)
 
     legend()
     return output, fig, ax
