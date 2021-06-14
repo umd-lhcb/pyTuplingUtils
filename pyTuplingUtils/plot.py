@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 04:24 PM +0200
+# Last Change: Mon Jun 14, 2021 at 04:43 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -34,13 +34,13 @@ def decorate_output(f, tight_layout=True, pad=0.):
 
         if not output:
             return data
-        else:
-            fig = data[0]
-            if tight_layout:
-                plt.tight_layout(pad=pad)
-            fig.savefig(output)
-            fig.clf()
-            plt.close(fig)
+
+        fig = data[0]
+        if tight_layout:
+            plt.tight_layout(pad=pad)
+        fig.savefig(output)
+        fig.clf()
+        plt.close(fig)
 
     return wrapper
 
@@ -66,8 +66,7 @@ def tick_formatter_short(x, p):
     X = str(x)
     if len(X) > 4:
         return '{:2g}'.format(x)
-    else:
-        return x
+    return x
 
 
 def plot_prepare(figure=None, axis=None, title=None,
@@ -201,11 +200,11 @@ def ax_add_args_step(label, color, where='mid'):
 
 
 @decorate_ax_style
-def ax_add_args_fill(color, alpha=0.5, ls='none'):
+def ax_add_args_fill(color, alpha=0.5, linewidth=0.):
     return {
         'color': color,
         'alpha': alpha,
-        'ls': ls
+        'linewidth': linewidth
     }
 
 
@@ -261,6 +260,7 @@ def plot_step(x, y, step_add_args,
               **kwargs):
     if convert_x:
         x = convert_bins_to_central_pos(x)
+
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.step(x, y, **step_add_args)
@@ -322,6 +322,8 @@ def plot_top_bot(top_plotters, bot_plotters,
 
     if ax1_ylabel:
         ax1.set_ylabel(ax1_ylabel)
+    if title:
+        ax1.set_title(title)
 
     ax2 = fig.add_subplot(spec[1, 0], sharex=ax1)
     ax2.set_yscale(ax2_yscale)
@@ -355,35 +357,3 @@ def plot_top_bot(top_plotters, bot_plotters,
     fig.align_ylabels()
 
     return fig, ax1, ax2
-
-
-def plot_top_errorbar_bot_errorbar(x1, y1, x2, y2, x_ratio, y_ratio,
-                                   errorbar1_add_args, errorbar2_add_args,
-                                   output,
-                                   ratio_add_args=ax_add_args_errorbar(
-                                       'Ratio', 'black'),
-                                   hline_pos=None,
-                                   **kwargs):
-    top_plotters = [
-        lambda fig, ax, **kw: plot_errorbar(
-            x1, y1, errorbar1_add_args,
-            figure=fig, axis=ax, show_legend=False, **kw),
-        lambda fig, ax, **kw: plot_errorbar(
-            x2, y2, errorbar2_add_args,
-            figure=fig, axis=ax, show_legend=False, **kw)
-    ]
-
-    bot_plotters = [
-        lambda fig, ax, **kw: plot_errorbar(
-            x_ratio, y_ratio, ratio_add_args,
-            figure=fig, axis=ax, show_legend=False, **kw)
-    ]
-
-    fig, _, ax2 = plot_top_bot(top_plotters, bot_plotters)
-
-    # Add a horizontal line
-    if not hline_pos:
-        hline_pos = y_ratio[y_ratio != 0].mean()
-    ax2.axhline(hline_pos, color='gray')
-
-    fig.savefig(output)
