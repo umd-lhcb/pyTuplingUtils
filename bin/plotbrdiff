@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:25 AM +0200
+# Last Change: Mon Jun 14, 2021 at 05:29 AM +0200
 
 import sys
 import uproot
@@ -194,7 +194,7 @@ if __name__ == '__main__':
 
             br = ref_br - comp_br
             if args.debug:
-                print('   number of common candidates: {}'.format(br.size))
+                print('    number of common candidates: {}'.format(br.size))
 
             histo, bins = gen_histo(br, args.bins, data_range=args.x_data_range)
             norm = br.size if args.normalize else 1
