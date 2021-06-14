@@ -9,6 +9,7 @@ script:
     - export VERSION=$(git describe --tags --abbrev=0)
     - sed -i "s/0.0.1/${VERSION}/" ./pyTuplingUtils/__init__.py
     - make unittest
+    - make integrationtest
 
 after_success:
     - codecov
