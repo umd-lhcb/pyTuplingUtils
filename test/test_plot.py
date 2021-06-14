@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon May 31, 2021 at 03:12 AM +0200
+# Last Change: Mon Jun 14, 2021 at 03:35 AM +0200
 
 import unittest
 
@@ -25,13 +25,6 @@ class FilterKwargsFuncTest(unittest.TestCase):
 
 
 class AxStyleTest(unittest.TestCase):
-    def test_ax_default(self):
-        assert ptu.plot.ax_add_args_default(1, 2, 3) == {
-            'label': 'tot: 1 mean: 2 std: 3',
-            'color': 'blue',
-            'edgecolor': 'none'
-        }
-
     def test_ax_errorbar_all_known_kw(self):
         assert ptu.plot.ax_add_args_errorbar('a', 'black', marker='x') == {
             'label': 'a',
