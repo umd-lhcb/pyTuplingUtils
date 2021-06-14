@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 03:40 AM +0200
+# Last Change: Mon Jun 14, 2021 at 04:09 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -146,9 +146,11 @@ def plot_prepare(figure=None, axis=None, title=None,
         ax.set_ylim(ylim)
 
     if show_legend:
-        ax.legend(**legend_add_args)
+        legend = lambda: ax.legend(**legend_add_args)
+    else:
+        legend = lambda: True
 
-    return fig, ax
+    return fig, ax, legend
 
 
 def get_ytick_position_in_ax_coordinate(ax, scale):
@@ -205,7 +207,7 @@ def convert_bins_to_central_pos(bins):
 def plot_hexbin(x, y, gridsize, hexbin_add_args,
                 output=None, cmap='inferno', bins='log', colorbar_label=None,
                 **kwargs):
-    fig, ax = plot_prepare(**kwargs)
+    fig, ax, legend = plot_prepare(**kwargs)
     hb = ax.hexbin(x, y,
                    gridsize=gridsize, cmap=cmap, bins=bins, **hexbin_add_args)
     cb = fig.colorbar(hb, ax=ax)
@@ -213,6 +215,7 @@ def plot_hexbin(x, y, gridsize, hexbin_add_args,
     if colorbar_label:
         cb.set_label(colorbar_label)
 
+    legend()
     return output, fig, ax
 
 
@@ -220,10 +223,11 @@ def plot_hexbin(x, y, gridsize, hexbin_add_args,
 def plot_histo(histo, bins, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short,
                **kwargs):
-    fig, ax = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
+    fig, ax, legend = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
     ax.bar(bins[:-1], histo, width=np.diff(bins), align='edge',
            **histo_add_args)
 
+    legend()
     return output, fig, ax
 
 
@@ -234,9 +238,10 @@ def plot_errorbar(x, y, errorbar_add_args,
     if convert_x:
         x = convert_bins_to_central_pos(x)
 
-    fig, ax = plot_prepare(**kwargs)
+    fig, ax, legend = plot_prepare(**kwargs)
     ax.errorbar(x, y, **errorbar_add_args)
 
+    legend()
     return output, fig, ax
 
 
@@ -247,9 +252,10 @@ def plot_step(x, y, step_add_args,
     if convert_x:
         x = convert_bins_to_central_pos(x)
 
-    fig, ax = plot_prepare(**kwargs)
+    fig, ax, legend = plot_prepare(**kwargs)
     ax.step(x, y, **step_add_args)
 
+    legend()
     return output, fig, ax
 
 
@@ -261,11 +267,12 @@ def plot_step(x, y, step_add_args,
 def plot_top(top_plotters,
              output=None,
              **kwargs):
-    fig, ax = plot_prepare(**kwargs)
+    fig, ax, legend = plot_prepare(**kwargs)
 
     for p in top_plotters:
         p(fig, ax)
 
+    legend()
     return output, fig, ax
 
 

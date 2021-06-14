@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 03:49 AM +0200
+# Last Change: Mon Jun 14, 2021 at 04:45 AM +0200
 
 import sys
 import uproot
@@ -13,8 +13,8 @@ from pyTuplingUtils.argparse import (
     single_branch_parser_no_output, DataPairAction, split_ntp_tree)
 
 from pyTuplingUtils.utils import gen_histo
-from pyTuplingUtils.plot import plot_top, plot_histo, plot_errorbar
-from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_errorbar
+from pyTuplingUtils.plot import plot_top, plot_histo, plot_step
+from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_step
 from pyTuplingUtils.boolean.eval import BooleanEvaluator
 
 
@@ -158,18 +158,18 @@ if __name__ == '__main__':
             if first_plot:
                 first_plot = False
                 histo_args = ax_add_args_histo(lbl, clr)
+                # NOTE: Closure binds late, so if we don't bind these temp
+                #       variables (e.g. 'histo') to the lambda, they'll all
+                #       point to the last histo and all plots will be the same
                 plotters.append(
-                    lambda fig, ax: plot_histo(
-                        histo, bins, histo_args,
-                        figure=fig, axis=ax, show_legend=False))
+                    lambda fig, ax, h=histo, b=bins, add=histo_args: plot_histo(
+                        h, b, add, figure=fig, axis=ax, show_legend=False))
 
             else:
-                pts_args = ax_add_args_errorbar(
-                    lbl, clr, marker='+', markeredgecolor=clr,
-                    markeredgewidth=3)
+                step_args = ax_add_args_step(lbl, clr, linewidth=3)
                 plotters.append(
-                    lambda fig, ax: plot_errorbar(
-                        bins, histo, pts_args,
+                    lambda fig, ax, h=histo, b=bins, add=step_args: plot_step(
+                        b, h, add,
                         figure=fig, axis=ax, show_legend=False))
 
     plot_top(plotters, output=args.output, title=args.title,
