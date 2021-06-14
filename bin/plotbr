@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:21 AM +0200
+# Last Change: Mon Jun 14, 2021 at 06:11 PM +0200
 
 import sys
 import uproot
@@ -139,9 +139,9 @@ if __name__ == '__main__':
                     print('    apply cuts: {} on: {}'.format(cut, br_name))
                     print('    after cuts: {}'.format(br.size))
 
-            histo, bins = gen_histo(br, args.bins, data_range=args.x_data_range)
-            norm = br.size if args.normalize else 1
-            histo = histo / norm
+            histo, bins = gen_histo(
+                br, args.bins, data_range=args.x_data_range,
+                density=args.normalize)
 
             if not args.x_data_range:
                 xmin = bins[0] if bins[0] < xmin else xmin
@@ -165,7 +165,7 @@ if __name__ == '__main__':
                         b, h, add, figure=fig, axis=ax, show_legend=False))
 
             else:
-                step_args = ax_add_args_step(lbl, clr, linewidth=3)
+                step_args = ax_add_args_step(lbl, clr)
                 plotters.append(
                     lambda fig, ax, b=bins, h=histo, add=step_args: plot_step(
                         b, h, add, figure=fig, axis=ax, show_legend=False))
