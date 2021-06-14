@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 04:09 AM +0200
+# Last Change: Mon Jun 14, 2021 at 05:00 AM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -80,9 +80,6 @@ def ax_add_args_histo(label, color='blue', edgecolor='none'):
         'edgecolor': 'none',
         'label': label
     }
-
-
-ax_add_args_simple = ax_add_args_histo  # For backward compatibility
 
 
 @decorate_ax_style
