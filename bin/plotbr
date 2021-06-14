@@ -2,12 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:13 AM +0200
+# Last Change: Mon Jun 14, 2021 at 05:21 AM +0200
 
 import sys
 import uproot
 import mplhep as hep
-import matplotlib.pyplot as plt
 
 from pyTuplingUtils.argparse import (
     single_branch_parser_no_output, DataPairAction, split_ntp_tree)
