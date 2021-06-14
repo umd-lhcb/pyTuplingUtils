@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:48 PM +0200
+# Last Change: Mon Jun 14, 2021 at 06:04 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -200,11 +200,12 @@ def ax_add_args_step(label, color, where='post'):
 
 
 @decorate_ax_style
-def ax_add_args_fill(color, alpha=0.5, linewidth=0.):
+def ax_add_args_fill(color, alpha=0.5, linewidth=0., step='post'):
     return {
         'color': color,
         'alpha': alpha,
-        'linewidth': linewidth
+        'linewidth': linewidth,
+        'step': step
     }
 
 
@@ -269,13 +270,14 @@ def plot_step(x, y, step_add_args,
 
 @decorate_output
 def plot_fill(x, y_range, fill_add_args,
-              output=None, convert_x=True,
+              output=None,
               **kwargs):
-    if convert_x:
-        x = convert_bins_to_central_pos(x)
+    ymin, ymax = y_range
+    ymin = np.append(ymin, ymin[-1])
+    ymax = np.append(ymax, ymax[-1])
 
     fig, ax, legend = plot_prepare(**kwargs)
-    ax.fill_between(x, *y_range, **fill_add_args)
+    ax.fill_between(x, ymin, ymax, **fill_add_args)
 
     legend()
     return output, fig, ax
@@ -297,10 +299,6 @@ def plot_top(top_plotters,
     legend()
     return output, fig, ax
 
-
-##############
-# Grid plots #
-##############
 
 def plot_top_bot(top_plotters, bot_plotters,
                  title=None,
