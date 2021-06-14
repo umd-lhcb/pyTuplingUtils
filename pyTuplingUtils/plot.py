@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 05:13 AM +0200
+# Last Change: Mon Jun 14, 2021 at 04:24 PM +0200
 
 import numpy as np
 import matplotlib as mp
@@ -68,40 +68,6 @@ def tick_formatter_short(x, p):
         return '{:2g}'.format(x)
     else:
         return x
-
-
-@decorate_ax_style
-def ax_add_args_histo(label, color='blue', edgecolor='none'):
-    if not edgecolor:
-        edgecolor = color
-
-    return {
-        'color': color,
-        'edgecolor': 'none',
-        'label': label
-    }
-
-
-@decorate_ax_style
-def ax_add_args_errorbar(label, color, yerr=None, marker='o',
-                         markeredgecolor='none', ls='none'):
-    return {
-        'label': label,
-        'ls': ls,
-        'color': color,
-        'marker': marker,
-        'markeredgecolor': markeredgecolor,
-        'yerr': yerr
-    }
-
-
-@decorate_ax_style
-def ax_add_args_step(label, color, where='mid'):
-    return {
-        'label': label,
-        'color': color,
-        'where': where
-    }
 
 
 def plot_prepare(figure=None, axis=None, title=None,
@@ -196,6 +162,53 @@ def convert_bins_to_central_pos(bins):
     return bins[:-1] + (np.diff(bins)/2)
 
 
+######################
+# Plot style helpers #
+######################
+
+@decorate_ax_style
+def ax_add_args_histo(label, color='blue', edgecolor='none'):
+    if not edgecolor:
+        edgecolor = color
+
+    return {
+        'color': color,
+        'edgecolor': 'none',
+        'label': label
+    }
+
+
+@decorate_ax_style
+def ax_add_args_errorbar(label, color, yerr=None, marker='o',
+                         markeredgecolor='none', ls='none'):
+    return {
+        'label': label,
+        'ls': ls,
+        'color': color,
+        'marker': marker,
+        'markeredgecolor': markeredgecolor,
+        'yerr': yerr
+    }
+
+
+@decorate_ax_style
+def ax_add_args_step(label, color, where='mid'):
+    return {
+        'label': label,
+        'color': color,
+        'where': where
+    }
+
+
+@decorate_ax_style
+def ax_add_args_fill(color, alpha=0.5, ls='none'):
+    return {
+        'color': color,
+        'alpha': alpha,
+        'ls': ls
+    }
+
+
 ################
 # Simple plots #
 ################
@@ -251,6 +264,20 @@ def plot_step(x, y, step_add_args,
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.step(x, y, **step_add_args)
+
+    legend()
+    return output, fig, ax
+
+
+@decorate_output
+def plot_fill(x, y_range, fill_add_args,
+              output=None, convert_x=True,
+              **kwargs):
+    if convert_x:
+        x = convert_bins_to_central_pos(x)
+
+    fig, ax, legend = plot_prepare(**kwargs)
+    ax.fill_between(x, *y_range, **fill_add_args)
 
     legend()
     return output, fig, ax
