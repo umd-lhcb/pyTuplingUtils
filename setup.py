@@ -1,6 +1,6 @@
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jul 29, 2021 at 02:36 AM +0200
+# Last Change: Thu Jul 29, 2021 at 02:39 AM +0200
 
 import setuptools
 import codecs
@@ -46,8 +46,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/umd-lhcb/pyTuplingUtils',
     packages=setuptools.find_packages(),
-    scripts=['bin/uidcommon', 'bin/uiddump', 'bin/tabgen.py',
-             'bin/plotbr', 'bin/plotbrdiff'],
+    scripts=['bin/uidcommon', 'bin/uiddump', 'bin/plotbr', 'bin/plotbrdiff'],
     include_package_data=True,
     install_requires=[
         'uproot',
