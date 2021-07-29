@@ -2,26 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu May 13, 2021 at 06:41 PM +0200
+# Last Change: Thu Jul 29, 2021 at 02:36 AM +0200
 
 import numpy as np
-import tabulate as tabl
 
-from functools import partial
 from .io import read_branches
-
-
-# Disable LaTeX character escaping
-tabl._table_formats["latex_booktabs_raw"] = tabl.TableFormat(
-    lineabove=partial(tabl._latex_line_begin_tabular, booktabs=True),
-    linebelowheader=tabl.Line("\\midrule", "", "", ""),
-    linebetweenrows=None,
-    linebelow=tabl.Line("\\bottomrule\n\\end{tabular}", "", "", ""),
-    headerrow=partial(tabl._latex_row, escrules={}),
-    datarow=partial(tabl._latex_row, escrules={}),
-    padding=1,
-    with_header_hide=None,
-)
 
 
 # Find total number of events (unique events) out of total number of candidates.
