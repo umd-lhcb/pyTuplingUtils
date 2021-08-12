@@ -22,6 +22,10 @@
         pythonPackages = python.pkgs;
       in
       {
+        packages = flake-utils.lib.flattenTree {
+          pyTuplingUtils = pythonPackages.pyTuplingUtils;
+        };
+
         devShell = pkgs.mkShell rec {
           name = "pyTuplingUtils-dev";
           buildInputs = with pythonPackages; [

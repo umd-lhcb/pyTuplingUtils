@@ -1,0 +1,61 @@
+diff --git a/setup.cfg b/setup.cfg
+index aed7890..a49a6b8 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -10,7 +10,7 @@ maintainer_email = scikit-hep-admins@googlegroups.com
+ license = MIT License
+ description = Matplotlib styles for HEP
+ url = https://github.com/scikit-hep/mplhep
+-classifiers = 
++classifiers =
+ 	Intended Audience :: Science/Research
+ 	License :: OSI Approved :: MIT License
+ 	Framework :: Matplotlib
+@@ -23,12 +23,11 @@ classifiers =
+ [options]
+ zip_safe = False
+ python_requires = >=3.7
+-package_dir = 
++package_dir =
+ 	=src
+ packages = find:
+ include_package_data = True
+-install_requires = 
+-	mplhep_data
++install_requires =
+ 	matplotlib>=3.4
+ 	numpy>=1.16.0
+ 	packaging
+@@ -58,6 +57,5 @@ profile = black
+ multi_line_output = 3
+ 
+ [egg_info]
+-tag_build = 
++tag_build =
+ tag_date = 0
+-
+diff --git a/src/mplhep/__init__.py b/src/mplhep/__init__.py
+index 663cf4c..c48679e 100644
+--- a/src/mplhep/__init__.py
++++ b/src/mplhep/__init__.py
+@@ -2,9 +2,6 @@ from __future__ import annotations
+ 
+ import os
+ 
+-import matplotlib.font_manager as fm
+-import mplhep_data
+-
+ # Get styles directly, also available within experiment helpers.
+ # Get helper functions
+ from . import alice, atlas, cms, label, lhcb, plot
+@@ -49,10 +46,6 @@ with open(os.path.join(_base_dir, ".VERSION")) as version_file:
+     __version__ = version_file.read().strip()
+ 
+ path = os.path.abspath(__file__)
+-font_path = os.path.join(os.path.dirname(mplhep_data.__file__), "fonts")
+-font_files = fm.findSystemFonts(fontpaths=font_path)
+-for font in font_files:
+-    fm.fontManager.addfont(font)
+ 
+ 
+ # Log submodules

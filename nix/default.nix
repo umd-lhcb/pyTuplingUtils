@@ -5,7 +5,7 @@
 , numpy
 , matplotlib
 , lark-parser
-, tabulate
+, mplhep
 }:
 
 buildPythonPackage rec {
@@ -14,7 +14,6 @@ buildPythonPackage rec {
 
   src = builtins.path { path = ./..; name = pname; };
 
-  buildInputs = [ root ];
   propagatedBuildInputs = [
     uproot
     lz4

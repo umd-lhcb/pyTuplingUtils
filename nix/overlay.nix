@@ -11,5 +11,7 @@ let
 in
 pythonPackageOverlay
   (final: prev: {
-    pyTuplingUtils = prev.callPackage ./default.nix { };
+    pyTuplingUtils = final.callPackage ./default.nix { };
+    mplhep = final.callPackage ./mplhep { };
+    uhi = final.callPackage ./uhi { };
   }) "python3"
