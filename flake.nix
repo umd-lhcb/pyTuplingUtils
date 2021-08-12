@@ -16,7 +16,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ self.overlay ];
+          overlays = [ self.overlay root-curated.overlay ];
         };
         python = pkgs.python3;
         pythonPackages = python.pkgs;

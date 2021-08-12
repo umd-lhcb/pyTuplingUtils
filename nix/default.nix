@@ -10,7 +10,7 @@
 
 buildPythonPackage rec {
   pname = "pyTuplingUtils";
-  version = "0.2.7";
+  version = "0.2.10";
 
   src = builtins.path { path = ./..; name = pname; };
 
@@ -20,7 +20,7 @@ buildPythonPackage rec {
     lz4
     matplotlib
     lark-parser
-    tabulate
+    mplhep
   ];
 
   doCheck = false;

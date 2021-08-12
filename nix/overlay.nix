@@ -1,15 +1,15 @@
 let
-  pythonPackageOverlay = overlay: attr: self: super: {
-    ${attr} = self.lib.fix (py:
-      super.${attr}.override (old: {
+  pythonPackageOverlay = overlay: attr: final: prev: {
+    ${attr} = final.lib.fix (py:
+      prev.${attr}.override (old: {
         self = py;
-        packageOverrides = self.lib.composeExtensions
+        packageOverrides = final.lib.composeExtensions
           (old.packageOverrides or (_: _: { }))
           overlay;
       }));
   };
 in
 pythonPackageOverlay
-  (self: super: {
-    pyTuplingUtils = super.callPackage ./default.nix { };
+  (final: prev: {
+    pyTuplingUtils = prev.callPackage ./default.nix { };
   }) "python3"
