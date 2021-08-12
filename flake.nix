@@ -23,7 +23,7 @@
       in
       {
         packages = flake-utils.lib.flattenTree {
-          pyTuplingUtils = pythonPackages.pyTuplingUtils;
+          pyTuplingUtilsDev = pythonPackages.pyTuplingUtils;
         };
 
         devShell = pkgs.mkShell rec {

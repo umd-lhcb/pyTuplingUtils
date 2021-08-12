@@ -1,5 +1,6 @@
 { stdenv
 , buildPythonPackage
+, setuptools
 , uproot
 , lz4
 , numpy
@@ -19,6 +20,7 @@ buildPythonPackage rec {
   '';
 
   propagatedBuildInputs = [
+    setuptools
     uproot
     lz4
     matplotlib
