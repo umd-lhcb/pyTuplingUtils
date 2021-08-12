@@ -2,11 +2,12 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 06:11 PM +0200
+# Last Change: Fri Aug 13, 2021 at 12:52 AM +0200
 
 import sys
 import uproot
 import mplhep as hep
+import numpy as np
 
 from pyTuplingUtils.argparse import (
     single_branch_parser_no_output, DataPairAction, split_ntp_tree)
@@ -70,6 +71,12 @@ def parse_input(descr='plot branches from ntuples.'):
                         nargs='+',
                         help='specify optional cuts for each branch.')
 
+    parser.add_argument('--weights',
+                        default=None,
+                        action='append',
+                        nargs='+',
+                        help='specify optional weight for each branch.')
+
     parser.add_argument('--yscale',
                         nargs='?',
                         default='linear',
@@ -117,15 +124,20 @@ if __name__ == '__main__':
     if not args.cuts:
         args.cuts = [[None]*len(br) for br in args.ref_branch]
 
-    for ntp_tree, branches, colors, labels, cuts in zip(
-            args.ref, args.ref_branch, args.colors, args.labels, args.cuts):
+    if not args.weights:
+        args.weights = [[None]*len(br) for br in args.ref_branch]
+
+    for ntp_tree, branches, colors, labels, cuts, weights in \
+            zip(args.ref, args.ref_branch, args.colors, args.labels,
+                args.cuts, args.weights):
         ntp_name, tree = split_ntp_tree(ntp_tree)
         cutter = BooleanEvaluator(uproot.open(ntp_name), tree)
 
         if args.debug:
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
 
-        for br_name, clr, lbl, cut in zip(branches, colors, labels, cuts):
+        for br_name, clr, lbl, cut, weight in \
+                zip(branches, colors, labels, cuts, weights):
             br = cutter.eval(br_name)
 
             if args.debug:
@@ -133,15 +145,25 @@ if __name__ == '__main__':
                     br_name, clr, lbl))
                 print('    number of candidates: {}'.format(br.size))
 
+            if weight is None or weight == 'None':
+                br_wt = np.ones(br.size)
+            else:
+                br_wt = cutter.eval(weight)
+                if args.debug:
+                    print('    apply weights: {} on: {}'.format(
+                        weight, br_name))
+                    print('    total sum of weights: {}'.format(np.sum(br_wt)))
+
             if cut:
                 br = br[cutter.eval(cut)]
+                br_wt = br_wt[cutter.eval(cut)]
                 if args.debug:
                     print('    apply cuts: {} on: {}'.format(cut, br_name))
                     print('    after cuts: {}'.format(br.size))
 
             histo, bins = gen_histo(
                 br, args.bins, data_range=args.x_data_range,
-                density=args.normalize)
+                density=args.normalize, weights=br_wt.astype(np.double))
 
             if not args.x_data_range:
                 xmin = bins[0] if bins[0] < xmin else xmin
