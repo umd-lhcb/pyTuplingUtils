@@ -1,3 +1,5 @@
+# NOTE: Older versions of nix have a problem regarding the 'follows' sematics.
+#       Don't use this flake inside another flake that will used by a third flake!
 {
   description = "Utilities for ntuples, such as plotting and simple debugging";
 
