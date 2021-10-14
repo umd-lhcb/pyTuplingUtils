@@ -2,12 +2,13 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 14, 2021 at 05:30 PM +0200
+# Last Change: Thu Oct 14, 2021 at 05:39 PM +0200
 
 import uproot
 
 from pyTuplingUtils.utils import extract_uid
 from pyTuplingUtils.argparse import single_ntuple_parser_no_output
+from pyTuplingUtils.boolean.eval import BooleanEvaluator
 
 
 def parse_input(descr='''
@@ -35,9 +36,14 @@ if __name__ == '__main__':
     args = parse_input().parse_args()
     ntp = uproot.open(args.ref)
 
+    if args.cuts:
+        exe = BooleanEvaluator(ntp, args.ref_tree)
+        cond = exe.eval(args.cuts)
+    else:
+        cond = True
+
     _, _, num_of_evt, num_of_ids, num_of_dupl_ids, num_of_evt_w_dupl_id = \
-        extract_uid(ntp, args.ref_tree, args.runNumber, args.eventNumber,
-                    args.cuts)
+        extract_uid(ntp, args.ref_tree, args.runNumber, args.eventNumber, cond)
     print('Num of events: {}, Num of IDs: {}, Num of UIDs: {}'.format(
         num_of_evt, num_of_ids, num_of_ids-num_of_dupl_ids))
     print('Num of duplicated IDs: {}, Num of duplicated events: {}, duplicate rate: {:.2f}%'.format(
