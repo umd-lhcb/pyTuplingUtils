@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 10, 2021 at 02:32 AM +0200
+# Last Change: Thu Oct 14, 2021 at 05:30 PM +0200
 
 import uproot
 
@@ -18,14 +18,15 @@ dump runNumber-eventNumber id for all events, and count number of unique events.
     parser.add_argument('--runNumber',
                         nargs='?',
                         default='runNumber',
-                        help='''
-branch name contains runNumber.''')
+                        help='branch name contains runNumber.')
 
     parser.add_argument('--eventNumber',
                         nargs='?',
                         default='eventNumber',
-                        help='''
-branch name contains eventNumber.''')
+                        help='branch name contains eventNumber.')
+
+    parser.add_argument('-c', '--cuts', default=None,
+                        help='specify optional cuts.')
 
     return parser
 
@@ -35,7 +36,8 @@ if __name__ == '__main__':
     ntp = uproot.open(args.ref)
 
     _, _, num_of_evt, num_of_ids, num_of_dupl_ids, num_of_evt_w_dupl_id = \
-        extract_uid(ntp, args.ref_tree, args.runNumber, args.eventNumber)
+        extract_uid(ntp, args.ref_tree, args.runNumber, args.eventNumber,
+                    args.cuts)
     print('Num of events: {}, Num of IDs: {}, Num of UIDs: {}'.format(
         num_of_evt, num_of_ids, num_of_ids-num_of_dupl_ids))
     print('Num of duplicated IDs: {}, Num of duplicated events: {}, duplicate rate: {:.2f}%'.format(
