@@ -1,6 +1,6 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 06:12 PM +0200
+# Last Change: Tue Oct 26, 2021 at 01:58 AM +0200
 
 .PHONY: sdist install install-egg clean \
 	unittest unittest-local integrationtest
@@ -9,7 +9,7 @@ sdist:
 	@python ./setup.py sdist
 
 install:
-	@pip install . --force-reinstall
+	@pip install .
 
 install-egg:
 	@python ./setup.py install
