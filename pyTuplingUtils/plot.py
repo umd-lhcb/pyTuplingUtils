@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Nov 22, 2021 at 06:31 PM +0100
+# Last Change: Mon Nov 22, 2021 at 06:33 PM +0100
 
 import numpy as np
 import matplotlib as mp
@@ -210,10 +210,11 @@ def ax_add_args_fill(color, alpha=0.5, linewidth=0., step='post'):
 
 
 @decorate_ax_style
-def ax_add_args_hlines(color, linestyles='solid'):
+def ax_add_args_hlines(label, color, linestyles='solid'):
     return {
+        'label': label,
         'colors': color,
-        'linestyles': linestyles,
+        'linestyles': linestyles
     }
 
 
