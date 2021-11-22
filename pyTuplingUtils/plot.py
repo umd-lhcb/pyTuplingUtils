@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 06:04 PM +0200
+# Last Change: Mon Nov 22, 2021 at 06:31 PM +0100
 
 import numpy as np
 import matplotlib as mp
@@ -209,6 +209,14 @@ def ax_add_args_fill(color, alpha=0.5, linewidth=0., step='post'):
     }
 
 
+@decorate_ax_style
+def ax_add_args_hlines(color, linestyles='solid'):
+    return {
+        'colors': color,
+        'linestyles': linestyles,
+    }
+
+
 ################
 # Simple plots #
 ################
@@ -278,6 +286,20 @@ def plot_fill(x, y_range, fill_add_args,
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.fill_between(x, ymin, ymax, **fill_add_args)
+
+    legend()
+    return output, fig, ax
+
+
+@decorate_output
+def plot_hlines(x, y, hlines_add_args,
+                output=None,
+                **kwargs):
+    xmin = x[:-1]
+    xmax = x[1:]
+
+    fig, ax, legend = plot_prepare(**kwargs)
+    ax.hlines(y, xmin, xmax, **hlines_add_args)
 
     legend()
     return output, fig, ax
