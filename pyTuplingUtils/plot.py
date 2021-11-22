@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Nov 22, 2021 at 06:33 PM +0100
+# Last Change: Mon Nov 22, 2021 at 06:40 PM +0100
 
 import numpy as np
 import matplotlib as mp
@@ -313,13 +313,14 @@ def plot_hlines(x, y, hlines_add_args,
 @decorate_output
 def plot_top(top_plotters,
              output=None,
+             legend_add_args={'numpoints': 1, 'loc': 'best'},
              **kwargs):
-    fig, ax, legend = plot_prepare(**kwargs)
+    fig, ax, _ = plot_prepare(**kwargs)
 
     for p in top_plotters:
         p(fig, ax)
 
-    legend()
+    ax.legend(**legend_add_args)
     return output, fig, ax
 
 
