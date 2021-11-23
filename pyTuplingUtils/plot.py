@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Nov 22, 2021 at 06:40 PM +0100
+# Last Change: Tue Nov 23, 2021 at 03:51 AM +0100
 
 import numpy as np
 import matplotlib as mp
@@ -218,6 +218,9 @@ def ax_add_args_hlines(label, color, linestyles='solid'):
     }
 
 
+ax_add_args_vlines = ax_add_args_hlines
+
+
 ################
 # Simple plots #
 ################
@@ -301,6 +304,23 @@ def plot_hlines(x, y, hlines_add_args,
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.hlines(y, xmin, xmax, **hlines_add_args)
+
+    legend()
+    return output, fig, ax
+
+
+@decorate_output
+def plot_vlines(x, y, vlines_add_args,
+                output=None, convert_x=True,
+                **kwargs):
+    if convert_x:
+        x = convert_bins_to_central_pos(x)
+
+    ymin = y[0]
+    ymax = y[1]
+
+    fig, ax, legend = plot_prepare(**kwargs)
+    ax.vlines(x, ymin, ymax, **vlines_add_args)
 
     legend()
     return output, fig, ax
