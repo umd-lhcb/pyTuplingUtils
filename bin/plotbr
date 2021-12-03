@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Aug 13, 2021 at 12:52 AM +0200
+# Last Change: Fri Dec 03, 2021 at 01:00 AM +0100
 
 import sys
 import uproot
@@ -192,8 +192,13 @@ if __name__ == '__main__':
                     lambda fig, ax, b=bins, h=histo, add=step_args: plot_step(
                         b, h, add, figure=fig, axis=ax, show_legend=False))
 
+    if not args.y_data_range and args.yscale == 'log':
+        ylim = None
+    else:
+        ylim = (ymin, ymax)
+
     plot_top(plotters, output=args.output, title=args.title,
-             xlim=(xmin, xmax), ylim=(ymin, ymax),
+             xlim=(xmin, xmax), ylim=ylim,
              xlabel=args.xlabel, ylabel=args.ylabel, yscale=args.yscale)
 
     if args.debug:
