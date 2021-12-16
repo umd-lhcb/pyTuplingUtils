@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Dec 16, 2021 at 04:42 PM +0100
+# Last Change: Thu Dec 16, 2021 at 04:57 PM +0100
 
 import numpy as np
 import matplotlib as mp
@@ -222,29 +222,13 @@ ax_add_args_vlines = ax_add_args_hlines
 
 
 @decorate_ax_style
-def ax_add_args_hist2d(bins=None):
-    return {'bins': bins}
+def ax_add_args_hist2d(bins=None, cmap='YlOrRd'):
+    return {'bins': bins, 'cmap': cmap}
 
 
 ################
 # Simple plots #
 ################
-
-@decorate_output
-def plot_hexbin(x, y, gridsize, hexbin_add_args,
-                output=None, cmap='inferno', bins='log', colorbar_label=None,
-                **kwargs):
-    fig, ax, legend = plot_prepare(**kwargs)
-    color_mesh = ax.hexbin(
-        x, y, gridsize=gridsize, cmap=cmap, bins=bins, **hexbin_add_args)
-    cb = fig.colorbar(color_mesh, ax=ax)
-
-    if colorbar_label:
-        cb.set_label(colorbar_label)
-
-    legend()
-    return output, fig, ax
-
 
 @decorate_output
 def plot_histo(bins, histo, histo_add_args,
@@ -326,6 +310,25 @@ def plot_vlines(x, y, vlines_add_args,
 
     fig, ax, legend = plot_prepare(**kwargs)
     ax.vlines(x, ymin, ymax, **vlines_add_args)
+
+    legend()
+    return output, fig, ax
+
+
+############
+# 2D plots #
+############
+
+@decorate_output
+def plot_hexbin(x, y, hexbin_add_args,
+                output=None, colorbar_label=None,
+                **kwargs):
+    fig, ax, legend = plot_prepare(**kwargs)
+    color_mesh = ax.hexbin(x, y,  **hexbin_add_args)
+    cb = fig.colorbar(color_mesh, ax=ax)
+
+    if colorbar_label:
+        cb.set_label(colorbar_label)
 
     legend()
     return output, fig, ax
