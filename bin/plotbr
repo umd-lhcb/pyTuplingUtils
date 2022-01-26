@@ -2,25 +2,39 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Dec 03, 2021 at 01:00 AM +0100
+# Last Change: Wed Jan 26, 2022 at 04:43 PM -0500
 
 import sys
 import uproot
 import mplhep as hep
 import numpy as np
 
+from argparse import Action
+
 from pyTuplingUtils.argparse import (
     single_branch_parser_no_output, DataPairAction, split_ntp_tree)
 
 from pyTuplingUtils.utils import gen_histo
-from pyTuplingUtils.plot import plot_top, plot_histo, plot_step
-from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_step
+from pyTuplingUtils.plot import plot_top, plot_histo, plot_step, plot_vlines
+from pyTuplingUtils.plot import ax_add_args_histo, ax_add_args_step, \
+    ax_add_args_vlines
 from pyTuplingUtils.boolean.eval import BooleanEvaluator
 
 
 ################################
 # Command line argument parser #
 ################################
+
+class VlineAction(Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        vlines = []
+        for vl in values:
+            x, ymin, ymax, color = vl.split(',')
+            vlines.append({'x': float(x), 'ymin': float(ymin),
+                           'ymax': float(ymax), 'color': color})
+
+        setattr(namespace, self.dest, vlines)
+
 
 def parse_input(descr='plot branches from ntuples.'):
     parser = single_branch_parser_no_output(descr)
@@ -90,6 +104,12 @@ def parse_input(descr='plot branches from ntuples.'):
                         action='store_true',
                         help='enable debug mode.')
 
+    parser.add_argument('--vlines',
+                        nargs='+',
+                        default=[],
+                        action=VlineAction,
+                        help='specify optional vertical lines.')
+
     return parser.parse_args()
 
 
@@ -103,6 +123,17 @@ if __name__ == '__main__':
 
     first_plot = True
     plotters = []
+
+    # Add vertical lines if defined
+    for vl in args.vlines:
+        vline_add_args = plotters.append(
+            lambda fig, ax, x=vl['x'], y=(vl['ymin'], vl['ymax']),
+            add=ax_add_args_vlines(
+                color=vl['color'], linestyles='dashed', linewidth=2,
+                label='_nolegend_'):
+            plot_vlines(x, y, add, figure=fig, axis=ax, show_legend=False,
+                        convert_x=False)
+        )
 
     xmin, xmax = (0, 0) if not args.x_data_range else args.x_data_range
     if not args.y_data_range:

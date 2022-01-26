@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun Jun 13, 2021 at 06:30 PM +0200
+# Last Change: Wed Jan 26, 2022 at 03:08 PM -0500
 
 import sys
 from argparse import Action, ArgumentParser
@@ -16,6 +16,7 @@ class DataRangeAction(Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if values is None:
             setattr(namespace, self.dest, [])
+            return
 
         if len(values) % 2 != 0:
             print('Odd number of min, max pairs!')
