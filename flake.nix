@@ -32,11 +32,8 @@
           name = "pyTuplingUtils-dev";
           buildInputs = with pythonPackages; [
             # Dev tools
-            jedi
-            flake8
-            pylint
             virtualenvwrapper
-
+            pylint
             # Pinned Python dependencies
             numpy
           ];
