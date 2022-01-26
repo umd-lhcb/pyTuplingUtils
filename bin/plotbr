@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jan 26, 2022 at 04:43 PM -0500
+# Last Change: Wed Jan 26, 2022 at 04:49 PM -0500
 
 import sys
 import uproot
@@ -29,9 +29,11 @@ class VlineAction(Action):
     def __call__(self, parser, namespace, values, option_string=None):
         vlines = []
         for vl in values:
-            x, ymin, ymax, color = vl.split(',')
+            x, ymin, ymax, color, *args = vl.split(',')
+
+            lbl = '_nolegend_' if not args else args[0]
             vlines.append({'x': float(x), 'ymin': float(ymin),
-                           'ymax': float(ymax), 'color': color})
+                           'ymax': float(ymax), 'color': color, 'lbl': lbl})
 
         setattr(namespace, self.dest, vlines)
 
@@ -130,7 +132,7 @@ if __name__ == '__main__':
             lambda fig, ax, x=vl['x'], y=(vl['ymin'], vl['ymax']),
             add=ax_add_args_vlines(
                 color=vl['color'], linestyles='dashed', linewidth=2,
-                label='_nolegend_'):
+                label=vl['lbl']):
             plot_vlines(x, y, add, figure=fig, axis=ax, show_legend=False,
                         convert_x=False)
         )
