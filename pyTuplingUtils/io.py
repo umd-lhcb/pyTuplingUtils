@@ -2,25 +2,28 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Sun May 09, 2021 at 02:52 AM +0200
+# Last Change: Wed Feb 16, 2022 at 01:02 PM -0500
 
 import numpy as np
+
+from uproot import concatenate
 
 ARRAY_TYPE = 'np'
 
 
 def read_branch(ntp, tree, branch, idx=None):
-    data = ntp[tree][branch].array(library=ARRAY_TYPE)
+    data = list(
+        concatenate(f'{ntp}:{tree}', branch, library=ARRAY_TYPE).values())[0]
 
     return data if not idx else data[idx]
 
 
 def read_branches_dict(ntp, tree, branches):
-    return ntp[tree].arrays(branches, library=ARRAY_TYPE)
+    return concatenate(f'{ntp}:{tree}', branches, library=ARRAY_TYPE)
 
 
 def read_branches(ntp, tree, branches, idx=None, transpose=False):
-    data = list(ntp[tree].arrays(branches, library=ARRAY_TYPE).values())
+    data = list(read_branches_dict(ntp, tree, branches).values())
 
     if idx is not None:
         data = [d[idx] for d in data]
