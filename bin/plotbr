@@ -2,10 +2,9 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jan 26, 2022 at 04:49 PM -0500
+# Last Change: Wed Feb 16, 2022 at 03:31 PM -0500
 
 import sys
-import uproot
 import mplhep as hep
 import numpy as np
 
@@ -164,7 +163,7 @@ if __name__ == '__main__':
             zip(args.ref, args.ref_branch, args.colors, args.labels,
                 args.cuts, args.weights):
         ntp_name, tree = split_ntp_tree(ntp_tree)
-        cutter = BooleanEvaluator(uproot.open(ntp_name), tree)
+        cutter = BooleanEvaluator(ntp_name, tree)
 
         if args.debug:
             print('Working on: {}, tree: {}'.format(ntp_name, tree))
