@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Dec 16, 2021 at 04:57 PM +0100
+# Last Change: Wed Feb 16, 2022 at 12:53 PM -0500
 
 import numpy as np
 import matplotlib as mp
@@ -235,8 +235,7 @@ def plot_histo(bins, histo, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short,
                **kwargs):
     fig, ax, legend = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
-    mid_bins = convert_bins_to_central_pos(bins)
-    ax.bar(mid_bins, histo, width=np.diff(bins), **histo_add_args)
+    ax.stairs(histo, bins, fill=True, **histo_add_args)
 
     legend()
     return output, fig, ax
