@@ -2,10 +2,9 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon May 31, 2021 at 02:55 AM +0200
+# Last Change: Wed Feb 16, 2022 at 04:16 PM -0500
 
 import unittest
-import uproot
 import os.path as osp
 import numpy as np
 
@@ -17,7 +16,7 @@ rb = ptu.io.read_branch
 
 
 class ArithmeticTest(unittest.TestCase):
-    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
+    ntp = osp.join(pwd, '../samples/sample.root')
     tree = 'TupleB0/DecayTree'
     known_symb = {
         'pi': 3.14,
@@ -76,7 +75,7 @@ class ArithmeticTest(unittest.TestCase):
 
 
 class BooleanTest(unittest.TestCase):
-    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
+    ntp = osp.join(pwd, '../samples/sample.root')
     tree = 'TupleB0/DecayTree'
     exe = evaluator(ntp, tree)
 
@@ -129,7 +128,7 @@ class BooleanTest(unittest.TestCase):
 
 
 class FunctionCallTest(unittest.TestCase):
-    ntp = uproot.open(osp.join(pwd, '../samples/sample.root'))
+    ntp = osp.join(pwd, '../samples/sample.root')
     tree = 'TupleB0/DecayTree'
     exe = evaluator(ntp, tree)
 

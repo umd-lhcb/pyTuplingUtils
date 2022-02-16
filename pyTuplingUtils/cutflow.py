@@ -2,9 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon May 24, 2021 at 10:06 PM +0200
-
-import uproot
+# Last Change: Wed Feb 16, 2022 at 04:15 PM -0500
 
 from dataclasses import dataclass
 from typing import Union, Optional
@@ -42,7 +40,7 @@ class CutflowGen:
         self.rules = self.strip_multiline_str(rules)
         self.init_num = init_num
 
-        self.ntp = uproot.open(ntp_path)
+        self.ntp = ntp_path
         self.tree = tree
         self.exe = BooleanEvaluator(self.ntp, tree, **kwargs)
 

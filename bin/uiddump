@@ -2,9 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Oct 14, 2021 at 05:39 PM +0200
-
-import uproot
+# Last Change: Wed Feb 16, 2022 at 04:13 PM -0500
 
 from pyTuplingUtils.utils import extract_uid
 from pyTuplingUtils.argparse import single_ntuple_parser_no_output
@@ -34,7 +32,7 @@ dump runNumber-eventNumber id for all events, and count number of unique events.
 
 if __name__ == '__main__':
     args = parse_input().parse_args()
-    ntp = uproot.open(args.ref)
+    ntp = args.ref
 
     if args.cuts:
         exe = BooleanEvaluator(ntp, args.ref_tree)

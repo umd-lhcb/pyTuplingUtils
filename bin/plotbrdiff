@@ -2,10 +2,9 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 14, 2021 at 06:11 PM +0200
+# Last Change: Wed Feb 16, 2022 at 04:15 PM -0500
 
 import sys
-import uproot
 import numpy as np
 import mplhep as hep
 
@@ -137,7 +136,7 @@ if __name__ == '__main__':
                 args.ref_cuts, args.comp_cuts,
                 args.colors, args.labels):
         ref_ntp_name, ref_tree = split_ntp_tree(ref_ntp_tree)
-        ref_ntp = uproot.open(ref_ntp_name)
+        ref_ntp = ref_ntp_name
         ref_cutter = BooleanEvaluator(ref_ntp, ref_tree)
 
         if comp_ntp_tree == ref_ntp_tree:
@@ -146,9 +145,8 @@ if __name__ == '__main__':
             comp_cutter = ref_cutter
         else:
             comp_ntp_name, comp_tree = split_ntp_tree(comp_ntp_tree)
-            comp_ntp = uproot.open(comp_ntp_name)
-            comp_cutter = BooleanEvaluator(uproot.open(comp_ntp_name),
-                                           comp_tree)
+            comp_ntp = comp_ntp_name
+            comp_cutter = BooleanEvaluator(comp_ntp, comp_tree)
 
         if args.debug:
             print('Working on reference: {}, tree: {}'.format(

@@ -2,9 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jun 10, 2021 at 02:32 AM +0200
-
-import uproot
+# Last Change: Wed Feb 16, 2022 at 04:16 PM -0500
 
 from pyTuplingUtils.utils import find_common_uid
 from pyTuplingUtils.argparse import double_ntuple_parser_no_output
@@ -33,8 +31,8 @@ branch name contains eventNumber.''')
 
 if __name__ == '__main__':
     args = parse_input().parse_args()
-    ntp1 = uproot.open(args.ref)
-    ntp2 = uproot.open(args.comp)
+    ntp1 = args.ref
+    ntp2 = args.comp
 
     uid_comm, idx1, idx2 = find_common_uid(
         ntp1, ntp2, args.ref_tree, args.comp_tree,
