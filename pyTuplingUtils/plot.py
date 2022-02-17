@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Feb 16, 2022 at 12:53 PM -0500
+# Last Change: Thu Feb 17, 2022 at 02:33 PM -0500
 
 import numpy as np
 import matplotlib as mp
@@ -25,7 +25,7 @@ def filter_kwargs_func(kwargs, func):
     return kw_known, kw_rest
 
 
-def decorate_output(f, tight_layout=True, pad=0.):
+def decorate_output(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         result = f(*args, **kwargs)
@@ -36,8 +36,6 @@ def decorate_output(f, tight_layout=True, pad=0.):
             return data
 
         fig = data[0]
-        if tight_layout:
-            plt.tight_layout(pad=pad)
         fig.savefig(output)
         fig.clf()
         plt.close(fig)
@@ -75,8 +73,10 @@ def plot_prepare(figure=None, axis=None, title=None,
                  xlim=None, ylim=None,
                  xscale='linear', yscale='linear',
                  show_legend=True,
-                 legend_add_args={'numpoints': 1, 'loc': 'best'}):
+                 legend_add_args={'numpoints': 1, 'loc': 'best'},
+                 tight_layout={'pad': 0.0}):
     fig = plt.figure() if not figure else figure
+    fig.set_tight_layout(tight_layout)
 
     if not axis:
         ax = fig.add_subplot()
@@ -373,8 +373,7 @@ def plot_top_bot(top_plotters, bot_plotters,
                  height_ratios=[3, 1],
                  legend_add_args={'numpoints': 1, 'loc': 'best'},
                  **kwargs):
-    fig = plt.figure()
-    fig.set_tight_layout({'pad': 0.})
+    fig, _, _ = plot_prepare(axis=None, **kwargs)
 
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
     spec.update(hspace=0.)
