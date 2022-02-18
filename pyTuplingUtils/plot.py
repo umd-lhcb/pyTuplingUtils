@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3/
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Feb 17, 2022 at 02:33 PM -0500
+# Last Change: Fri Feb 18, 2022 at 05:36 PM -0500
 
 import numpy as np
 import matplotlib as mp
@@ -372,8 +372,10 @@ def plot_top_bot(top_plotters, bot_plotters,
                  ax1_yscale='linear', ax2_yscale='linear',
                  height_ratios=[3, 1],
                  legend_add_args={'numpoints': 1, 'loc': 'best'},
+                 tight_layout={'pad': 0.0},
                  **kwargs):
-    fig, _, _ = plot_prepare(axis=None, **kwargs)
+    fig = plt.figure()
+    fig.set_tight_layout(tight_layout)
 
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
     spec.update(hspace=0.)
