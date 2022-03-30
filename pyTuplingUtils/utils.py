@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jul 29, 2021 at 02:36 AM +0200
+# Last Change: Wed Mar 30, 2022 at 12:47 PM -0400
 
 import numpy as np
 
@@ -59,3 +59,10 @@ def gen_histo(array, bins=200, scale=1.05, data_range=None, **kwargs):
         return np.histogram(array, bins, (data_min, data_max), **kwargs)
 
     return np.histogram(array, bins, data_range, **kwargs)
+
+
+def gen_histo_stacked_baseline(histos):
+    result = [np.zeros(histos[0].size)]
+    for idx in range(0, len(histos)-1):
+        result.append(result[idx]+histos[idx])
+    return result
