@@ -51,14 +51,15 @@ def make_data(values, errors, precision):
     return data.tolist()
 
 
-def print_cell_range(lower, upper):
-    return f'{lower}\n{upper}'
+def print_cell_range(lower, upper, precision=2):
+    return '{0:,.{1}f}'.format(lower, precision) + '\n' + '{0:,.{1}f}'.format(
+        upper, precision)
 
 
 def print_2d(values, errors, xbins, ybins,
-             tablefmt='simple', precision=4, no_headers=False):
-    header = ['x / y'] + [print_cell_range(i, j)
-                          for i, j in zip(ybins[:-1], ybins[1:])]
+             tablefmt='simple', precision=4, no_headers=False, legend='x / y'):
+    header = [legend] + [print_cell_range(i, j)
+                         for i, j in zip(ybins[:-1], ybins[1:])]
     index = [print_cell_range(i, j) for i, j in zip(xbins[:-1], xbins[1:])]
     data = make_data(values, errors, precision)
 
@@ -96,13 +97,17 @@ if __name__ == '__main__':
                  args.tablefmt, args.precision, args.no_headers)
 
     elif len(binning) == 3:
-        for v, e, z_low, z_high in \
-                zip(values, errors, binning[2][:-1], binning[2][1:]):
+        for v, e, low, high in \
+                zip(values, errors,
+                    binning[0][:-1], binning[0][1:]):
             if not args.no_headers:
-                print(f'## z ∈ [{z_low}, {z_high})')
+                print()
+                print(f'## x ∈ [{low}, {high})')
             print()
-            print_2d(v, e, binning[0], binning[1],
-                     args.tablefmt, args.precision, args.no_headers)
+            print_2d(v, e, binning[1], binning[2],
+                     args.tablefmt, args.precision, args.no_headers,
+                     legend='y / z')
+            print()
 
     else:
         print(f'{len(binning)}D histogram not supported!')
