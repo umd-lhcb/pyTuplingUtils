@@ -93,8 +93,10 @@ if __name__ == '__main__':
         print('1D histogram not supported!')
 
     elif len(binning) == 2:
+        print()
         print_2d(values, errors, binning[0], binning[1],
                  args.tablefmt, args.precision, args.no_headers)
+        print()
 
     elif len(binning) == 3:
         for v, e, low, high in \
