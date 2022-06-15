@@ -7,11 +7,12 @@
 , matplotlib
 , lark-parser
 , mplhep
+, tabulate
 }:
 
 buildPythonPackage rec {
   pname = "pyTuplingUtils";
-  version = "0.2.10";
+  version = "0.3.2.2";
 
   src = builtins.path { path = ./..; name = pname; };
 
@@ -26,6 +27,7 @@ buildPythonPackage rec {
     matplotlib
     lark-parser
     mplhep
+    tabulate
   ];
 
   doCheck = false;

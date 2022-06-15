@@ -1,17 +1,10 @@
-let
-  pythonPackageOverlay = overlay: attr: final: prev: {
-    ${attr} = final.lib.fix (py:
-      prev.${attr}.override (old: {
-        self = py;
-        packageOverrides = final.lib.composeExtensions
-          (old.packageOverrides or (_: _: { }))
-          overlay;
-      }));
-  };
-in
-pythonPackageOverlay
-  (final: prev: {
-    pyTuplingUtils = final.callPackage ./default.nix { };
-    mplhep = final.callPackage ./mplhep { };
-    uhi = final.callPackage ./uhi { };
-  }) "python3"
+final: prev:
+
+{
+  pythonOverrides = prev.lib.composeExtensions prev.pythonOverrides (finalPy: prevPy: {
+    pyTuplingUtils = finalPy.callPackage ./default.nix { };
+    mplhep = finalPy.callPackage ./mplhep { };
+    uhi = finalPy.callPackage ./uhi { };
+  });
+  python3 = prev.python3.override { packageOverrides = final.pythonOverrides; };
+}

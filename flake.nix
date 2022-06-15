@@ -18,14 +18,14 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ self.overlay root-curated.overlay ];
+          overlays = [ root-curated.overlay self.overlay ];
         };
         python = pkgs.python3;
         pythonPackages = python.pkgs;
       in
       {
         packages = flake-utils.lib.flattenTree {
-          pyTuplingUtilsDev = pythonPackages.pyTuplingUtils;
+          pyTuplingUtils = python.withPackages (p: with p; [ pyTuplingUtils ]);
         };
 
         devShell = pkgs.mkShell rec {
@@ -35,7 +35,12 @@
             virtualenvwrapper
             pylint
             # Pinned Python dependencies
-            numpy
+            uproot
+            lz4
+            matplotlib
+            lark-parser
+            mplhep
+            tabulate
           ];
 
           shellHook = ''
