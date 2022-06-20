@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 20, 2022 at 03:07 AM -0400
+# Last Change: Mon Jun 20, 2022 at 05:39 PM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -167,12 +167,9 @@ def convert_bins_to_central_pos(bins):
 
 @decorate_ax_style
 def ax_add_args_histo(label, color='blue', edgecolor='none'):
-    if not edgecolor:
-        edgecolor = color
-
     return {
         'color': color,
-        'edgecolor': 'none',
+        'edgecolor': edgecolor,
         'label': label
     }
 
