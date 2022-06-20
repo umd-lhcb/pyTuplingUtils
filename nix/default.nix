@@ -12,7 +12,7 @@
 
 buildPythonPackage rec {
   pname = "pyTuplingUtils";
-  version = "0.3.2.2";
+  version = "0.3.3";
 
   src = builtins.path { path = ./..; name = pname; };
 

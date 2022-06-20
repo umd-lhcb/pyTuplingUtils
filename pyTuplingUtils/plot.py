@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Feb 18, 2022 at 05:36 PM -0500
+# Last Change: Mon Jun 20, 2022 at 03:07 AM -0400
 
 import numpy as np
 import matplotlib as mp
@@ -233,9 +233,10 @@ def ax_add_args_hist2d(bins=None, cmap='YlOrRd'):
 @decorate_output
 def plot_histo(bins, histo, histo_add_args,
                output=None, xtick_formatter=tick_formatter_short,
+               fill=True,
                **kwargs):
     fig, ax, legend = plot_prepare(xtick_formatter=xtick_formatter, **kwargs)
-    ax.stairs(histo, bins, fill=True, **histo_add_args)
+    ax.stairs(histo, bins, fill=fill, **histo_add_args)
 
     legend()
     return output, fig, ax
