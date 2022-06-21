@@ -2,10 +2,11 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Feb 16, 2022 at 01:24 PM -0500
+# Last Change: Tue Jun 21, 2022 at 02:06 PM -0400
 
 import numpy as np
 
+from collections.abc import Iterable
 from uproot import concatenate
 
 ARRAY_TYPE = 'np'
@@ -14,7 +15,7 @@ ARRAY_TYPE = 'np'
 def regulate_input(ntp, tree):
     if isinstance(ntp, str):
         return f'{ntp}:{tree}'
-    if isinstance(ntp, list):
+    if isinstance(ntp, Iterable):
         return [regulate_input(i, tree) for i in ntp]
     return ntp[tree]
 
