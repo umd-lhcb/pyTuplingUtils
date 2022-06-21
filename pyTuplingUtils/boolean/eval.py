@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Wed Jun 24, 2020 at 09:08 PM +0800
+# Last Change: Tue Jun 21, 2022 at 02:01 PM -0400
 
 from lark import Transformer, v_args
 
@@ -13,10 +13,7 @@ from pyTuplingUtils.boolean.const import KNOWN_SYMB, KNOWN_FUNC
 
 
 class TransForTupling(Transformer):
-    def __init__(self, ntp, tree,
-                 known_symb=KNOWN_SYMB, known_func=KNOWN_FUNC):
-        self.ntp = ntp
-        self.tree = tree
+    def __init__(self, known_symb=KNOWN_SYMB, known_func=KNOWN_FUNC):
         self.cache = {}
         self.cache.update(known_symb)
         self.known_symb = known_symb
@@ -130,9 +127,11 @@ class TransForTupling(Transformer):
 
 
 class BooleanEvaluator(object):
-    def __init__(self, *args, transformer=TransForTupling, **kwargs):
+    def __init__(self, ntp, tree, transformer=TransForTupling, **kwargs):
         self.parser = boolean_parser.parse
-        self.transformer = transformer(*args, **kwargs)
+        self.ntp = ntp
+        self.tree = tree
+        self.transformer = transformer(**kwargs)
 
     def parse(self, s):
         return self.parser(s)
@@ -145,6 +144,6 @@ class BooleanEvaluator(object):
                         if str(n.children[0]) not in
                         self.transformer.known_symb.keys()]
         self.transformer.cache.update(read_branches_dict(
-            self.transformer.ntp, self.transformer.tree, vars_to_load))
+            self.ntp, self.tree, vars_to_load))
 
         return self.transformer.transform(tree)
