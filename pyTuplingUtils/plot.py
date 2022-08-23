@@ -2,14 +2,14 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Mon Jun 20, 2022 at 05:39 PM -0400
+# Last Change: Tue Aug 23, 2022 at 04:54 AM -0400
 
 import numpy as np
 import matplotlib as mp
-import matplotlib.pyplot as plt
 
 from functools import wraps
 from inspect import getfullargspec
+from matplotlib.figure import Figure
 
 
 ###################
@@ -37,8 +37,6 @@ def decorate_output(f):
 
         fig = data[0]
         fig.savefig(output)
-        fig.clf()
-        plt.close(fig)
 
     return wrapper
 
@@ -75,7 +73,7 @@ def plot_prepare(figure=None, axis=None, title=None,
                  show_legend=True,
                  legend_add_args={'numpoints': 1, 'loc': 'best'},
                  tight_layout={'pad': 0.0}):
-    fig = plt.figure() if not figure else figure
+    fig = Figure() if not figure else figure
     fig.set_tight_layout(tight_layout)
 
     if not axis:
@@ -372,7 +370,7 @@ def plot_top_bot(top_plotters, bot_plotters,
                  legend_add_args={'numpoints': 1, 'loc': 'best'},
                  tight_layout={'pad': 0.0},
                  **kwargs):
-    fig = plt.figure()
+    fig = Figure()
     fig.set_tight_layout(tight_layout)
 
     spec = fig.add_gridspec(ncols=1, nrows=2, height_ratios=height_ratios)
