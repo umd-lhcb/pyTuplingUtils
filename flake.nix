@@ -32,35 +32,10 @@
           name = "pyTuplingUtils-dev";
           buildInputs = with pythonPackages; [
             # Dev tools
-            virtualenvwrapper
             pylint
             # Pinned Python dependencies
-            uproot
-            lz4
-            matplotlib
-            lark-parser
-            mplhep
-            tabulate
+            pythonPackages.pyTuplingUtils
           ];
-
-          shellHook = ''
-            # Allow the use of wheels.
-            SOURCE_DATE_EPOCH=$(date +%s)
-
-            if test -d $HOME/build/python-venv; then
-              VENV=$HOME/build/python-venv/${name}
-            else
-              VENV=./.virtualenv
-            fi
-
-            if test ! -d $VENV; then
-              virtualenv $VENV
-            fi
-            source $VENV/bin/activate
-
-            # allow for the environment to pick up packages installed with virtualenv
-            export PYTHONPATH=$VENV/${python.sitePackages}/:$PYTHONPATH
-          '';
         };
       });
 }

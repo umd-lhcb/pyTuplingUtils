@@ -1,18 +1,11 @@
 # Author: Yipeng Sun <syp at umd dot edu>
 # License: BSD 2-clause
-# Last Change: Tue Oct 26, 2021 at 01:58 AM +0200
+# Last Change: Tue Aug 23, 2022 at 04:57 AM -0400
 
-.PHONY: sdist install install-egg clean \
-	unittest unittest-local integrationtest
+.PHONY: sdist clean
 
 sdist:
 	@python ./setup.py sdist
-
-install:
-	@pip install .
-
-install-egg:
-	@python ./setup.py install
 
 clean:
 	@rm -rf ./dist
@@ -23,6 +16,7 @@ clean:
 ##############
 # Unit tests #
 ##############
+.PHONY: unittest unittest-local integrationtest
 
 unittest:
 	@coverage run -m unittest discover -s ./test
