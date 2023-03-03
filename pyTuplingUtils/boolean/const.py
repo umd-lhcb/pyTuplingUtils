@@ -2,7 +2,7 @@
 #
 # Author: Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Thu Jul 30, 2020 at 04:03 AM +0800
+# Last Change: Fri Mar 03, 2023 at 06:31 PM -0500
 
 import numpy as np
 
@@ -27,6 +27,7 @@ KNOWN_FUNC = {
     'abs': np.abs,
     'log': np.log,
     'sin': np.sin,
+    'sqrt': np.sqrt,
     'ONE': lambda: 1,
     'LOG10pp': lambda p1x, p1y, p1z, p2x, p2y, p2z: np.log10(1-(p1x*p2x + p1y*p2y + p1z*p2z)/np.sqrt(p1x*p1x+p1y*p1y+p1z*p1z)/np.sqrt(p2x*p2x+p2y*p2y+p2z*p2z)),
     'ETA': lambda p, pz: np.log((p+pz)/(p-pz))/2.,
